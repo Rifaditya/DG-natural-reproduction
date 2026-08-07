@@ -1,0 +1,41 @@
+project:
+  name: "Natural Reproduction"
+  version: "1.0.0"
+  author: "Dasik (Rifaditya)"
+  namespace: "naturalrepro"
+
+philosophy:
+  primary: "Vanilla Outsider (VO)"
+  goal: "Enable autonomous animal breeding based on health, hunger, and population density."
+
+features:
+  - id: "autonomous_love"
+    name: "Autonomous Breeding"
+    description: "Animals can enter love mode without player intervention if conditions are met."
+    implementation:
+      mixin: "AnimalEntity"
+      logic: "Random chance check in mobTick()"
+
+  - id: "density_control"
+    name: "Population Density Control"
+    description: "Prevents autonomous breeding if too many animals of the same type are nearby."
+    implementation:
+      library: "DasikLibrary (GroupManager)"
+
+configuration:
+  gamerules:
+    naturalReproductionEnabled:
+      type: "Boolean"
+      default: true
+    naturalReproductionRate:
+      type: "Integer"
+      default: 24000
+    naturalReproductionMaxDensity:
+      type: "Integer"
+      default: 10
+
+qa:
+  test_cases:
+    - "Observe a pair of isolated cows over 24 hours, verify calf is born."
+    - "Test in a crowded pen (20+ cows), verify NO autonomous breeding occurs."
+    - "Damage an animal and verify it refuses to breed until healed."

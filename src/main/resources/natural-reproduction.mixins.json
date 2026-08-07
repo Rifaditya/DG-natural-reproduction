@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.vanillaoutsider.naturalreproduction.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "AnimalBreedingMixin",
+    "AnimalDropScaleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

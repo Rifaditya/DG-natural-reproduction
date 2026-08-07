@@ -1,0 +1,18 @@
+{
+  "title.natural-reproduction.config": "Natural Reproduction Configuration",
+  "gamerule.category.natural-reproduction": "Natural Reproduction",
+  "gamerule.natural-reproduction:enabled": "Enable Natural Reproduction",
+  "gamerule.natural-reproduction:enabled.description": "When true, passive animals breed autonomously when fed and in proximity to mates.",
+  "gamerule.natural-reproduction:density_cap": "Population Density Cap",
+  "gamerule.natural-reproduction:density_cap.description": "Maximum number of animals of the same species allowed in a 16-block radius for autonomous breeding to occur.",
+  "gamerule.natural-reproduction:rate": "Autonomous Breeding Rate",
+  "gamerule.natural-reproduction:rate.description": "Average tick interval between autonomous breeding attempts per animal (24000 = 1 MC Day).",
+  "gamerule.natural-reproduction:scale_drops": "Scale-Based Item Drops",
+  "gamerule.natural-reproduction:scale_drops.description": "When true, animal item drops scale proportionally with the animal's physical scale attribute.",
+  "gamerule.natural-reproduction:cramped_space_penalty": "Cramped Space Penalty & Recovery",
+  "gamerule.natural-reproduction:cramped_space_penalty.description": "When true, breeding in small 4x4 enclosures stunting offspring scale down to 0.25x; breeding in spacious pastures recovers size genetics.",
+  "gamerule.natural-reproduction:biome_fertility": "Native Biome Fertility Boost",
+  "gamerule.natural-reproduction:biome_fertility.description": "When true, animals in native biomes get 2x faster breeding frequency and +15% offspring genetics quality.",
+  "gamerule.natural-reproduction:biome_variants": "Biome Variant Skin Adaptation",
+  "gamerule.natural-reproduction:biome_variants.description": "When true, offspring born in specific biomes dynamically adapt their visual entity variant skin (e.g. Snowy Wolves, Desert Frogs)."
+}

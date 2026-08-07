@@ -1,0 +1,18 @@
+# 📋 Natural Reproduction Release Queue & Backlog
+
+This file tracks built versions uploaded to Modrinth/CurseForge.
+
+## 🚀 Published & Backlog Queue
+
+- [x] **`1.2.0+26.2`** (2026-08-02) - **Variant-Specific Environmental Habitat Triggers**: Animals with variant skins (Wolves, Frogs, Rabbits, Foxes) have unique environmental habitat block requirements tailored to their variant skin type.
+- [x] **`1.1.0+26.2`** (2026-08-02) - **Biome Climate & Variant Adaptation**: Animals in native biomes get 2x faster breeding & +15% genetics quality; offspring born in specific biomes adapt visual variant skins (Snowy Wolves, Desert Frogs, etc.).
+- [x] **`1.0.9+26.2`** (2026-08-02) - **Polishing Update**: Synced full 5 GameRules into Brigadier command suite, added visual particle feedback for stunting vs. recovery, and refreshed platform pages.
+- [x] **`1.0.8+26.2`** (2026-08-02) - **Delayed Gratification Relocation**: Relocated to `Delayed Gratification Collection` folder and aligned concept doc under `Doc/Concept/DG/`.
+- [x] **`1.0.7+26.2`** (2026-08-02) - **Data-Driven Universal Genetics Fix**: Registered data-driven `GeneticsConfig` across all 25+ vanilla animal species & updated attribute ID to `minecraft:scale`.
+- [x] **`1.0.6+26.2`** (2026-08-02) - **Cramped Penalty & Spacious Recovery**: Breeding in confined 4x4 pens stunts offspring to 0.25x scale; breeding in open pastures recovers size genetics over generations. Backed by `natural-reproduction:cramped_space_penalty`.
+- [x] **`1.0.5+26.2`** (2026-08-02) - **Scale-Based Item Drops**: Animal drop yield scales dynamically with physical body scale attribute, backed by `natural-reproduction:scale_drops` GameRule.
+- [x] **`1.0.4+26.2`** (2026-08-02) - **Universal Animal Support**: Extended autonomous breeding and habitat triggers to ALL vanilla Minecraft animal species via `AnimalHabitatHelper`.
+- [x] **`1.0.3+26.2`** (2026-08-02) - **Code Quality Audit Fixes**: Mixin member prefixing, JDK path correction, verification headers, 2-space JSON formatting, and CurseForge/Modrinth platform pages.
+- [x] **`1.0.2+26.2`** (2026-08-02) - **YACL Migration**: Replaced legacy ClothConfig integration with YACL (YetAnotherConfigLib v3) + ModMenu optional GUI screen builder.
+- [x] **`1.0.1+26.2`** (2026-08-02) - **Maintenance & Core Integration**: Added `natural-reproduction:rate` GameRule, species environmental habitat checks, `/naturalreproduction` Brigadier command suite, `ModVersionGuard`, and automated unit test suite.
+- [x] **`1.0.0+26.2`** (2026-08-02) - **Initial Release**: Autonomous wild animal breeding and livestock genetics (`DasikAnimalGeneticsAPI`) for Cows, Pigs, Sheep, and Chickens.

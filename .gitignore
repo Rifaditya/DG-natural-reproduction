@@ -1,0 +1,24 @@
+# Build & Gradle outputs
+.gradle/
+build/
+out/
+bin/
+
+# Archives & JARs
+Archive/
+Archive Jar of all versions/
+*.jar
+
+# IDE & Editor files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS metadata
+.DS_Store
+Thumbs.db
