@@ -12,7 +12,6 @@ This document outlines version compatibility, dependency bounds, and lifecycle p
 | Minecraft Version | Mod Release Tag | DasikLibrary Bound | Fabric Loader Bound | Support Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **MC 26.2** | `v1.3.4+26.2` | `>= 1.8.15` | `>= 0.19.1` | **Active Mainline** |
-| **MC 26.1.2** | `v1.2.0+26.1.2` | `>= 1.8.9` | `>= 0.16.10` | Supported (Backported) |
 
 ---
 
