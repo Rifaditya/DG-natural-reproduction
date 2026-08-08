@@ -61,7 +61,7 @@ All 27 supported animal species scan a **5x3x5 area** around themselves for spec
 ## 🧬 Pasture Management & Genetics
 
 ### 🏚️ Cramped Space Penalty vs. 🌾 Spacious Size Recovery
-- **Confined Factory Farming (Confined Pen)**: Breeding in small enclosed pens or 1x1/2x2 pit holes causes offspring to suffer smooth, incremental size stunting (-5% scale per extra crowding entity down to `0.25x` floor).
+- **Confined Pens & Overcrowded Pastures**: Breeding in tight enclosed pens/pits OR in overcrowded sections of large pastures (>= 3 local crowding mobs) causes offspring to suffer smooth, gradual size stunting (-5% scale per extra crowding entity down to `0.25x` floor).
 - **Spacious Pasture Recovery (<= 2 Mobs in 4x4 Area)**: Moving stunted animals to open pastures boosts offspring scale genetics (+30% recovery per generation) up to **1.30x max scale**.
 
 ---

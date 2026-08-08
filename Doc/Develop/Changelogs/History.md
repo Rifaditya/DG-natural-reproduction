@@ -1,5 +1,10 @@
 # Natural Reproduction - Version History
 
+## [1.3.4+26.2] - 2026-08-08
+
+### Enhanced & Added
+- **Dual Structural Confinement & Local Density Crowding Penalty**: Updated `AnimalCrampedSpaceHelper` so the crowding penalty takes effect both in small structural pens/pits AND in large open pastures (e.g. 100x100 pens) whenever local mob crowding is high (`extraLocalCount >= 3`).
+
 ## [1.3.3+26.2] - 2026-08-08
 
 ### Changed & Refactored
