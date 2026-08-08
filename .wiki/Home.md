@@ -11,6 +11,9 @@
   <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/DasikLibrary-%3E%3D1.8.15-orange.svg" alt="DasikLibrary"></a>
 </p>
 
+> [!NOTE]
+> 📌 **Repository Source Disclaimer**: The documentation in this Wiki reflects the **current source code state in the repository** (`v1.3.4+26.2`), which may include recent unreleased commits or developmental features ahead of public release builds on CurseForge and Modrinth.
+
 ---
 
 Welcome to the central encyclopedic wiki documentation for **Natural Reproduction**. This mod overhauls animal husbandry across Minecraft, allowing all 27 passive mob species to autonomously breed in the wild when health, partner proximity, and environmental habitat conditions are satisfied.

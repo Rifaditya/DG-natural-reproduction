@@ -1,5 +1,8 @@
 # Version Compatibility Matrix
 
+> [!NOTE]
+> 📌 **Repository Source Disclaimer**: The documentation in this Wiki reflects the **current source code state in the repository** (`v1.3.4+26.2`), which may include recent unreleased commits or developmental features ahead of public release builds on CurseForge and Modrinth.
+
 This document outlines version compatibility, dependency bounds, and lifecycle policies for **Natural Reproduction**.
 
 ---
