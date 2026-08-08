@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.3+26.2] - 2026-08-08
+
+### Changed & Refactored
+- **Smooth Gradual Cramped Space Penalty**: Refactored `AnimalCrampedSpaceHelper` to replace discrete tier steps with a smooth continuous density formula (`penaltyMultiplier = Math.max(0.95 - extraLocalCount * 0.05, 0.40)`). Every extra crowding animal in a confined pen now causes a smooth, incremental 5% scale reduction per entity instead of sudden cliff drops.
+
 ## [1.3.2+26.2] - 2026-08-08
 
 ### Changed & Updated

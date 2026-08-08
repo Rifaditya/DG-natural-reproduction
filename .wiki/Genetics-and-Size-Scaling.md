@@ -20,7 +20,7 @@ To discourage cramped 1x1/2x2 factory farming pits, Natural Reproduction evaluat
 
 | Pasture Condition | Herd Density | Effect on Offspring Size | Item Drop Impact |
 | :--- | :--- | :--- | :--- |
-| **Confined Factory Pen** | `>= 4 mobs` in a 4x4 area | **Stunts size down to `0.25x` scale** | Severe drop count reduction |
+| **Confined Factory Pen** | Confined 1x1/2x2 pit or pen | **Smooth gradual stunting (-5% scale per extra crowding mob)** down to `0.25x` | Reduced drop yield |
 | **Spacious Open Pasture** | `<= 2 mobs` in a 4x4 area | **Recovers size genetics (+30% per generation)** up to `1.30x` scale | Bonus item drop yield |
 
 > **Note**: Confined stunting can be toggled on or off using the `natural-reproduction:cramped_space_penalty` GameRule or ModMenu / YACL config GUI.

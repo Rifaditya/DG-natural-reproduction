@@ -37,19 +37,9 @@ public final class AnimalCrampedSpaceHelper {
         boolean isConfinedPen = isConfinedArea(level, baby.blockPosition());
         float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
 
-        if (isConfinedPen && extraLocalCount >= 2) {
-            // Cramped Space Penalty: gradual scale stunting based on extra density
-            float penaltyMultiplier;
-            if (extraLocalCount <= 2) {
-                penaltyMultiplier = 0.85f;
-            } else if (extraLocalCount <= 4) {
-                penaltyMultiplier = 0.65f;
-            } else if (extraLocalCount <= 6) {
-                penaltyMultiplier = 0.45f;
-            } else {
-                penaltyMultiplier = 0.30f;
-            }
-
+        if (isConfinedPen && extraLocalCount >= 1) {
+            // Cramped Space Penalty: smooth gradual scale stunting (-5% per extra local mob)
+            float penaltyMultiplier = Math.max(0.95f - (extraLocalCount * 0.05f), 0.40f);
             float newScale = Math.clamp(currentScale * penaltyMultiplier, 0.25f, 2.0f);
             DasikAnimalGeneticsAPI.setScale(baby, newScale);
 
