@@ -1,22 +1,92 @@
-<h2>Natural Reproduction - Autonomous Wild Animal Breeding</h2>
-<p><strong>Delayed Gratification Collection</strong> | <em>Pasture Management & Multi-Generational Investment</em></p>
+<h1 align="center">Natural Reproduction</h1>
+<p align="center">
+    <strong>Delayed Gratification Collection</strong> | <em>Pasture Management & Multi-Generational Investment</em>
+</p>
 
-<p>Animals in the wild should not depend solely on players for survival and growth. <strong>Natural Reproduction</strong> allows all passive mobs in Minecraft to autonomously breed and multiply when environmental conditions are ideal, while rewarding thoughtful pasture management and genetics investment.</p>
+<p align="center">
+    <a href="https://minecraft.net"><img src="https://img.shields.io/badge/Minecraft-26.2%2B-brightgreen.svg" alt="Minecraft"></a>
+    <a href="https://fabricmc.net"><img src="https://img.shields.io/badge/ModLoader-Fabric-blue.svg" alt="Fabric"></a>
+    <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License"></a>
+    <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/DasikLibrary-%3E%3D1.8.15-orange.svg" alt="DasikLibrary"></a>
+</p>
 
-<h3>Features</h3>
+<hr>
+
+<p>Animals in the wild should not depend solely on players for survival and growth. <strong>Natural Reproduction</strong> allows all passive mobs in Minecraft to autonomously breed and multiply when environmental conditions are ideal, while rewarding thoughtful pasture management, native climate alignment, and multi-generational size genetics investment.</p>
+
+<h3>🌟 Key Features</h3>
+
 <ul>
-    <li><strong>Universal 25+ Animal Species Support:</strong> Autonomous breeding and environmental habitat block triggers across cattle, equines, canines, felines, amphibians, aquatic mobs, nether fauna, and wild animals.</li>
-    <li><strong>Scale-Based Item Drop Yield:</strong> Larger animals (up to 1.30x scale) yield bonus item drops on death/harvest, while smaller animals yield reduced drops.</li>
-    <li><strong>Cramped Space Penalty vs. Spacious Pasture Recovery:</strong> Breeding in cramped 4x4 factory farm pens stunts offspring scale down to 0.25x (yielding minimal drops). Moving animals to open pastures (+30% recovery per generation) restores their genetic size potential!</li>
-    <li><strong>Data-Driven Genetics Integration:</strong> Powered by <code>DasikAnimalGeneticsAPI</code> and <code>EntityGeneticsRegistry</code> modifying <code>minecraft:scale</code>.</li>
-    <li><strong>Fully Configurable via GameRules & GUI:</strong> Dynamic GameRules (<code>natural-reproduction:enabled</code>, <code>rate</code>, <code>density_cap</code>, <code>scale_drops</code>, <code>cramped_space_penalty</code>) and YACL v3 config screen.</li>
-    <li><strong>In-Game Command Suite:</strong> Comprehensive <code>/naturalreproduction</code> Brigadier command suite with tab completion and full rule controls.</li>
+    <li><strong>🌾 Autonomous Wild Breeding:</strong> Healthy, well-fed animals naturally enter Love Mode when surrounded by compatible mates and environmental habitat blocks.</li>
+    <li><strong>🏞️ Native Biome Climate Fertility Boost:</strong> Animals in their native climate biomes (e.g. Wolves in Taigas, Frogs in Swamps, Cows/Sheep in Plains, Polar Bears in Ice Plains) receive <strong>2x faster breeding frequency</strong> and <strong>+15% offspring genetics quality boost</strong>.</li>
+    <li><strong>🎨 Biome Variant Skin Adaptation:</strong> Offspring born in specific biomes dynamically adapt visual skin variants (e.g. Desert Frogs become Warm variant, Taiga Wolves become Pale/Black variant, Snowy Rabbits become White variant).</li>
+    <li><strong>🐺 Variant-Specific Environmental Habitat Triggers:</strong> Animals require variant-tailored habitat blocks (e.g. Snowy Wolves & Foxes require snow/ice blocks; Warm Frogs & Gold Rabbits require sand/cactus).</li>
+    <li><strong>🏚️ Cramped Space Penalty vs. 🌾 Spacious Pasture Recovery:</strong> Breeding in cramped 4x4 factory farm pens (4+ mobs) stunts offspring scale down to <code>0.25x</code>. Moving animals to spacious open pastures (+30% recovery per generation) restores physical size potential up to <code>1.30x</code>!</li>
+    <li><strong>⚖️ Scale-Based Item Drops:</strong> Item drop yield on death/harvest scales proportionally with physical body scale attribute.</li>
+    <li><strong>⚙️ 27 Per-Species GameRule Toggles:</strong> Full granular control over every single animal species under a dedicated <code>Natural Reproduction - Species Toggles</code> category (all enabled by default).</li>
 </ul>
 
-<h3>Requirements</h3>
+<h3>📋 Dynamic GameRules</h3>
+
 <ul>
-    <li>Fabric Loader &gt;= 0.19.1</li>
-    <li>Minecraft 26.2+</li>
-    <li>Fabric API</li>
-    <li>DasikLibrary &gt;= 1.8.0</li>
+    <li><code>natural-reproduction:enabled</code> (Boolean, Default: <code>true</code>) &mdash; Master switch for autonomous wild breeding.</li>
+    <li><code>natural-reproduction:density_cap</code> (Integer, Default: <code>10</code>) &mdash; Maximum same-species animals permitted within a 16-block radius.</li>
+    <li><code>natural-reproduction:rate</code> (Integer, Default: <code>24000</code>) &mdash; Average tick interval between breeding checks (24000 = 1 MC Day).</li>
+    <li><code>natural-reproduction:scale_drops</code> (Boolean, Default: <code>true</code>) &mdash; Scale-proportional item drop yields.</li>
+    <li><code>natural-reproduction:cramped_space_penalty</code> (Boolean, Default: <code>true</code>) &mdash; Confined pen stunting vs spacious pasture size recovery.</li>
+    <li><code>natural-reproduction:biome_fertility</code> (Boolean, Default: <code>true</code>) &mdash; 2x breeding speed and +15% quality in native biomes.</li>
+    <li><code>natural-reproduction:biome_variants</code> (Boolean, Default: <code>true</code>) &mdash; Dynamic biome variant skin adaptation for offspring.</li>
+    <li><code>natural-reproduction:allow_&lt;species&gt;</code> (Boolean, Default: <code>true</code>) &mdash; 27 individual species toggles under <em>Natural Reproduction - Species Toggles</em> category (Cows, Pigs, Sheep, Chickens, Horses, Wolves, Frogs, Bees, Hoglins, etc.).</li>
 </ul>
+
+<h3>💬 Brigadier Command Suite</h3>
+
+<p>Manage all mod settings in-game via <code>/naturalreproduction</code> with tab completion:</p>
+<ul>
+    <li><code>/naturalreproduction status</code> &mdash; Display active states of all core rules and 27 species toggles.</li>
+    <li><code>/naturalreproduction get &lt;rule&gt;</code> &mdash; Query the current value of a specific rule.</li>
+    <li><code>/naturalreproduction set &lt;rule&gt; &lt;value&gt;</code> &mdash; Dynamically update any core rule or species toggle.</li>
+    <li><code>/naturalreproduction trackerlogs list|clear|enable|disable</code> &mdash; Inspect and manage autonomous breeding event logs.</li>
+    <li><code>/naturalreproduction reset</code> &mdash; Reset all rules and 27 species toggles to defaults.</li>
+</ul>
+
+<h3>🛠️ Installation Requirements</h3>
+
+<ul>
+    <li><strong>Fabric Loader:</strong> &gt;= 0.19.1</li>
+    <li><strong>Minecraft:</strong> 26.2+</li>
+    <li><strong>Fabric API:</strong> Required</li>
+    <li><strong>DasikLibrary:</strong> &gt;= 1.8.15 (Required)</li>
+    <li><strong>YetAnotherConfigLib (YACL v3):</strong> Optional (Client GUI)</li>
+    <li><strong>ModMenu:</strong> Optional (Client GUI)</li>
+</ul>
+
+<h3>👥 Credits</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Contributor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Lead Developer & Author</strong></td>
+            <td>Dasik (Rifaditya)</td>
+        </tr>
+        <tr>
+            <td><strong>Genetics & GameRule Engine</strong></td>
+            <td>DasikLibrary Team</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>📄 License & Modpack Usage</h3>
+
+<blockquote>
+    <p>This mod is licensed under the <strong>GNU General Public License v3.0 (GPLv3)</strong>.</p>
+    <p>You are welcome to include <strong>Natural Reproduction</strong> in any modpack published on CurseForge or Modrinth!</p>
+</blockquote>
+
+<p align="center"><em>Made with ❤️ by Dasik (Rifaditya)</em></p>

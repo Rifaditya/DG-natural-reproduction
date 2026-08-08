@@ -1,5 +1,16 @@
 # Natural Reproduction - Version History
 
+## [1.3.2+26.2] - 2026-08-08
+
+### Changed & Updated
+- **Minimum DasikLibrary Requirement Bump**: Updated minimum `dasik-library` dependency bound in `fabric.mod.json` to `">=1.8.15"` and updated `gradle.properties` to `dasik_library_version=1.8.15`.
+- **Platform Pages & Docs Sync**: Updated `README.md`, `description_curseforge.html`, and `description_modrinth.md` to reflect `DasikLibrary >= 1.8.15` minimum requirement and the 27 per-species GameRule toggles.
+
+## [1.3.1+26.2] - 2026-08-08
+
+### Added
+- **27 Per-Species GameRule Toggles & Dedicated Category**: Registered 27 individual per-species GameRules under `natural_reproduction_species` category (`§lNatural Reproduction - Species Toggles`). Added O(1) runtime evaluation in `AnimalHabitatHelper`, updated `/naturalreproduction` command suite, and added a dedicated tab in YACL config screen.
+
 ## [1.2.0+26.2] - 2026-08-02
 
 ### Added

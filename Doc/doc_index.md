@@ -2,7 +2,7 @@
 
 Welcome to the central documentation hub for **Natural Reproduction**. This project follows the **Zenith Protocol v2.1** documentation standard.
 
-## ðŸ“ Navigation
+## 📌 Navigation
 
 ### [Core Concepts](Concept/DG/concept_natural_reproduction.md)
 *   **[Technical Specification (YAML)](Concept/concept_natural_reproduction.yaml)**
@@ -11,16 +11,15 @@ Welcome to the central documentation hub for **Natural Reproduction**. This proj
 ### [Development](Develop/)
 *   **[Architecture](Develop/Architecture/)**
 *   **[Changelogs](Develop/Changelogs/History.md)**
-*   **[Audit Logs](Develop/Audit/)**
 
-### [Player Guide](Players/breeding_guide.md)
-*   **[Breeding Guide & Requirements](Players/breeding_guide.md)**: Detailed breakdown of autonomous breeding, habitat block requirements, genetics, GameRules, and commands.
+### [Player Guide Hub](Players/index.md)
+*   **[Breeding Guide & Requirements](Players/breeding_guide.md)**: Complete 27 animal species habitat requirements, variant triggers, native climate biomes, pasture management, GameRules, and commands.
 
 ### [Platform Pages](Platform%20Pages/)
 
 ---
 
-## ðŸ–¼ï¸ Media & Assets
+## 🖼️ Media & Assets
 *   Explore the **[Media folder](Media/)**
 
 ---

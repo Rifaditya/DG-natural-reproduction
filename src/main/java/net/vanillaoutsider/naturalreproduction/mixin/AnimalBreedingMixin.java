@@ -32,7 +32,7 @@ public abstract class AnimalBreedingMixin {
 
         // Autonomous Wild Breeding Logic
         if (!level.isClientSide() && self.getAge() == 0 && !self.isInLove()) {
-            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED)) {
+            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED) && AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self)) {
                 int rate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
                 if (rate <= 0) {
                     rate = 24000;
@@ -60,7 +60,9 @@ public abstract class AnimalBreedingMixin {
                             );
 
                             if (!potentialMates.isEmpty()) {
+                                Animal mate = potentialMates.get(0);
                                 self.setInLove(null);
+                                mate.setInLove(null);
                             }
                         }
                     }
@@ -92,6 +94,26 @@ public abstract class AnimalBreedingMixin {
             boolean enableVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
             boolean enableFertilityBoost = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
             net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper.applyBiomeVariantAndBoost(level, parent1, mate, baby, enableVariants, enableFertilityBoost);
+
+            // Log autonomous reproduction event to tracker if manually enabled
+            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.TRACKER_LOGS)) {
+                float babyScale = DasikAnimalGeneticsAPI.getScale(baby);
+                String biomeId = level.getBiome(baby.blockPosition()).unwrapKey().map(k -> k.identifier().toString()).orElse("unknown");
+                String speciesName = baby.getType().getDescription().getString();
+
+                String statusNote = "Standard";
+                if (net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper.isNativeBiome(level, parent1)) {
+                    statusNote = "Native Biome Boost";
+                } else if (babyScale <= 0.35f) {
+                    statusNote = "Cramped Stunted";
+                } else if (babyScale >= 1.20f) {
+                    statusNote = "Spacious Pasture";
+                }
+
+                net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger.logBreeding(
+                    level, speciesName, baby.blockPosition(), biomeId, babyScale, statusNote
+                );
+            }
         }
     }
 }

@@ -5,17 +5,23 @@ package net.vanillaoutsider.naturalreproduction;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.genetics.EntityGeneticsRegistry;
 import net.dasik.social.api.genetics.GeneticsConfig;
+import net.dasik.social.api.genetics.GeneticsLimitRegistry;
 import net.dasik.social.api.genetics.MutationRule;
 import net.dasik.social.api.genetics.TraitConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.vanillaoutsider.naturalreproduction.command.NaturalReproductionCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NaturalReproductionFabric implements ModInitializer {
@@ -26,6 +32,10 @@ public class NaturalReproductionFabric implements ModInitializer {
         Identifier.fromNamespaceAndPath(MOD_ID, "natural_reproduction")
     );
 
+    public static final GameRuleCategory SPECIES_CATEGORY = DynamicGameRuleManager.registerCategory(
+        Identifier.fromNamespaceAndPath(MOD_ID, "species_toggles")
+    );
+
     public static GameRule<Boolean> ENABLED;
     public static GameRule<Integer> DENSITY_CAP;
     public static GameRule<Integer> RATE;
@@ -33,6 +43,40 @@ public class NaturalReproductionFabric implements ModInitializer {
     public static GameRule<Boolean> CRAMPED_SPACE_PENALTY;
     public static GameRule<Boolean> BIOME_FERTILITY;
     public static GameRule<Boolean> BIOME_VARIANTS;
+    public static GameRule<Integer> MIN_SCALE;
+    public static GameRule<Integer> MAX_SCALE;
+    public static GameRule<Boolean> TRACKER_LOGS;
+
+    public static GameRule<Boolean> ALLOW_COW;
+    public static GameRule<Boolean> ALLOW_PIG;
+    public static GameRule<Boolean> ALLOW_SHEEP;
+    public static GameRule<Boolean> ALLOW_CHICKEN;
+    public static GameRule<Boolean> ALLOW_MOOSHROOM;
+    public static GameRule<Boolean> ALLOW_HORSE;
+    public static GameRule<Boolean> ALLOW_DONKEY;
+    public static GameRule<Boolean> ALLOW_MULE;
+    public static GameRule<Boolean> ALLOW_LLAMA;
+    public static GameRule<Boolean> ALLOW_TRADER_LLAMA;
+    public static GameRule<Boolean> ALLOW_CAMEL;
+    public static GameRule<Boolean> ALLOW_WOLF;
+    public static GameRule<Boolean> ALLOW_CAT;
+    public static GameRule<Boolean> ALLOW_FOX;
+    public static GameRule<Boolean> ALLOW_OCELOT;
+    public static GameRule<Boolean> ALLOW_TURTLE;
+    public static GameRule<Boolean> ALLOW_FROG;
+    public static GameRule<Boolean> ALLOW_AXOLOTL;
+    public static GameRule<Boolean> ALLOW_POLAR_BEAR;
+    public static GameRule<Boolean> ALLOW_PANDA;
+    public static GameRule<Boolean> ALLOW_RABBIT;
+    public static GameRule<Boolean> ALLOW_GOAT;
+    public static GameRule<Boolean> ALLOW_ARMADILLO;
+    public static GameRule<Boolean> ALLOW_SNIFFER;
+    public static GameRule<Boolean> ALLOW_BEE;
+    public static GameRule<Boolean> ALLOW_STRIDER;
+    public static GameRule<Boolean> ALLOW_HOGLIN;
+
+    public static final Map<EntityType<?>, GameRule<Boolean>> SPECIES_TOGGLES = new HashMap<>();
+    public static final Map<String, GameRule<Boolean>> RULE_NAME_MAP = new HashMap<>();
 
     @Override
     public void onInitialize() {
@@ -81,20 +125,64 @@ public class NaturalReproductionFabric implements ModInitializer {
             .description("When true, offspring born in specific biomes dynamically adapt their visual entity variant skin (e.g. Snowy Wolves, Desert Frogs).")
             .register();
 
+        MIN_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:min_scale", CATEGORY, 50)
+            .name("Minimum Size Percentage")
+            .description("Minimum animal scale percentage (50 = 0.5x scale).")
+            .register();
+
+        MAX_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:max_scale", CATEGORY, 130)
+            .name("Maximum Size Percentage")
+            .description("Maximum animal scale percentage (130 = 1.3x scale).")
+            .register();
+
+        TRACKER_LOGS = DynamicGameRuleManager.booleanRule("natural-reproduction:tracker_logs", CATEGORY, false)
+            .name("Breeding Tracker Logging")
+            .description("When true, autonomous animal reproduction events are recorded to the tracker log and server console.")
+            .register();
+
+        // 27 Per-Species GameRules under SPECIES_CATEGORY
+        ALLOW_COW = registerSpeciesRule("allow_cow", EntityTypes.COW, "Cow");
+        ALLOW_PIG = registerSpeciesRule("allow_pig", EntityTypes.PIG, "Pig");
+        ALLOW_SHEEP = registerSpeciesRule("allow_sheep", EntityTypes.SHEEP, "Sheep");
+        ALLOW_CHICKEN = registerSpeciesRule("allow_chicken", EntityTypes.CHICKEN, "Chicken");
+        ALLOW_MOOSHROOM = registerSpeciesRule("allow_mooshroom", EntityTypes.MOOSHROOM, "Mooshroom");
+        ALLOW_HORSE = registerSpeciesRule("allow_horse", EntityTypes.HORSE, "Horse");
+        ALLOW_DONKEY = registerSpeciesRule("allow_donkey", EntityTypes.DONKEY, "Donkey");
+        ALLOW_MULE = registerSpeciesRule("allow_mule", EntityTypes.MULE, "Mule");
+        ALLOW_LLAMA = registerSpeciesRule("allow_llama", EntityTypes.LLAMA, "Llama");
+        ALLOW_TRADER_LLAMA = registerSpeciesRule("allow_trader_llama", EntityTypes.TRADER_LLAMA, "Trader Llama");
+        ALLOW_CAMEL = registerSpeciesRule("allow_camel", EntityTypes.CAMEL, "Camel");
+        ALLOW_WOLF = registerSpeciesRule("allow_wolf", EntityTypes.WOLF, "Wolf");
+        ALLOW_CAT = registerSpeciesRule("allow_cat", EntityTypes.CAT, "Cat");
+        ALLOW_FOX = registerSpeciesRule("allow_fox", EntityTypes.FOX, "Fox");
+        ALLOW_OCELOT = registerSpeciesRule("allow_ocelot", EntityTypes.OCELOT, "Ocelot");
+        ALLOW_TURTLE = registerSpeciesRule("allow_turtle", EntityTypes.TURTLE, "Turtle");
+        ALLOW_FROG = registerSpeciesRule("allow_frog", EntityTypes.FROG, "Frog");
+        ALLOW_AXOLOTL = registerSpeciesRule("allow_axolotl", EntityTypes.AXOLOTL, "Axolotl");
+        ALLOW_POLAR_BEAR = registerSpeciesRule("allow_polar_bear", EntityTypes.POLAR_BEAR, "Polar Bear");
+        ALLOW_PANDA = registerSpeciesRule("allow_panda", EntityTypes.PANDA, "Panda");
+        ALLOW_RABBIT = registerSpeciesRule("allow_rabbit", EntityTypes.RABBIT, "Rabbit");
+        ALLOW_GOAT = registerSpeciesRule("allow_goat", EntityTypes.GOAT, "Goat");
+        ALLOW_ARMADILLO = registerSpeciesRule("allow_armadillo", EntityTypes.ARMADILLO, "Armadillo");
+        ALLOW_SNIFFER = registerSpeciesRule("allow_sniffer", EntityTypes.SNIFFER, "Sniffer");
+        ALLOW_BEE = registerSpeciesRule("allow_bee", EntityTypes.BEE, "Bee");
+        ALLOW_STRIDER = registerSpeciesRule("allow_strider", EntityTypes.STRIDER, "Strider");
+        ALLOW_HOGLIN = registerSpeciesRule("allow_hoglin", EntityTypes.HOGLIN, "Hoglin");
+
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             NaturalReproductionCommand.register(dispatcher);
         });
 
         // Register Data-Driven Animal Genetics with DasikLibrary API across ALL vanilla animal species
         Map<String, TraitConfig> animalTraits = Map.of(
-            "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.75f, 1.30f),
+            "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.50f, 1.30f),
             "max_health", new TraitConfig("max_health", "minecraft:generic.max_health", "ADD_VALUE", 2.0f, 0.5f, -4.0f, 12.0f),
             "movement_speed", new TraitConfig("movement_speed", "minecraft:generic.movement_speed", "ADD_MULTIPLIED_BASE", 0.05f, 0.5f, -0.04f, 0.08f)
         );
 
         Map<String, Map<String, MutationRule>> animalMutations = Map.of(
             "default", Map.of(
-                "scale", new MutationRule("uniform", 0.75f, 1.30f),
+                "scale", new MutationRule("uniform", 0.50f, 1.30f),
                 "max_health", new MutationRule("triangular", -2.0f, 8.0f),
                 "movement_speed", new MutationRule("triangular", -0.03f, 0.06f)
             )
@@ -102,45 +190,51 @@ public class NaturalReproductionFabric implements ModInitializer {
 
         GeneticsConfig config = new GeneticsConfig(animalTraits, animalMutations);
 
-        // Livestock & Farmland Fauna
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.COW, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.PIG, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.SHEEP, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.CHICKEN, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.MOOSHROOM, config);
+        List<EntityType<?>> allAnimals = List.of(
+            EntityTypes.COW, EntityTypes.PIG, EntityTypes.SHEEP, EntityTypes.CHICKEN,
+            EntityTypes.MOOSHROOM, EntityTypes.HORSE, EntityTypes.DONKEY, EntityTypes.MULE,
+            EntityTypes.LLAMA, EntityTypes.TRADER_LLAMA, EntityTypes.CAMEL, EntityTypes.WOLF,
+            EntityTypes.CAT, EntityTypes.FOX, EntityTypes.OCELOT, EntityTypes.TURTLE,
+            EntityTypes.FROG, EntityTypes.AXOLOTL, EntityTypes.POLAR_BEAR, EntityTypes.PANDA,
+            EntityTypes.RABBIT, EntityTypes.GOAT, EntityTypes.ARMADILLO, EntityTypes.SNIFFER,
+            EntityTypes.BEE, EntityTypes.STRIDER, EntityTypes.HOGLIN
+        );
 
-        // Equines & Camelids
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.HORSE, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.DONKEY, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.MULE, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.LLAMA, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.TRADER_LLAMA, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.CAMEL, config);
+        for (EntityType<?> type : allAnimals) {
+            EntityGeneticsRegistry.register(type, config);
+            GeneticsLimitRegistry.registerMin(type, "scale", (entity, defaultMin) -> {
+                if (entity.level() instanceof ServerLevel sl) {
+                    return DynamicGameRuleManager.getInt(sl, MIN_SCALE) / 100.0f;
+                }
+                return 0.50f;
+            });
+            GeneticsLimitRegistry.registerMax(type, "scale", (entity, defaultMax) -> {
+                if (entity.level() instanceof ServerLevel sl) {
+                    return DynamicGameRuleManager.getInt(sl, MAX_SCALE) / 100.0f;
+                }
+                return 1.30f;
+            });
+        }
 
-        // Canines & Felines
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.WOLF, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.CAT, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.FOX, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.OCELOT, config);
+        LOGGER.info("Natural Reproduction: Universal Data-Driven Genetics & 27 Per-Species Toggles Registered.");
+    }
 
-        // Amphibians & Aquatics
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.TURTLE, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.FROG, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.AXOLOTL, config);
+    private GameRule<Boolean> registerSpeciesRule(String ruleName, EntityType<?> type, String displayName) {
+        GameRule<Boolean> rule = DynamicGameRuleManager.booleanRule("natural-reproduction:" + ruleName, SPECIES_CATEGORY, true)
+            .name("Allow " + displayName + " Reproduction")
+            .description("When true, " + displayName.toLowerCase() + "s can breed autonomously when habitat conditions are met.")
+            .register();
+        SPECIES_TOGGLES.put(type, rule);
+        RULE_NAME_MAP.put(ruleName, rule);
+        return rule;
+    }
 
-        // Bears & Wild Mammals
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.POLAR_BEAR, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.PANDA, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.RABBIT, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.GOAT, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.ARMADILLO, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.SNIFFER, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.BEE, config);
-
-        // Nether Fauna
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.STRIDER, config);
-        EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityTypes.HOGLIN, config);
-
-        LOGGER.info("Natural Reproduction: Universal Data-Driven Genetics Registered for 25+ Animal Species (DasikLibrary API).");
+    public static boolean isSpeciesAllowed(ServerLevel level, EntityType<?> type) {
+        GameRule<Boolean> rule = SPECIES_TOGGLES.get(type);
+        if (rule != null && level != null) {
+            return DynamicGameRuleManager.getBoolean(level, rule);
+        }
+        return true;
     }
 }
+

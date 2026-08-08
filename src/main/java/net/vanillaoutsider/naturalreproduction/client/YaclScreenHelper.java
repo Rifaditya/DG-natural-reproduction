@@ -8,10 +8,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.gamerules.GameRule;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -31,6 +33,10 @@ public class YaclScreenHelper {
         boolean currentCrampedPenalty = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY) : true;
         boolean currentBiomeFertility = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_FERTILITY) : true;
         boolean currentBiomeVariants = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_VARIANTS) : true;
+        boolean currentTrackerLogs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.TRACKER_LOGS) : false;
+
+        int currentMinScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MIN_SCALE) : 50;
+        int currentMaxScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MAX_SCALE) : 130;
 
         try {
             Class<?> yaclClass = Class.forName("dev.isxander.yacl3.api.YetAnotherConfigLib");
@@ -109,6 +115,42 @@ public class YaclScreenHelper {
             );
             optionMethod.invoke(groupBuilder, rateOption);
 
+            // Add Min Scale Option
+            Object minScaleOption = buildIntSliderOption(
+                Component.translatable("gamerule.natural-reproduction:min_scale"),
+                Component.translatable("gamerule.natural-reproduction:min_scale.description"),
+                50,
+                10, 100, 5,
+                () -> currentMinScale,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MIN_SCALE != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.MIN_SCALE, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, minScaleOption);
+
+            // Add Max Scale Option
+            Object maxScaleOption = buildIntSliderOption(
+                Component.translatable("gamerule.natural-reproduction:max_scale"),
+                Component.translatable("gamerule.natural-reproduction:max_scale.description"),
+                130,
+                100, 300, 5,
+                () -> currentMaxScale,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MAX_SCALE != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.MAX_SCALE, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, maxScaleOption);
+
             // Add Scale Drops Option
             Object scaleDropsOption = buildBooleanOption(
                 Component.translatable("gamerule.natural-reproduction:scale_drops"),
@@ -177,6 +219,23 @@ public class YaclScreenHelper {
             );
             optionMethod.invoke(groupBuilder, biomeVariantsOption);
 
+            // Add Tracker Logs Option
+            Object trackerLogsOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:tracker_logs"),
+                Component.translatable("gamerule.natural-reproduction:tracker_logs.description"),
+                false,
+                () -> currentTrackerLogs,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.TRACKER_LOGS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.TRACKER_LOGS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, trackerLogsOption);
+
             Method groupBuildMethod = findMethod(groupBuilder.getClass(), "build");
             Object optionGroup = groupBuildMethod.invoke(groupBuilder);
 
@@ -188,6 +247,40 @@ public class YaclScreenHelper {
 
             Method builderCategoryMethod = findMethod(builderClass, "category");
             builderCategoryMethod.invoke(yaclBuilder, category);
+
+            // Add Dedicated Species Toggles Category Tab
+            Object speciesCategoryBuilder = categoryCreateBuilderMethod.invoke(null);
+            findMethod(speciesCategoryBuilder.getClass(), "name").invoke(speciesCategoryBuilder, Component.translatable("gamerule.category.natural-reproduction.species_toggles"));
+
+            Object speciesGroupBuilder = groupCreateBuilderMethod.invoke(null);
+            findMethod(speciesGroupBuilder.getClass(), "name").invoke(speciesGroupBuilder, Component.translatable("gamerule.category.natural-reproduction.species_toggles"));
+
+            for (Map.Entry<String, GameRule<Boolean>> entry : NaturalReproductionFabric.RULE_NAME_MAP.entrySet()) {
+                String ruleKey = entry.getKey();
+                GameRule<Boolean> rule = entry.getValue();
+
+                Object speciesOption = buildBooleanOption(
+                    Component.translatable("gamerule.natural-reproduction:" + ruleKey),
+                    Component.translatable("gamerule.natural-reproduction:" + ruleKey + ".description"),
+                    true,
+                    () -> client.level != null ? DynamicGameRuleManager.getBoolean(client.level, rule) : true,
+                    val -> {
+                        if (client.getSingleplayerServer() != null && rule != null) {
+                            ServerLevel overworld = client.getSingleplayerServer().overworld();
+                            if (overworld != null) {
+                                overworld.getGameRules().set(rule, val, client.getSingleplayerServer());
+                            }
+                        }
+                    }
+                );
+                optionMethod.invoke(speciesGroupBuilder, speciesOption);
+            }
+
+            Object speciesOptionGroup = groupBuildMethod.invoke(speciesGroupBuilder);
+            categoryGroupMethod.invoke(speciesCategoryBuilder, speciesOptionGroup);
+            Object speciesCategory = categoryBuildMethod.invoke(speciesCategoryBuilder);
+
+            builderCategoryMethod.invoke(yaclBuilder, speciesCategory);
 
             Method builderBuildMethod = findMethod(builderClass, "build");
             Object yacl = builderBuildMethod.invoke(yaclBuilder);

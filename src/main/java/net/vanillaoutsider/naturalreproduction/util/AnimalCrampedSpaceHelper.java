@@ -3,9 +3,13 @@
 package net.vanillaoutsider.naturalreproduction.util;
 
 import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
@@ -19,24 +23,28 @@ public final class AnimalCrampedSpaceHelper {
             return;
         }
 
-        // Count same-species animals in immediate 4x4 area (5x3x5 bounding box)
+        // Count same-species EXTRA animals in immediate 4x4 area (excluding baby, parent1, parent2)
         List<Animal> localMobs = level.getEntitiesOfClass(
             Animal.class,
             baby.getBoundingBox().inflate(2.5, 1.5, 2.5),
             e -> e.getType() == baby.getType() && e.isAlive()
+                && !e.getUUID().equals(parent1.getUUID())
+                && !e.getUUID().equals(parent2.getUUID())
+                && !e.getUUID().equals(baby.getUUID())
         );
 
-        int localCount = localMobs.size();
+        int extraLocalCount = localMobs.size();
+        boolean isConfinedPen = isConfinedArea(level, baby.blockPosition());
         float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
 
-        if (localCount >= 4) {
-            // Cramped Space Penalty: gradual scale stunting based on density
+        if (isConfinedPen && extraLocalCount >= 2) {
+            // Cramped Space Penalty: gradual scale stunting based on extra density
             float penaltyMultiplier;
-            if (localCount <= 4) {
+            if (extraLocalCount <= 2) {
                 penaltyMultiplier = 0.85f;
-            } else if (localCount <= 6) {
+            } else if (extraLocalCount <= 4) {
                 penaltyMultiplier = 0.65f;
-            } else if (localCount <= 8) {
+            } else if (extraLocalCount <= 6) {
                 penaltyMultiplier = 0.45f;
             } else {
                 penaltyMultiplier = 0.30f;
@@ -56,15 +64,17 @@ public final class AnimalCrampedSpaceHelper {
                 baby.getX(), baby.getY() + 0.5, baby.getZ(),
                 2, 0.2, 0.2, 0.2, 0.02
             );
-        } else if (localCount <= 2) {
-            // Spacious Recovery: if parents or baby are stunted (<1.0f), boost scale towards normal/giant potential
+        } else {
+            // Open Pasture / Spacious Recovery: boost scale towards MAX_SCALE (default 1.30x)
             float parent1Scale = DasikAnimalGeneticsAPI.getScale(parent1);
             float parent2Scale = DasikAnimalGeneticsAPI.getScale(parent2);
             float avgParentScale = (parent1Scale + parent2Scale) / 2.0f;
 
-            if (avgParentScale < 1.0f || currentScale < 1.0f) {
-                float recoveryBoost = 1.30f;
-                float newScale = Math.clamp(currentScale * recoveryBoost, 0.25f, 1.30f);
+            float maxAllowed = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(level, net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.MAX_SCALE) / 100.0f;
+
+            if (avgParentScale < maxAllowed || currentScale < maxAllowed) {
+                float recoveryBoost = 1.15f;
+                float newScale = Math.clamp(currentScale * recoveryBoost, 0.25f, maxAllowed);
                 DasikAnimalGeneticsAPI.setScale(baby, newScale);
 
                 // Visual particle feedback for spacious pasture size recovery
@@ -75,5 +85,37 @@ public final class AnimalCrampedSpaceHelper {
                 );
             }
         }
+    }
+
+    /**
+     * Universal confinement check: detects 1x1 / 2x2 pit holes, fences, walls, trapdoors, and solid block enclosures.
+     */
+    public static boolean isConfinedArea(ServerLevel level, BlockPos center) {
+        int blockedDirections = 0;
+
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockPos feetPos = center.relative(dir);
+            BlockPos eyePos = center.above().relative(dir);
+
+            BlockState feetState = level.getBlockState(feetPos);
+            BlockState eyeState = level.getBlockState(eyePos);
+
+            if (isObstacle(feetState) || isObstacle(eyeState)) {
+                blockedDirections++;
+            }
+        }
+
+        // Confined if 3 or 4 horizontal sides are blocked by solid blocks/fences/walls (e.g. 1x1/2x2 pit holes or tight pens)
+        return blockedDirections >= 3;
+    }
+
+    private static boolean isObstacle(BlockState state) {
+        if (state.isAir()) {
+            return false;
+        }
+        return state.is(BlockTags.FENCES)
+            || state.is(BlockTags.WALLS)
+            || state.is(BlockTags.TRAPDOORS)
+            || state.isSolid();
     }
 }

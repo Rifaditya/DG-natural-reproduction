@@ -2,6 +2,73 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2+26.2] - 2026-08-08
+
+### Changed & Updated
+- **Minimum DasikLibrary Requirement Bump**: Updated minimum `dasik-library` dependency bound in `fabric.mod.json` to `">=1.8.15"` and updated `gradle.properties` to `dasik_library_version=1.8.15`.
+- **Platform Pages & Docs Sync**: Updated `README.md`, `description_curseforge.html`, and `description_modrinth.md` to reflect `DasikLibrary >= 1.8.15` minimum requirement and the 27 per-species GameRule toggles.
+
+## [1.3.1+26.2] - 2026-08-08
+
+### Added
+- **27 Per-Species GameRule Toggles & Dedicated Category**: Added 27 individual per-species GameRules under a dedicated `natural_reproduction_species` category (`§lNatural Reproduction - Species Toggles`). All 27 toggles default to `true` (ON), allowing admins to granularly enable or disable natural reproduction for any specific animal species (e.g. Wolf, Hoglin, Cow, Pig) via `/gamerule`, `/naturalreproduction set`, or the YACL config screen.
+
+## [1.3.0+26.2] - 2026-08-08
+
+### Added & Fixed
+- **Universal Confinement & Pit Hole Detection**: Introduced universal confinement checking (`isConfinedArea`) detecting 1x1 / 2x2 pit holes, fences, walls, trapdoors, and solid block enclosures.
+- **Open Pasture Stunting Immunity**: Excluded breeding parents from local crowd counts and protected open pasture herds from false stunting penalties, granting size recovery (`Spacious Pasture`) up to `1.30x` scale in open worlds.
+
+## [1.2.9+26.2] - 2026-08-08
+
+### Fixed
+- **Dual-Parent In-Love State Fix for Autonomous Breeding**: Fixed issue where only parent #1 was set into love mode during autonomous breeding. Now both `self` and `mate` enter love mode concurrently (`self.setInLove(null)` and `mate.setInLove(null)`), satisfying vanilla `BreedGoal` requirements and allowing animals to successfully mate, spawn offspring, and trigger tracker logs during tick sprints.
+
+## [1.2.8+26.2] - 2026-08-08
+
+### Added & Changed
+- **Manual Toggle & Off-By-Default Tracker Logging**: Made Autonomous Breeding Tracker Logging disabled (`false`) by default. Added `natural-reproduction:tracker_logs` GameRule (default `false`), YACL toggle, and `/naturalreproduction trackerlogs enable/disable` command controls.
+
+## [1.2.7+26.2] - 2026-08-08
+
+### Added
+- **Autonomous Breeding Tracker Log System & Command**: Added `BreedingTrackerLogger` and `/naturalreproduction trackerlogs` (and `/naturalreproduction logs`) command suite (`list`, `clear`) to track, format, and inspect autonomous animal reproduction events (day, species, coordinates, biome, offspring scale, habitat status).
+
+## [1.2.6+26.2] - 2026-08-08
+
+### Fixed
+- **GameRule Text Formatting Refinement**: Removed bold formatting from individual GameRule display names so individual rules render in standard unbolded font, isolating bold formatting exclusively to category headers.
+
+## [1.2.5+26.2] - 2026-08-07
+
+### Added & Changed
+- **Default Max Scale Update (1.3x)**: Updated default maximum animal scale bound from `1.50x` (150%) to `1.30x` (130%) across GameRules, genetics configs, YACL sliders, Brigadier commands, and localization.
+- **Bold Category Header Formatting**: Added `§l` formatting prefix to GameRule category translation keys so category headers (e.g. `Natural Reproduction (9 rules)`) render bolded in GameRule menus.
+
+## [1.2.4+26.2] - 2026-08-07
+
+### Added
+- **Bold GameRule Title Formatting**: Added `§l` formatting prefix across all GameRule display names in `en_us.json` and builder registrations so GameRule titles appear bolded in vanilla and modded GameRule menus.
+
+## [1.2.3+26.2] - 2026-08-07
+
+### Fixed
+- **Stale Attribute Modifier Purging Integration**: Integrated with `DasikLibrary` 1.8.11 to purge all legacy/duplicate attribute modifiers on entity spawn and tick, permanently resolving the giant animal scale bug.
+
+## [1.2.2+26.2] - 2026-08-07
+
+### Added
+- **Configurable Dynamic Size Range**: Default scale bounds set to `0.5x` (50% smallest) and `1.5x` (150% largest). Introduced dynamic `natural-reproduction:min_scale` and `natural-reproduction:max_scale` GameRules integrated with `GeneticsLimitRegistry`.
+- **YACL v3 & Command Suite Sliders**: Added GUI sliders and `/naturalreproduction set min_scale <val>` / `max_scale <val>` command controls.
+
+### Fixed
+- **Scale Attribute Base Offset**: Integrated with `DasikLibrary` 1.8.10 to subtract `1.0f` from `scale` attribute modifiers (`ADD_VALUE`), fixing 200%+ oversized sheep.
+
+## [1.2.1+26.2] - 2026-08-07
+
+### Fixed
+- **Startup Mixin Injection Crash**: Changed `AnimalDropScaleMixin` target to `@Mixin(Entity.class)` with `instanceof Animal` check. Resolves `InvalidInjectionException` caused by injecting into inherited `spawnAtLocation` method on `Animal.class` (`ERR-20260530-002`).
+
 ## [1.2.0+26.2] - 2026-08-02
 
 ### Added

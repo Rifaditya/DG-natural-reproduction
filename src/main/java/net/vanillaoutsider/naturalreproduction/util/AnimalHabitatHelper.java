@@ -27,6 +27,13 @@ public final class AnimalHabitatHelper {
     private AnimalHabitatHelper() {
     }
 
+    public static boolean isSpeciesReproductionAllowed(ServerLevel level, Animal self) {
+        if (level == null || self == null) {
+            return false;
+        }
+        return net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.isSpeciesAllowed(level, self.getType());
+    }
+
     public static boolean hasEnvironmentalBreedingConditions(ServerLevel level, Animal self) {
         BlockPos center = self.blockPosition();
         EntityType<?> type = self.getType();
