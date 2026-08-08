@@ -1,13 +1,16 @@
 # Client & Server Configuration Guide
 
-**Natural Reproduction** provides seamless configuration options for both server operators and singleplayer clients via native namespaced **GameRules** and optional client-side **GUI integration**.
+| Interface | Supported Environment | Entrypoint Mapping |
+| :--- | :--- | :--- |
+| **Server GameRules** | Server & Singleplayer | `game_rules.dat` (Server-authoritative) |
+| **ModMenu Client GUI** | Client Side Only (`ENV_CLIENT`) | `net.fabricmc.api.ClientModInitializer` |
+| **YACL v3 Integration** | Client Side Only (`ENV_CLIENT`) | `YaclScreenHelper.java` |
 
 ---
 
 ## 🎮 Server GameRule Supremacy
 
-All gameplay mechanics (breeding rates, overcrowding density caps, scale item drop scaling, cramped pen penalties, native biome fertility, and 27 per-species reproduction toggles) are driven by server-authoritative **GameRules**.
-
+All gameplay mechanics are driven by server-authoritative GameRules:
 - When playing on a multiplayer server, the server's GameRules dictate gameplay behavior for all connected clients.
 - GameRules can be modified live in-game by server operators (OP level 2+) via `/gamerule` or `/naturalreproduction set <rule> <val>`.
 
@@ -17,12 +20,7 @@ All gameplay mechanics (breeding rates, overcrowding density caps, scale item dr
 
 In singleplayer or local host worlds, players can configure settings visually using **ModMenu** and **Yet Another Config Lib (YACL v3)**:
 
-### Accessing the Screen
-1. Open the Minecraft pause menu or main menu.
-2. Click **Mods** (ModMenu).
-3. Select **Natural Reproduction** from the mod list and click **Configure**.
-
-### Config Screen Categories & Layout
+### Config Screen Layout
 - **General Settings Tab**:
   - Master Switch (`natural-reproduction:enabled`)
   - Breeding Frequency Rate (`natural-reproduction:rate`)
@@ -43,4 +41,4 @@ The client GUI integration is safely gated in `YaclScreenHelper.java` and `ModMe
 - The GUI screen is registered strictly on the client side (`net.fabricmc.api.EnvType.CLIENT`).
 - Dedicated `ModMenu` and `YACL` entrypoint mappings prevent server classloading crashes when installed on dedicated server environments.
 
-For a full list of GameRule keys, see [[GameRules & Commands|GameRules-and-Commands]].
+For diagnostic logs, see [[HUD & Diagnostics|HUD-and-Diagnostics]].

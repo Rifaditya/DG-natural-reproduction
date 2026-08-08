@@ -1,15 +1,18 @@
 # Developer Setup & Building from Source
 
-This guide covers setting up the development environment, cloning the repository, building tagged JAR artifacts, and importing **Natural Reproduction** into your IDE.
+| Requirement | Value |
+| :--- | :--- |
+| **Java JDK** | JDK **25** (Strictly required for MC 26.2 build toolchains) |
+| **Gradle** | **9.3+** (`--no-daemon`) |
+| **Fabric Loom** | **1.15.5+** |
+| **Target Minecraft** | Stable **MC 26.2** |
+| **Automated Testing** | `./gradlew test` (JUnit & Loom GameTest framework) |
 
 ---
 
-## 🛠️ Prerequisites & Environment Requirements
+## 🛠️ Environment Prerequisites
 
-- **Java Development Kit (JDK)**: JDK **25** (strictly required for Minecraft 26.2+ build toolchains).
-- **Gradle**: **9.3+** (Gradle wrapper included in repository).
-- **Fabric Loom**: **1.15.5+**
-- **Minecraft Version**: Target stable **MC 26.2**.
+Ensure JDK 25 is installed and configured in your environment variables or Gradle configuration (`org.gradle.java.home=E:/JDK25`).
 
 ---
 
@@ -22,7 +25,7 @@ cd Natural-Reproduction
 ```
 
 ### 2. Build via Gradle Wrapper
-Execute `./gradlew build` without daemon to compile, test, and package the mod:
+Execute `./gradlew build --no-daemon` to compile, test, and package the mod:
 ```bash
 # On Linux / macOS / Git Bash
 ./gradlew build --no-daemon
@@ -31,7 +34,13 @@ Execute `./gradlew build` without daemon to compile, test, and package the mod:
 .\gradlew.bat build --no-daemon
 ```
 
-### 3. Output Artifact Location
+### 3. Automated GameTest Verification
+Run automated headless tests using JUnit and Fabric Loom GameTest:
+```bash
+./gradlew test --no-daemon
+```
+
+### 4. Output Artifact Location
 The compiled build output JAR file will be generated in:
 ```text
 build/libs/natural-reproduction-<version>+26.2.jar
@@ -42,21 +51,12 @@ build/libs/natural-reproduction-<version>+26.2.jar
 ## 🔌 IDE Import & Project Setup
 
 ### IntelliJ IDEA (Recommended)
-1. Open IntelliJ IDEA -> **File** -> **Open** -> select the project root directory.
+1. Open IntelliJ IDEA -> **File** -> **Open** -> select project root directory.
 2. Select **Import as Gradle Project**.
-3. Ensure **Project SDK** is configured to **JDK 25** (`E:/JDK25` or installed JDK 25 path).
-4. Run Loom task generation:
+3. Set **Project SDK** to **JDK 25**.
+4. Generate Loom sources:
    ```bash
    ./gradlew genSources
    ```
-5. Use IntelliJ Gradle tool window to run `Tasks -> fabric -> runClient` or `runServer` for debugging.
-
----
-
-## 📜 Build Laws & Guidelines
-
-- **1 Jar 1 Version Law**: The build strictly targets single Minecraft versions without cross-version reflection hacks.
-- **Outer Archive Law**: Following every successful `./gradlew build`, the output JAR must be archived to `Archive Jar of all versions/`.
-- **Zero-Dependency Guard**: `ModVersionGuard.checkClass` in `onInitialize` enforces environment class checks at startup using `Thread.currentThread().getContextClassLoader()`.
 
 For architecture details, see [[Architecture & Mixins|Architecture-and-Mixins]].

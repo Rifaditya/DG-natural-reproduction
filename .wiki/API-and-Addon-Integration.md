@@ -1,6 +1,10 @@
 # API & Addon Integration Reference
 
-**Natural Reproduction** is built on top of **DasikLibrary**, utilizing data-driven genetics registries and dynamic GameRule managers. This guide covers integration APIs for addon developers and third-party mods.
+| Library / API | Compatible Version | Integration Purpose |
+| :--- | :--- | :--- |
+| **DasikLibrary** | `>= 1.8.15` | `DasikAnimalGeneticsAPI`, `DynamicGameRuleManager`, `ModVersionGuard` |
+| **Fabric Loader** | `>= 0.19.1` | Mod entrypoints and client/server gating |
+| **YACL v3** | `3.8.2+1.21.4-fabric` | Optional client configuration GUI builder |
 
 ---
 
@@ -19,11 +23,6 @@ float currentScale = DasikAnimalGeneticsAPI.getScale(animal);
 float newScale = Math.clamp(currentScale * 1.15f, 0.25f, 1.30f);
 DasikAnimalGeneticsAPI.setScale(animal, newScale);
 ```
-
-### Scale Attribute Features in DasikLibrary 1.8.15+
-- **Scale Offset Calculation**: Automatically subtracts `1.0f` for `ADD_VALUE` attribute modifiers, preventing 200% giant entity spawning bugs.
-- **Stale Modifier Purging**: Actively purges legacy/duplicate `genetics_` attribute modifiers on entity spawn/tick.
-- **Codec Bounds Crash Fix**: `DynamicGameRuleManager` integer builders handle `Integer.MIN_VALUE` without throwing `IllegalStateException` on world save.
 
 ---
 

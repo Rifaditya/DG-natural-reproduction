@@ -1,28 +1,38 @@
 # Technical Architecture & Mixins Breakdown
 
-**Natural Reproduction** adheres to strict engineering standards, single-function cohesion laws, and high-performance Java Mixins targeting Minecraft 26.2.
+| Component | Specification |
+| :--- | :--- |
+| **Architectural Law** | 1 File, 1 Function Law (Single-purpose classes) |
+| **Mixin Framework** | SpongePowered Mixin for Fabric Loom 1.15.5 |
+| **Java Platform** | Java 25 |
+| **Thread Safety** | Non-blocking main thread execution |
 
 ---
 
-## 📂 Package Architecture
+## 📂 ASCII Package Architecture
 
 ```text
 net.vanillaoutsider.naturalreproduction
+│
 ├── NaturalReproductionFabric.java       # Mod initialize entrypoint & GameRules registration
-├── client
+│
+├── client/
 │   ├── ModMenuIntegration.java          # ModMenu API entrypoint
 │   └── YaclScreenHelper.java            # YACL v3 config screen builder
-├── command
+│
+├── command/
 │   └── NaturalReproductionCommand.java  # Brigadier command suite (/naturalreproduction)
-├── mixin
+│
+├── mixin/
 │   ├── AnimalBreedingMixin.java         # Autonomous love mode tick injection
 │   └── AnimalDropScaleMixin.java        # Scale-proportional item drop yield injection
-└── util
+│
+└── util/
     ├── AnimalBiomeHelper.java           # Native climate biomes & skin variant triggers
     ├── AnimalCrampedSpaceHelper.java    # Dual structural confinement & density crowding penalty
     ├── AnimalHabitatHelper.java         # 27 species environmental habitat block scanning
     ├── BreedingLogEntry.java            # Event tracking data structure
-    └── BreedingTrackerLogger.java       # Breeding event logger
+    └── BreedingTrackerLogger.java       # In-memory breeding event logger
 ```
 
 ---
@@ -48,6 +58,5 @@ net.vanillaoutsider.naturalreproduction
   - `isOvercrowded = isConfinedPen || extraLocalCount >= 3`: Applies crowding penalty both in tight structural pens AND in large open pastures (e.g. 100x100) when animals are crammed together.
 - **Smooth Continuous Penalty Formula**:
   $$\text{penaltyMultiplier} = \max(0.95 - (\text{extraLocalCount} \times 0.05), 0.40)$$
-  Applies incremental -5% scale stunting per extra crowding entity down to `0.40` floor (`0.25x` scale).
 
 For API integration, see [[API & Addon Integration|API-and-Addon-Integration]].

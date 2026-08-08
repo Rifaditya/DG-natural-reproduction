@@ -1,20 +1,23 @@
-# Dynamic GameRules & Command Reference
+# Complete Dynamic GameRules Reference
 
-Server administrators and singleplayer worlds can customize every aspect of **Natural Reproduction** in real time using native namespaced **GameRules**, the `/naturalreproduction` command suite, or the optional **ModMenu / YACL v3** GUI screen.
+| Category | Key Count | Storage Data File | Administration |
+| :--- | :--- | :--- | :--- |
+| **Core GameRules** | 7 GameRules | `game_rules.dat` | `/gamerule` & `/naturalreproduction set` |
+| **Species Toggles** | 27 GameRules | `game_rules.dat` | `§lNatural Reproduction - Species Toggles` |
 
 ---
 
-## ⚙️ Core Dynamic GameRules
+## ⚙️ Core Dynamic GameRules Table
 
 | GameRule Key | Data Type | Default | Description |
 | :--- | :---: | :---: | :--- |
 | `natural-reproduction:enabled` | Boolean | `true` | Master switch for autonomous wild animal breeding. |
 | `natural-reproduction:density_cap` | Integer | `10` | Maximum same-species animals permitted within a 16-block radius. |
-| `natural-reproduction:rate` | Integer | `24000` | Average tick interval between breeding checks (24000 ticks = 1 MC Day). |
+| `natural-reproduction:rate` | Integer | `24000` | Average tick interval between breeding checks ($24000\text{ ticks} = 1\text{ MC Day}$). |
 | `natural-reproduction:scale_drops` | Boolean | `true` | Item drop yield scales proportionally with physical body scale attribute. |
 | `natural-reproduction:cramped_space_penalty` | Boolean | `true` | Confined pen stunting vs spacious pasture size recovery. |
-| `natural-reproduction:biome_fertility` | Boolean | `true` | 2x breeding speed and +15% quality boost in native climate biomes. |
-| `natural-reproduction:biome_variants` | Boolean | `true` | Offspring born in specific biomes adapt visual entity variant skins. |
+| `natural-reproduction:biome_fertility` | Boolean | `true` | $2\times$ breeding frequency and $+15\%$ genetics quality in native biomes. |
+| `natural-reproduction:biome_variants` | Boolean | `true` | Dynamic biome variant skin adaptation for offspring. |
 
 ---
 
@@ -52,17 +55,4 @@ Administrators can enable or disable natural reproduction for any individual ani
 | `natural-reproduction:allow_strider` | Strider | `true` | Enable/disable autonomous breeding for Striders. |
 | `natural-reproduction:allow_hoglin` | Hoglin | `true` | Enable/disable autonomous breeding for Hoglins. |
 
----
-
-## 💬 Brigadier Command Suite
-
-Manage all mod settings in-game using `/naturalreproduction` (requires Gamemaster OP level 2):
-
-- `/naturalreproduction status` &mdash; Displays active states of all core rules and 27 species toggles.
-- `/naturalreproduction get <rule>` &mdash; Queries the current value of a specific rule.
-- `/naturalreproduction set <rule> <value>` &mdash; Dynamically updates any core rule or species toggle.
-- `/naturalreproduction trackerlogs list|clear|enable|disable` &mdash; Inspect and manage autonomous reproduction logs.
-- `/naturalreproduction reset` &mdash; Resets all core rules and 27 species toggles to factory defaults.
-- `/naturalreproduction reload` &mdash; Reloads configuration settings.
-
-For full breeding details, see [[Animal Breeding Guide|Animal-Breeding-Guide]].
+For Brigadier command syntax, see [[Commands|Commands]].

@@ -1,26 +1,17 @@
-# Autonomous Animal Breeding Guide
+# Complete 27 Animal Species Habitat & Biome Reference
 
-In **Natural Reproduction**, animals do not require wheat or carrots from players to reproduce. When wild animals have full health and ideal environmental surroundings, they enter **Love Mode** naturally.
-
-For full details on size genetics, see [[Genetics & Size Scaling|Genetics-and-Size-Scaling]]. For configuration rules, see [[GameRules & Commands|GameRules-and-Commands]].
-
----
-
-## 🌾 Core Breeding Check Rules
-
-During an animal's autonomous AI check cycle (configurable via `natural-reproduction:rate`), it verifies:
-
-1. **Full Health & Maturity**: The animal must be at **100% max health** and must be a fully grown adult (`isBaby() == false`).
-2. **Partner Proximity**: A compatible mate of the **same species** must be within an **8-block radius**.
-3. **Density Cap**: The surrounding area (16-block radius) must not exceed **10 animals of the same species** (`natural-reproduction:density_cap`).
+| Feature | Value |
+| :--- | :--- |
+| **Total Supported Species** | 27 Animal Species |
+| **Habitat Scanning Area** | $5\times 3\times 5$ Cuboid (`offset(-2, -1, -2)` to `offset(2, 1, 2)`) |
+| **Native Biome Frequency Boost** | $2\times\text{ Speed}$ ($600\text{s} = 10\text{m}$) |
+| **Native Biome Quality Boost** | $+15\%\text{ Genetics Scale Boost}$ |
 
 ---
 
 ## 🐾 Complete 27 Animal Species Reference Table
 
-Animals scan a **5x3x5 area** (`offset(-2, -1, -2)` to `offset(2, 1, 2)`) around themselves for required habitat blocks. Breeding in their **Native Climate Biome** grants **2x faster breeding speed** and **+15% genetics quality boost**.
-
-| Animal Species | Required Habitat Blocks (within 2 blocks) | Native Climate Biomes (2x Speed & +15% Quality) | Skin Variant Triggers & Notes |
+| Animal Species | Required Habitat Blocks (within 2 blocks) | Native Climate Biomes ($2\times\text{ Speed}, +15\%\text{ Quality}$) | Skin Variant Triggers & Notes |
 | :--- | :--- | :--- | :--- |
 | **🐮 Cow** | Grass Block, Short Grass, Tall Grass, Wheat | Plains, Meadow, Sunflower Plains, Savanna | Standard livestock habitat |
 | **🐑 Sheep** | Grass Block, Short Grass, Tall Grass, Wheat | Plains, Meadow, Sunflower Plains, Savanna | Standard livestock habitat |
@@ -49,3 +40,5 @@ Animals scan a **5x3x5 area** (`offset(-2, -1, -2)` to `offset(2, 1, 2)`) around
 | **🛡️ Armadillo** | Red Sand, Terracotta, Dead Bush, Short Grass | Savanna, Badlands | Savanna terracotta environment |
 | **🐐 Goat** | Snow layer, Powder Snow, Stone, Packed Ice, Wheat | Jagged Peaks, Frozen Peaks, Snowy Slopes | Alpine cliff & snow environment |
 | **👃 Sniffer** | Torchflower, Pitcher Plant, Moss Block, Podzol | Warm Ocean, Lush biomes | Ancient flora & moss environment |
+
+For scale genetics, see [[Genetics & Size Scaling|Genetics-and-Size-Scaling]].

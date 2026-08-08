@@ -4,11 +4,21 @@
 
 ---
 
-#### 🎮 Player Guides
-* [[Animal Breeding Guide|Animal-Breeding-Guide]]
+#### 📦 Minecraft Versions
+* [[MC 26.2 Guide|Minecraft-26.2-Guide]]
+* [[Version Compatibility|Version-Compatibility]]
+
+---
+
+#### 🎮 Player & Feature Guides
+* [[Autonomous Wild Breeding|Autonomous-Wild-Breeding]]
+* [[Species Habitat Reference|Species-Habitat-Reference]]
 * [[Genetics & Size Scaling|Genetics-and-Size-Scaling]]
-* [[GameRules & Commands|GameRules-and-Commands]]
-* [[Configuration Guide|Configuration-Guide]]
+* [[Biome Fertility & Variants|Biome-Fertility-and-Variants]]
+* [[GameRules|GameRules]]
+* [[Commands|Commands]]
+* [[Configuration|Configuration]]
+* [[HUD & Diagnostics|HUD-and-Diagnostics]]
 
 ---
 
