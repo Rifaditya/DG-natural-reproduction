@@ -2,7 +2,7 @@
 
 | Category | Key Count | Storage Data File | Administration |
 | :--- | :--- | :--- | :--- |
-| **Core GameRules** | 7 GameRules | `game_rules.dat` | `/gamerule` & `/naturalreproduction set` |
+| **Core GameRules** | 10 GameRules | `game_rules.dat` | `/gamerule` & `/naturalreproduction set` |
 | **Species Toggles** | 27 GameRules | `game_rules.dat` | `§lNatural Reproduction - Species Toggles` |
 
 ---
@@ -18,6 +18,9 @@
 | `natural-reproduction:cramped_space_penalty` | Boolean | `true` | Confined pen stunting vs spacious pasture size recovery. |
 | `natural-reproduction:biome_fertility` | Boolean | `true` | $2\times$ breeding frequency and $+15\%$ genetics quality in native biomes. |
 | `natural-reproduction:biome_variants` | Boolean | `true` | Dynamic biome variant skin adaptation for offspring. |
+| `natural-reproduction:min_scale` | Integer | `50` | Minimum physical animal scale percentage ($50 = 0.50x\text{ scale}$). |
+| `natural-reproduction:max_scale` | Integer | `130` | Maximum physical animal scale percentage ($130 = 1.30x\text{ scale}$). |
+| `natural-reproduction:tracker_logs` | Boolean | `false` | When true, autonomous reproduction events are logged to memory and console. |
 
 ---
 

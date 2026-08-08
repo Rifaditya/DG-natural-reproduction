@@ -15,6 +15,7 @@
 net.vanillaoutsider.naturalreproduction
 │
 ├── NaturalReproductionFabric.java       # Mod initialize entrypoint & GameRules registration
+├── ModVersionGuard.java                 # Zero-dependency startup class guard (Knot ClassLoader)
 │
 ├── client/
 │   ├── ModMenuIntegration.java          # ModMenu API entrypoint
@@ -24,12 +25,13 @@ net.vanillaoutsider.naturalreproduction
 │   └── NaturalReproductionCommand.java  # Brigadier command suite (/naturalreproduction)
 │
 ├── mixin/
-│   ├── AnimalBreedingMixin.java         # Autonomous love mode tick injection
+│   ├── AnimalBreedingMixin.java         # Autonomous love mode tick injection & genetics inheritance
 │   └── AnimalDropScaleMixin.java        # Scale-proportional item drop yield injection
 │
 └── util/
     ├── AnimalBiomeHelper.java           # Native climate biomes & skin variant triggers
     ├── AnimalCrampedSpaceHelper.java    # Dual structural confinement & density crowding penalty
+    ├── AnimalDropHelper.java            # Scale-based item drop yield multiplier logic
     ├── AnimalHabitatHelper.java         # 27 species environmental habitat block scanning
     ├── BreedingLogEntry.java            # Event tracking data structure
     └── BreedingTrackerLogger.java       # In-memory breeding event logger
@@ -41,8 +43,8 @@ net.vanillaoutsider.naturalreproduction
 
 | Mixin Class | Target Minecraft Class | Target Method / Injection Point | Description |
 | :--- | :--- | :--- | :--- |
-| `AnimalBreedingMixin` | `net.minecraft.world.entity.animal.Animal` | `@Inject` into `customServerAiStep` (HEAD) | Evaluates autonomous Love Mode conditions (health, partner proximity, overcrowding density cap, habitat blocks, species toggles). |
-| `AnimalDropScaleMixin` | `net.minecraft.world.entity.LivingEntity` | `@ModifyReturnValue` on drop calculations | Multiplies item drop yields by physical entity scale attribute (`minecraft:scale`). |
+| `AnimalBreedingMixin` | `net.minecraft.world.entity.animal.Animal` | `@Inject` into `customServerAiStep` (HEAD) & `spawnChildFromBreeding` (TAIL) | Evaluates autonomous Love Mode conditions (health, partner proximity, overcrowding density cap, habitat blocks, species toggles) and handles baby scale inheritance/cramped stunting. |
+| `AnimalDropScaleMixin` | `net.minecraft.world.entity.Entity` | `@Inject` into `spawnAtLocation` (HEAD) | Intercepts entity item drop spawning and delegates to `AnimalDropHelper.applyScaleDropMultiplier` when `SCALE_DROPS` GameRule is enabled. |
 
 ---
 

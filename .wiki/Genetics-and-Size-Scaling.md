@@ -12,12 +12,18 @@
 
 ## 🧬 Physical Size Attribute (`minecraft:scale`)
 
-Natural Reproduction integrates with `DasikAnimalGeneticsAPI` to provide multi-generational livestock genetics:
-- **Base Range**: Offspring vary in size from $0.75x$ (runt) to $1.30x$ (giant).
-- **Inheritance Math**:
-  $$\text{baseScale} = \frac{\text{parent}_1.\text{scale} + \text{parent}_2.\text{scale}}{2.0}$$
-  - In native climate biomes, offspring receive a $+15\%$ genetics quality boost:
-    $$\text{boostedScale} = \text{baseScale} \times 1.15$$
+Natural Reproduction registers 3 data-driven genetic traits across all 27 animal species using `DasikAnimalGeneticsAPI`:
+
+| Trait Key | Target Entity Attribute | Attribute Operation | Base Range | Dynamic Bounds |
+| :--- | :--- | :--- | :---: | :--- |
+| **`scale`** | `minecraft:scale` | `ADD_VALUE` | $0.50x \le \text{scale} \le 1.30x$ | Configured live via `MIN_SCALE` ($50\%$) & `MAX_SCALE` ($130\%$) GameRules. |
+| **`max_health`** | `minecraft:generic.max_health` | `ADD_VALUE` | $+2.0\text{ HP Base}$ | Bounds: $-4.0\text{ HP}$ to $+12.0\text{ HP}$ bonus max health. |
+| **`movement_speed`** | `minecraft:generic.movement_speed` | `ADD_MULTIPLIED_BASE` | $+5\%\text{ Speed Base}$ | Bounds: $-4\%$ to $+8\%$ bonus movement speed. |
+
+### Physical Scale Inheritance Math
+$$\text{baseScale} = \frac{\text{parent}_1.\text{scale} + \text{parent}_2.\text{scale}}{2.0}$$
+- In native climate biomes, offspring receive a $+15\%$ genetics quality boost:
+  $$\text{boostedScale} = \text{baseScale} \times 1.15$$
 
 ---
 

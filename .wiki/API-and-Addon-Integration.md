@@ -10,18 +10,42 @@
 
 ## 🧬 DasikAnimalGeneticsAPI Integration
 
-Natural Reproduction registers data-driven `GeneticsConfig` rules using `DasikAnimalGeneticsAPI`:
+Natural Reproduction registers universal data-driven `GeneticsConfig` rules across all 27 animal species using `EntityGeneticsRegistry` and `GeneticsLimitRegistry`:
 
 ```java
-import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
-import net.minecraft.world.entity.animal.Animal;
+import net.dasik.social.api.genetics.EntityGeneticsRegistry;
+import net.dasik.social.api.genetics.GeneticsConfig;
+import net.dasik.social.api.genetics.GeneticsLimitRegistry;
+import net.dasik.social.api.genetics.TraitConfig;
+import net.dasik.social.api.genetics.MutationRule;
 
-// Query current physical scale attribute (minecraft:scale)
-float currentScale = DasikAnimalGeneticsAPI.getScale(animal);
+// Register Data-Driven Traits across all 27 Animal Species
+Map<String, TraitConfig> animalTraits = Map.of(
+    "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.50f, 1.30f),
+    "max_health", new TraitConfig("max_health", "minecraft:generic.max_health", "ADD_VALUE", 2.0f, 0.5f, -4.0f, 12.0f),
+    "movement_speed", new TraitConfig("movement_speed", "minecraft:generic.movement_speed", "ADD_MULTIPLIED_BASE", 0.05f, 0.5f, -0.04f, 0.08f)
+);
 
-// Update physical scale attribute
-float newScale = Math.clamp(currentScale * 1.15f, 0.25f, 1.30f);
-DasikAnimalGeneticsAPI.setScale(animal, newScale);
+GeneticsConfig config = new GeneticsConfig(animalTraits, animalMutations);
+
+for (EntityType<?> type : allAnimals) {
+    EntityGeneticsRegistry.register(type, config);
+
+    // Register Dynamic Limit Callbacks tied to server MIN_SCALE & MAX_SCALE GameRules
+    GeneticsLimitRegistry.registerMin(type, "scale", (entity, defaultMin) -> {
+        if (entity.level() instanceof ServerLevel sl) {
+            return DynamicGameRuleManager.getInt(sl, MIN_SCALE) / 100.0f;
+        }
+        return 0.50f;
+    });
+
+    GeneticsLimitRegistry.registerMax(type, "scale", (entity, defaultMax) -> {
+        if (entity.level() instanceof ServerLevel sl) {
+            return DynamicGameRuleManager.getInt(sl, MAX_SCALE) / 100.0f;
+        }
+        return 1.30f;
+    });
+}
 ```
 
 ---
