@@ -20,11 +20,29 @@ public abstract class AnimalDropScaleMixin {
 
     @Inject(
         method = "spawnAtLocation(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;F)Lnet/minecraft/world/entity/item/ItemEntity;",
-        at = @At("HEAD")
+        at = @At("HEAD"),
+        cancellable = true
     )
     private void naturalreproduction$onSpawnAtLocation(ServerLevel level, ItemStack stack, float offsetY, CallbackInfoReturnable<ItemEntity> cir) {
         if ((Object) this instanceof Animal self) {
             if (level != null && !level.isClientSide() && stack != null && !stack.isEmpty()) {
+                boolean inbreedingActive = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION);
+                if (inbreedingActive && AnimalDropHelper.shouldConvertInbreedingDrop(self, stack)) {
+                    ItemStack converted = AnimalDropHelper.convertInbreedingDrop(self, stack);
+                    if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS)) {
+                        AnimalDropHelper.applyScaleDropMultiplier(self, converted);
+                    }
+                    if (!converted.isEmpty()) {
+                        ItemEntity itemEntity = new ItemEntity(level, self.getX(), self.getY() + (double) offsetY, self.getZ(), converted);
+                        itemEntity.setDefaultPickUpDelay();
+                        level.addFreshEntity(itemEntity);
+                        cir.setReturnValue(itemEntity);
+                    } else {
+                        cir.setReturnValue(null);
+                    }
+                    return;
+                }
+
                 if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS)) {
                     AnimalDropHelper.applyScaleDropMultiplier(self, stack);
                 }

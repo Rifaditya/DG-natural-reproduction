@@ -31,6 +31,7 @@ public class YaclScreenHelper {
         int currentRate = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.RATE) : 24000;
         boolean currentScaleDrops = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.SCALE_DROPS) : true;
         boolean currentCrampedPenalty = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY) : true;
+        boolean currentInbreeding = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.INBREEDING_DEGRADATION) : true;
         boolean currentBiomeFertility = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_FERTILITY) : true;
         boolean currentBiomeVariants = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_VARIANTS) : true;
         boolean currentTrackerLogs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.TRACKER_LOGS) : false;
@@ -184,6 +185,23 @@ public class YaclScreenHelper {
                 }
             );
             optionMethod.invoke(groupBuilder, crampedPenaltyOption);
+
+            // Add Inbreeding Lineage Degradation Option
+            Object inbreedingOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:inbreeding_degradation"),
+                Component.translatable("gamerule.natural-reproduction:inbreeding_degradation.description"),
+                true,
+                () -> currentInbreeding,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.INBREEDING_DEGRADATION != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.INBREEDING_DEGRADATION, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, inbreedingOption);
 
             // Add Biome Fertility Option
             Object biomeFertilityOption = buildBooleanOption(

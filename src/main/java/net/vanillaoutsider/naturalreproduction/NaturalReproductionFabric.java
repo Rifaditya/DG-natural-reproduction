@@ -41,6 +41,7 @@ public class NaturalReproductionFabric implements ModInitializer {
     public static GameRule<Integer> RATE;
     public static GameRule<Boolean> SCALE_DROPS;
     public static GameRule<Boolean> CRAMPED_SPACE_PENALTY;
+    public static GameRule<Boolean> INBREEDING_DEGRADATION;
     public static GameRule<Boolean> BIOME_FERTILITY;
     public static GameRule<Boolean> BIOME_VARIANTS;
     public static GameRule<Integer> MIN_SCALE;
@@ -113,6 +114,11 @@ public class NaturalReproductionFabric implements ModInitializer {
         CRAMPED_SPACE_PENALTY = DynamicGameRuleManager.booleanRule("natural-reproduction:cramped_space_penalty", CATEGORY, true)
             .name("Cramped Space Penalty & Recovery")
             .description("When true, breeding in cramped spaces stunting offspring scale down to 0.25x; breeding in spacious pastures recovers size genetics.")
+            .register();
+
+        INBREEDING_DEGRADATION = DynamicGameRuleManager.booleanRule("natural-reproduction:inbreeding_degradation", CATEGORY, true)
+            .name("Inbreeding Lineage Degradation")
+            .description("When true, repeated closed-herd inbreeding degrades genetics down to lethal collapse.")
             .register();
 
         BIOME_FERTILITY = DynamicGameRuleManager.booleanRule("natural-reproduction:biome_fertility", CATEGORY, true)

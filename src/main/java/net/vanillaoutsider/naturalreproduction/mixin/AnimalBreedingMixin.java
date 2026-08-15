@@ -9,7 +9,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.Animal;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
+import net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper;
+import net.vanillaoutsider.naturalreproduction.util.AnimalCrampedSpaceHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalHabitatHelper;
+import net.vanillaoutsider.naturalreproduction.util.AnimalLineageHelper;
+import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,6 +34,11 @@ public abstract class AnimalBreedingMixin {
             GeneticsEngine.applyGeneticsModifiers(self);
         }
 
+        // Tier 4 Lethal Genetic Collapse Tick (1 damage/sec until death)
+        if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION)) {
+            AnimalLineageHelper.tickLethalCollapse(level, self);
+        }
+
         // Autonomous Wild Breeding Logic
         if (!level.isClientSide() && self.getAge() == 0 && !self.isInLove()) {
             if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED) && AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self)) {
@@ -39,7 +48,7 @@ public abstract class AnimalBreedingMixin {
                 }
 
                 int effectiveRate = rate;
-                if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY) && net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper.isNativeBiome(level, self)) {
+                if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY) && AnimalBiomeHelper.isNativeBiome(level, self)) {
                     effectiveRate = Math.max(100, rate / 2); // 2x faster breeding checks in native biomes
                 }
 
@@ -88,21 +97,32 @@ public abstract class AnimalBreedingMixin {
             }
 
             if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY)) {
-                net.vanillaoutsider.naturalreproduction.util.AnimalCrampedSpaceHelper.applyConfinementOrRecovery(level, parent1, mate, baby);
+                AnimalCrampedSpaceHelper.applyConfinementOrRecovery(level, parent1, mate, baby);
+            }
+
+            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION)) {
+                AnimalLineageHelper.applyLineageEffects(level, parent1, mate, baby);
             }
 
             boolean enableVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
             boolean enableFertilityBoost = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
-            net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper.applyBiomeVariantAndBoost(level, parent1, mate, baby, enableVariants, enableFertilityBoost);
+            AnimalBiomeHelper.applyBiomeVariantAndBoost(level, parent1, mate, baby, enableVariants, enableFertilityBoost);
 
             // Log autonomous reproduction event to tracker if manually enabled
             if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.TRACKER_LOGS)) {
                 float babyScale = DasikAnimalGeneticsAPI.getScale(baby);
                 String biomeId = level.getBiome(baby.blockPosition()).unwrapKey().map(k -> k.identifier().toString()).orElse("unknown");
                 String speciesName = baby.getType().getDescription().getString();
+                int inbreedingTier = AnimalLineageHelper.getInbreedingTier(baby);
 
                 String statusNote = "Standard";
-                if (net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper.isNativeBiome(level, parent1)) {
+                if (inbreedingTier >= 4) {
+                    statusNote = "Lethal Collapse (T4)";
+                } else if (inbreedingTier == 3) {
+                    statusNote = "Degraded Meat (T3)";
+                } else if (inbreedingTier > 0) {
+                    statusNote = "Inbred Tier " + inbreedingTier;
+                } else if (AnimalBiomeHelper.isNativeBiome(level, parent1)) {
                     statusNote = "Native Biome Boost";
                 } else if (babyScale <= 0.35f) {
                     statusNote = "Cramped Stunted";
@@ -110,11 +130,10 @@ public abstract class AnimalBreedingMixin {
                     statusNote = "Spacious Pasture";
                 }
 
-                net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger.logBreeding(
+                BreedingTrackerLogger.logBreeding(
                     level, speciesName, baby.blockPosition(), biomeId, babyScale, statusNote
                 );
             }
         }
     }
 }
-

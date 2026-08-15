@@ -14,9 +14,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
+import net.vanillaoutsider.naturalreproduction.util.BreedingLogEntry;
+import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 
 import java.util.List;
-import java.util.Map;
 
 public class NaturalReproductionCommand {
 
@@ -36,6 +37,7 @@ public class NaturalReproductionCommand {
             .then(Commands.literal("rate").executes(ctx -> executeGetInt(ctx, "rate")))
             .then(Commands.literal("scale_drops").executes(ctx -> executeGetBool(ctx, "scale_drops")))
             .then(Commands.literal("cramped_space_penalty").executes(ctx -> executeGetBool(ctx, "cramped_space_penalty")))
+            .then(Commands.literal("inbreeding_degradation").executes(ctx -> executeGetBool(ctx, "inbreeding_degradation")))
             .then(Commands.literal("biome_fertility").executes(ctx -> executeGetBool(ctx, "biome_fertility")))
             .then(Commands.literal("biome_variants").executes(ctx -> executeGetBool(ctx, "biome_variants")))
             .then(Commands.literal("tracker_logs").executes(ctx -> executeGetBool(ctx, "tracker_logs")))
@@ -68,6 +70,9 @@ public class NaturalReproductionCommand {
             .then(Commands.literal("cramped_space_penalty")
                 .then(Commands.argument("val", BoolArgumentType.bool())
                     .executes(ctx -> executeSetBool(ctx, "cramped_space_penalty", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("inbreeding_degradation")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "inbreeding_degradation", BoolArgumentType.getBool(ctx, "val")))))
             .then(Commands.literal("biome_fertility")
                 .then(Commands.argument("val", BoolArgumentType.bool())
                     .executes(ctx -> executeSetBool(ctx, "biome_fertility", BoolArgumentType.getBool(ctx, "val")))))
@@ -130,6 +135,7 @@ public class NaturalReproductionCommand {
         int maxScale = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE);
         boolean scaleDrops = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS);
         boolean crampedPenalty = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY);
+        boolean inbreeding = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION);
         boolean biomeFertility = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
         boolean biomeVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
         boolean trackerLogs = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.TRACKER_LOGS);
@@ -143,7 +149,7 @@ public class NaturalReproductionCommand {
         final int enabledSpeciesCount = count;
 
         ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, maxScale, scaleDrops, crampedPenalty, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
+            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, maxScale, scaleDrops, crampedPenalty, inbreeding, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
         ), false);
         return 1;
     }
@@ -159,6 +165,9 @@ public class NaturalReproductionCommand {
         } else if ("cramped_space_penalty".equals(ruleName)) {
             boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:cramped_space_penalty = " + val), false);
+        } else if ("inbreeding_degradation".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:inbreeding_degradation = " + val), false);
         } else if ("biome_fertility".equals(ruleName)) {
             boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:biome_fertility = " + val), false);
@@ -205,6 +214,9 @@ public class NaturalReproductionCommand {
         } else if ("cramped_space_penalty".equals(ruleName) && NaturalReproductionFabric.CRAMPED_SPACE_PENALTY != null) {
             level.getGameRules().set(NaturalReproductionFabric.CRAMPED_SPACE_PENALTY, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:cramped_space_penalty to " + value), true);
+        } else if ("inbreeding_degradation".equals(ruleName) && NaturalReproductionFabric.INBREEDING_DEGRADATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.INBREEDING_DEGRADATION, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:inbreeding_degradation to " + value), true);
         } else if ("biome_fertility".equals(ruleName) && NaturalReproductionFabric.BIOME_FERTILITY != null) {
             level.getGameRules().set(NaturalReproductionFabric.BIOME_FERTILITY, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:biome_fertility to " + value), true);
@@ -265,6 +277,9 @@ public class NaturalReproductionCommand {
         if (NaturalReproductionFabric.CRAMPED_SPACE_PENALTY != null) {
             level.getGameRules().set(NaturalReproductionFabric.CRAMPED_SPACE_PENALTY, true, level.getServer());
         }
+        if (NaturalReproductionFabric.INBREEDING_DEGRADATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.INBREEDING_DEGRADATION, true, level.getServer());
+        }
         if (NaturalReproductionFabric.BIOME_FERTILITY != null) {
             level.getGameRules().set(NaturalReproductionFabric.BIOME_FERTILITY, true, level.getServer());
         }
@@ -290,8 +305,7 @@ public class NaturalReproductionCommand {
 
     private static int executeListLogs(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack src = ctx.getSource();
-        java.util.List<net.vanillaoutsider.naturalreproduction.util.BreedingLogEntry> entries = 
-            net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger.getRecentLogs(10);
+        List<BreedingLogEntry> entries = BreedingTrackerLogger.getRecentLogs(10);
 
         if (entries.isEmpty()) {
             src.sendSuccess(() -> Component.literal("§e[Natural Reproduction Logs]§r No autonomous breeding events recorded yet."), false);
@@ -299,7 +313,7 @@ public class NaturalReproductionCommand {
         }
 
         src.sendSuccess(() -> Component.literal("§a=== Recent Autonomous Reproduction Logs (Last " + entries.size() + ") ==="), false);
-        for (net.vanillaoutsider.naturalreproduction.util.BreedingLogEntry entry : entries) {
+        for (BreedingLogEntry entry : entries) {
             src.sendSuccess(() -> Component.literal(
                 String.format("§7Day %d§r | §f%s§r at §b[%d, %d, %d]§r (%s) -> Scale: §e%.2fx§r [§6%s§r]",
                     entry.day(), entry.species(), entry.pos().getX(), entry.pos().getY(), entry.pos().getZ(),
@@ -310,9 +324,8 @@ public class NaturalReproductionCommand {
     }
 
     private static int executeClearLogs(CommandContext<CommandSourceStack> ctx) {
-        net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger.clear();
+        BreedingTrackerLogger.clear();
         ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction Logs]§r Cleared all autonomous breeding event logs."), true);
         return 1;
     }
 }
-

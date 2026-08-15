@@ -1,5 +1,18 @@
 # Natural Reproduction - Version History
 
+## [1.4.0+26.2] - 2026-08-15
+
+### Added
+- **Multi-Generational Inbreeding Lineage Degradation & Lethal Collapse**: Added 5-tier inbreeding degradation (Tiers 0 to 4):
+  - *Tier 0 (Wild / Diverse)*: Full genetic potential, normal breeding.
+  - *Tier 1 (Mild Inbreeding)*: -10% scale stunting, -2 HP, birth smoke puff.
+  - *Tier 2 (Moderate Inbreeding)*: -25% scale stunting, -20% movement speed, -4 HP, slower walking.
+  - *Tier 3 (Severe Degradation)*: Miniature 0.35x scale, -50% HP, -30% speed, black squid ink particles. 100% prime meat drops (beef, pork, mutton, chicken, rabbit) convert to Rotten Flesh & Bones; secondary yields (leather, wool) reduced by 75%.
+  - *Tier 4 (Lethal Genetic Collapse)*: Terminal inbreeding failure. Offspring suffers 1 damage per second continuously until death, emitting persistent distress smoke and squid ink particles.
+- **Gradual Generational Dilution & Hybrid Vigor**: Outcrossing degraded livestock with unrelated wild stock steps down the inbreeding tier by 1 level per generation (Tier 4 -> 3 -> 2 -> 1 -> 0). Reaching Tier 0 via outcrossing awards +15% Hybrid Vigor to offspring scale and vitality.
+- **AnimalLineageHelper**: Created dedicated single-purpose utility class managing lineage tier calculations, dilution step-down, attribute penalties, and lethal collapse damage ticks.
+- **Inbreeding Degradation GameRule**: Registered `natural-reproduction:inbreeding_degradation` (Boolean, default `true`), integrated into `/gamerule`, `/naturalreproduction` command suite, and YACL GUI.
+
 ## [1.3.4+26.2] - 2026-08-08
 
 ### Enhanced & Added

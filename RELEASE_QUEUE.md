@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [x] **`1.4.0+26.2`** (2026-08-15) - **Multi-Generational Inbreeding Lineage Degradation & Lethal Collapse**: Added 5-tier inbreeding degradation (T0 to T4), gradual generational dilution step-down, Hybrid Vigor outcrossing (+15% scale), 100% prime meat conversion to Rotten Flesh & Bones at T3/T4, 1 dmg/sec lethal collapse at T4, and `natural-reproduction:inbreeding_degradation` GameRule.
 - [x] **`1.3.4+26.2`** (2026-08-08) - **Dual Structural Confinement & Local Density Crowding Penalty**: Extended crowding check to apply both in pits/tight pens and large 100x100 pastures whenever local mob crowding is high (`extraLocalCount >= 3`).
 - [x] **`1.3.3+26.2`** (2026-08-08) - **Smooth Gradual Cramped Space Penalty**: Replaced discrete tier steps with continuous density formula (`-5%` scale per extra crowding entity).
 - [x] **`1.3.2+26.2`** (2026-08-08) - **DasikLibrary 1.8.15 Bump & Platform Pages Sync**: Bumped minimum `dasik-library` bound to `1.8.15` minimum and updated CurseForge, Modrinth, and README docs.

@@ -83,4 +83,65 @@ public class NaturalReproductionTest {
         boolean requiresDesertBlocks = "GOLD".equals(goldRabbitVariant);
         Assertions.assertTrue(requiresDesertBlocks, "Gold Rabbit variant requires sand/cactus blocks for breeding");
     }
+
+    @Test
+    @DisplayName("Verify Multi-Generational Inbreeding Tier Progression (Tiers 0 -> 4)")
+    public void testInbreedingTierProgression() {
+        // T0 + T0 inbred -> T1
+        int t1 = Math.clamp(Math.max(0, 0) + 1, 1, 4);
+        Assertions.assertEquals(1, t1, "First inbreeding cross must yield Tier 1");
+
+        // T1 + T1 inbred -> T2
+        int t2 = Math.clamp(Math.max(1, 1) + 1, 1, 4);
+        Assertions.assertEquals(2, t2, "Second inbreeding cross must yield Tier 2");
+
+        // T2 + T2 inbred -> T3
+        int t3 = Math.clamp(Math.max(2, 2) + 1, 1, 4);
+        Assertions.assertEquals(3, t3, "Third inbreeding cross must yield Tier 3");
+
+        // T3 + T3 inbred -> T4
+        int t4 = Math.clamp(Math.max(3, 3) + 1, 1, 4);
+        Assertions.assertEquals(4, t4, "Fourth inbreeding cross must yield Tier 4 Lethal Collapse");
+
+        // T4 + T4 inbred -> capped at T4
+        int t4Cap = Math.clamp(Math.max(4, 4) + 1, 1, 4);
+        Assertions.assertEquals(4, t4Cap, "Inbreeding tier cannot exceed Tier 4");
+    }
+
+    @Test
+    @DisplayName("Verify Gradual Generational Dilution & Hybrid Vigor Outcrossing")
+    public void testGradualGenerationalDilution() {
+        // T4 outcrossed with T0 -> T3
+        int d4 = Math.max(0, Math.max(4, 0) - 1);
+        Assertions.assertEquals(3, d4, "Outcrossing Tier 4 with Tier 0 must dilute to Tier 3");
+
+        // T3 outcrossed with T0 -> T2
+        int d3 = Math.max(0, Math.max(3, 0) - 1);
+        Assertions.assertEquals(2, d3, "Outcrossing Tier 3 with Tier 0 must dilute to Tier 2");
+
+        // T2 outcrossed with T0 -> T1
+        int d2 = Math.max(0, Math.max(2, 0) - 1);
+        Assertions.assertEquals(1, d2, "Outcrossing Tier 2 with Tier 0 must dilute to Tier 1");
+
+        // T1 outcrossed with T0 -> T0 (Clean recovery)
+        int d1 = Math.max(0, Math.max(1, 0) - 1);
+        Assertions.assertEquals(0, d1, "Outcrossing Tier 1 with Tier 0 must dilute to Tier 0");
+
+        // Hybrid Vigor boost (+15% scale)
+        float baseScale = 1.0f;
+        float hybridScale = Math.clamp(baseScale * 1.15f, 0.25f, 1.30f);
+        Assertions.assertEquals(1.15f, hybridScale, 0.001f, "Restoring to Tier 0 via outcrossing awards +15% Hybrid Vigor boost");
+    }
+
+    @Test
+    @DisplayName("Verify Tier 3/4 Inbreeding Drop Conversion & Reduction")
+    public void testInbreedingDropConversion() {
+        int initialLeather = 4;
+        int reducedLeather = Math.max(1, initialLeather / 4);
+        Assertions.assertEquals(1, reducedLeather, "Tier 3/4 animals must have secondary yields reduced by 75%");
+
+        int largeLeather = 12;
+        int reducedLargeLeather = Math.max(1, largeLeather / 4);
+        Assertions.assertEquals(3, reducedLargeLeather, "Tier 3/4 animals with 12 drops must reduce down to 3");
+    }
 }

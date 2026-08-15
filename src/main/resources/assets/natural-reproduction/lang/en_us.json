@@ -12,6 +12,8 @@
   "gamerule.natural-reproduction:scale_drops.description": "When true, animal item drops scale proportionally with the animal's physical scale attribute.",
   "gamerule.natural-reproduction:cramped_space_penalty": "Cramped Space Penalty & Recovery",
   "gamerule.natural-reproduction:cramped_space_penalty.description": "When true, breeding in small 4x4 enclosures stunting offspring scale down to 0.25x; breeding in spacious pastures recovers size genetics.",
+  "gamerule.natural-reproduction:inbreeding_degradation": "Inbreeding Lineage Degradation",
+  "gamerule.natural-reproduction:inbreeding_degradation.description": "When true, repeated closed-herd inbreeding degrades genetics across tiers down to lethal collapse.",
   "gamerule.natural-reproduction:biome_fertility": "Native Biome Fertility Boost",
   "gamerule.natural-reproduction:biome_fertility.description": "When true, animals in native biomes get 2x faster breeding frequency and +15% offspring genetics quality.",
   "gamerule.natural-reproduction:biome_variants": "Biome Variant Skin Adaptation",
