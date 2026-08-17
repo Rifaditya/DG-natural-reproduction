@@ -42,6 +42,16 @@ public class NaturalReproductionFabric implements ModInitializer {
     public static GameRule<Boolean> SCALE_DROPS;
     public static GameRule<Boolean> CRAMPED_SPACE_PENALTY;
     public static GameRule<Boolean> INBREEDING_DEGRADATION;
+    public static GameRule<Boolean> PASTURE_ENRICHMENT;
+    public static GameRule<Boolean> OVERGRAZING;
+    public static GameRule<Boolean> GESTATION_PERIOD;
+    public static GameRule<Boolean> MANUAL_GESTATION;
+    public static GameRule<Integer> GESTATION_DURATION;
+    public static GameRule<Boolean> FERTILIZED_CHICKEN_EGGS;
+    public static GameRule<Boolean> CHICKEN_INFERTILE_REGULAR_EGGS;
+    public static GameRule<Integer> DISPENSER_EGG_HATCH_CHANCE;
+    public static GameRule<Boolean> HERD_DYNAMICS;
+    public static GameRule<Boolean> HERD_STAMPEDE;
     public static GameRule<Boolean> BIOME_FERTILITY;
     public static GameRule<Boolean> BIOME_VARIANTS;
     public static GameRule<Integer> MIN_SCALE;
@@ -119,6 +129,56 @@ public class NaturalReproductionFabric implements ModInitializer {
         INBREEDING_DEGRADATION = DynamicGameRuleManager.booleanRule("natural-reproduction:inbreeding_degradation", CATEGORY, true)
             .name("Inbreeding Lineage Degradation")
             .description("When true, repeated closed-herd inbreeding degrades genetics down to lethal collapse.")
+            .register();
+
+        PASTURE_ENRICHMENT = DynamicGameRuleManager.booleanRule("natural-reproduction:pasture_enrichment", CATEGORY, true)
+            .name("Pasture Enrichment Dynamics")
+            .description("When true, pastures with feeding troughs, hay, water, and shelter grant well-nourished bonuses.")
+            .register();
+
+        OVERGRAZING = DynamicGameRuleManager.booleanRule("natural-reproduction:overgrazing", CATEGORY, true)
+            .name("Overgrazing Terrain Wear")
+            .description("When true, dense herds convert grass blocks into dirt/coarse dirt.")
+            .register();
+
+        GESTATION_PERIOD = DynamicGameRuleManager.booleanRule("natural-reproduction:gestation_period", CATEGORY, true)
+            .name("Autonomous Gestation Timers")
+            .description("When true, breeding enters mothers into a pregnancy countdown before delivering offspring.")
+            .register();
+
+        MANUAL_GESTATION = DynamicGameRuleManager.booleanRule("natural-reproduction:manual_gestation", CATEGORY, true)
+            .name("Manual Breeding Gestation")
+            .description("When true, player manual feeding also uses pregnancy gestation timers.")
+            .register();
+
+        GESTATION_DURATION = DynamicGameRuleManager.integerRule("natural-reproduction:gestation_duration", CATEGORY, 24000)
+            .name("Gestation Duration")
+            .description("Pregnancy gestation duration in ticks (24000 = 1 MC Day).")
+            .register();
+
+        FERTILIZED_CHICKEN_EGGS = DynamicGameRuleManager.booleanRule("natural-reproduction:fertilized_chicken_eggs", CATEGORY, true)
+            .name("Fertilized Chicken Eggs")
+            .description("When true, chicken autonomous breeding rolls 50/50 for immediate chicks or laying guaranteed-hatch Fertilized Eggs.")
+            .register();
+
+        CHICKEN_INFERTILE_REGULAR_EGGS = DynamicGameRuleManager.booleanRule("natural-reproduction:chicken_infertile_regular_eggs", CATEGORY, true)
+            .name("Infertile Regular Eggs")
+            .description("When true, ordinary unfertilized chicken eggs have a reduced 1/64 miracle hatch chance.")
+            .register();
+
+        DISPENSER_EGG_HATCH_CHANCE = DynamicGameRuleManager.integerRule("natural-reproduction:dispenser_egg_hatch_chance", CATEGORY, 75)
+            .name("Dispenser Egg Hatch Chance")
+            .description("Percentage chance (0-100%) for a dispenser-fired Fertilized Egg to hatch a baby chick.")
+            .register();
+
+        HERD_DYNAMICS = DynamicGameRuleManager.booleanRule("natural-reproduction:herd_dynamics", CATEGORY, true)
+            .name("Herd Social Dynamics & Leadership")
+            .description("When true, animals form pastoral herds led by the largest Alpha animal with diurnal schedule cohesion.")
+            .register();
+
+        HERD_STAMPEDE = DynamicGameRuleManager.booleanRule("natural-reproduction:herd_stampede", CATEGORY, true)
+            .name("Herd Distress Stampede Panic")
+            .description("When true, damage from predators or players alerts nearby herd members to stampede away in unison.")
             .register();
 
         BIOME_FERTILITY = DynamicGameRuleManager.booleanRule("natural-reproduction:biome_fertility", CATEGORY, true)

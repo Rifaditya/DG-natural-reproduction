@@ -1,5 +1,66 @@
 # Natural Reproduction - Version History
 
+## [1.4.6+26.2] - 2026-08-17
+
+### Added & Improved
+- **Better Dogs Synergy & Tamed Pet Protection (`AnimalBreedingMixin`)**:
+  - *Tamed Animals Autonomous Breeding Exemption*: Tamed dogs and pets never breed autonomously in the wild without explicit player interaction.
+  - *Instant Vanilla Birth Delivery*: Manual breeding of tamed dogs immediately delivers vanilla/Better Dogs litters (1–4 pups, personality DNA, scale alleles) with zero forced gestation delays.
+  - *Herd Flocking Scoping*: Restricted `FollowHerdLeaderGoal` strictly to pastoral livestock, allowing Better Dogs pack alpha leadership (`WildWolfFollowLeaderGoal`) to operate exclusively on wolves.
+- **Cooperative Herd Leader Caching (`HerdSocialHelper`)**: Implemented spatial chunk caching (`LEADER_CACHE`) caching elected Alpha leaders for 10 seconds (200 ticks), eliminating hundreds of redundant 24-block bounding box queries per second across loaded chunks.
+- **Staggered Autonomous Breeding & Fast-Fail Guards (`AnimalBreedingMixin`)**: Distributed livestock breeding checks across 80-tick cycles (`(id + gameTime) % 80 == 0`) with fast-fail health and pregnancy guards before querying density boxes.
+
+## [1.4.5+26.2] - 2026-08-17
+
+### Fixed
+- **Startup Mixin Transformation Crash (`AnimalBreedingMixin`)**: Fixed game startup crash (`InvalidMixinException`) caused by attempting to `@Shadow protected GoalSelector goalSelector` on `Animal.class`. Made `AnimalBreedingMixin` extend `AgeableMob` directly, allowing `goalSelector` to be resolved cleanly via native Java superclass inheritance without `@Shadow`.
+
+## [1.4.4+26.2] - 2026-08-15 [BROKEN / CRASHED ON STARTUP]
+
+> **Post-Mortem / Crash Notice**: Failed during game bootstrap with `InvalidMixinException: @Shadow field goalSelector was not located in the target class net.minecraft.world.entity.animal.Animal` due to shadowing inherited `Mob.class` field on subclass mixin. Superseded by `1.4.5+26.2`.
+
+### Added
+- **Herd Social Cohesion, Alpha Leadership & Flock Movement AI**: Introduced emergent group dynamics and synchronized pastoral routines:
+  - *Dynamic Alpha Leader Election*: In pastures with 3+ same-species animals, the largest/oldest mature animal is dynamically elected as the Alpha Leader based on scale genetics.
+  - *Follow Herd Leader AI Goal*: Herd followers maintain an organic 5–16 block soft grazing perimeter behind their Alpha, creating natural pastoral formations without unnatural clumping.
+  - *Diurnal Schedule Cohesion*: Leaders steer grazing towards water troughs and shade at midday, and cluster the herd near barn shelter/fences at dusk to rest and protect calves.
+  - *Predator Alarm & Synchronized Stampede*: When any herd member is damaged by predators or players, an alert distress sound triggers a 5-second coordinated stampede flight for all nearby herd members within 16 blocks.
+- **HerdSocialHelper**: Created single-purpose helper class managing leader elections, flocking bounds, diurnal schedule checks, and stampede alarm broadcasts.
+- **FollowHerdLeaderGoal**: Created custom AI goal attached to livestock entities for organic pastoral flocking.
+- **Dedicated GameRules**: Registered `natural-reproduction:herd_dynamics` (Boolean, default `true`) and `natural-reproduction:herd_stampede` (Boolean, default `true`), integrated into `/gamerule`, `/naturalreproduction` command suite, and YACL screen.
+
+## [1.4.3+26.2] - 2026-08-15
+
+### Added
+- **Dedicated Chicken Reproduction & Fertilized Egg System**: Completely separated chicken periodic unfertilized egg laying from active reproduction mechanics:
+  - *Player Manual Breeding*: Delivering seeds manually instantly hatches a baby chick directly between parents.
+  - *Autonomous Natural Breeding*: Rolls 50/50 between spawning an immediate baby chick or laying a guaranteed-hatch **Fertilized Egg** item.
+  - *Fertilized Egg Mechanics*: Thrown Fertilized Eggs have a 100% guaranteed baby chick hatch rate for player throws and a configurable 75% hatch rate when fired from Dispensers, inheriting parental genetics. Fertilized eggs cleanly stack up to 16 with other fertilized eggs only.
+  - *Infertile Regular Eggs*: Ordinary passive chicken eggs have their thrown hatch rate reduced to a 1-in-64 rare miracle chance.
+- **ChickenEggHelper**: Created single-purpose helper class managing fertilized egg item creation, CustomData tagging, and impact hatching calculations.
+- **ThrownEggMixin**: Intercepted egg projectile impact to apply guaranteed fertilized chick hatching and infertile egg reduction.
+- **Dedicated GameRules**: Registered `natural-reproduction:fertilized_chicken_eggs` (Boolean, default `true`), `natural-reproduction:chicken_infertile_regular_eggs` (Boolean, default `true`), and `natural-reproduction:dispenser_egg_hatch_chance` (Integer, default `75`%), integrated into `/gamerule`, `/naturalreproduction` command suite, and YACL screen.
+
+## [1.4.2+26.2] - 2026-08-15
+
+### Added
+- **Autonomous Gestation Timers & Prenatal Pasture Vitality**: Introduced dynamic pregnancy countdowns and prenatal nutrition mechanics:
+  - *Pregnancy Countdown*: Breeding enters mothers into active gestation (default `24000` ticks = 1 in-game day), emitting occasional warmth particles (`HAPPY_VILLAGER` / `HEART`) and preventing immediate repeat breeding.
+  - *Dynamic Prenatal Pasture Care*: Mothers spending their pregnancy in enriched pastures deliver calves with the **"Prenatal Vitality"** trait (+15% max HP, +10% movement speed, +10% scale recovery up to 1.30x).
+  - *Native Egg Laying Synergy*: Oviparous species lay native egg blocks upon completing gestation (Frogs lay `Blocks.FROGSPAWN`, Turtles lay `Blocks.TURTLE_EGG`, Sniffers lay `Blocks.SNIFFER_EGG`, Chickens lay eggs).
+- **AnimalGestationHelper**: Created single-purpose utility class managing gestation countdowns, prenatal enrichment checks, and egg delivery.
+- **Dedicated GameRules**: Registered `natural-reproduction:gestation_period` (Boolean, default `true`), `natural-reproduction:manual_gestation` (Boolean, default `true`), and `natural-reproduction:gestation_duration` (Integer, default `24000` ticks), integrated into `/gamerule`, `/naturalreproduction` command suite, and YACL screen.
+
+## [1.4.1+26.2] - 2026-08-15
+
+### Added
+- **Pasture Enrichment, Rotational Grazing & Feeding Trough Dynamics**: Implemented complete pasture enrichment and overgrazing mechanics using strictly vanilla interactive blocks and native particle effects:
+  - *Multi-Structure Pasture Enrichment*: Automatically detects vanilla feeding troughs (water cauldrons, composters with compost/crops), hay reserves (`Blocks.HAY_BLOCK`), natural water sources, and barn ceiling weather shelters within 16 blocks.
+  - *Well-Nourished Livestock State*: Living in enriched pastures grants herds +25% faster autonomous breeding check intervals, +10% offspring scale recovery (up to 1.30x max), and periodic golden `ParticleTypes.WAX_ON` sparkle particles.
+  - *Dynamic Overgrazing Terrain Wear*: Dense herds (5+ animals in an 8-block area) grazing without pasture rotation dynamically convert grass blocks into `Blocks.DIRT` (or `Blocks.COARSE_DIRT` for 8+ crowding), requiring pasture rotation to keep foraging grounds fertile.
+- **AnimalPastureHelper**: Created single-purpose helper class managing pasture enrichment evaluation, overhead barn shelter scanning, overgrazing wear, and well-nourished sparkle effects.
+- **Dedicated GameRules**: Registered `natural-reproduction:pasture_enrichment` (Boolean, default `true`) and `natural-reproduction:overgrazing` (Boolean, default `true`), integrated into `/gamerule`, `/naturalreproduction` command suite, and YACL screen.
+
 ## [1.4.0+26.2] - 2026-08-15
 
 ### Added

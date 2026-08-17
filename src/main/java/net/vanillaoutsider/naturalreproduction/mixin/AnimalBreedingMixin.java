@@ -7,12 +7,15 @@ import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
 import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.Animal;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.vanillaoutsider.naturalreproduction.util.AnimalBiomeHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalCrampedSpaceHelper;
+import net.vanillaoutsider.naturalreproduction.util.AnimalGestationHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalHabitatHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalLineageHelper;
+import net.vanillaoutsider.naturalreproduction.util.AnimalPastureHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,11 +25,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(Animal.class)
-public abstract class AnimalBreedingMixin {
+public abstract class AnimalBreedingMixin extends AgeableMob {
+
+    protected AnimalBreedingMixin() {
+        super(null, null);
+    }
 
     @Inject(method = "customServerAiStep", at = @At("HEAD"))
     private void naturalreproduction$onCustomServerAiStep(ServerLevel level, CallbackInfo ci) {
         Animal self = (Animal)(Object)this;
+
+        // Better Dogs & Pet Priority: completely exempt TamableAnimal (wolves, cats, parrots, etc.)
+        if (self instanceof net.minecraft.world.entity.TamableAnimal) {
+            return;
+        }
 
         // Ensure genetics stats are rolled and applied via DasikLibrary API
         if (!DasikAnimalGeneticsAPI.hasGenetics(self)) {
@@ -34,25 +46,57 @@ public abstract class AnimalBreedingMixin {
             GeneticsEngine.applyGeneticsModifiers(self);
         }
 
-        // Tier 4 Lethal Genetic Collapse Tick (1 damage/sec until death)
-        if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION)) {
+        // Attach Herd Social Follow Goal dynamically
+        if (DasikAnimalGeneticsAPI.getTrait(self, "nr_herd_goal", 0.0f) == 0.0f) {
+            this.goalSelector.addGoal(6, new net.vanillaoutsider.naturalreproduction.ai.FollowHerdLeaderGoal(self, 1.0D));
+            DasikAnimalGeneticsAPI.setTrait(self, "nr_herd_goal", 1.0f);
+        }
+
+        // Herd Predator Distress Alarm Check
+        if (self.hurtTime == 10 && self.getLastHurtByMob() != null) {
+            net.vanillaoutsider.naturalreproduction.util.HerdSocialHelper.triggerHerdDistressAlarm(level, self, self.getLastHurtByMob());
+        }
+
+        // Active Pregnancy / Gestation Countdown Tick (staggered every 20 ticks)
+        if (self.tickCount % 20 == 0 && DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.GESTATION_PERIOD)) {
+            AnimalGestationHelper.tickGestation(level, self);
+        }
+
+        // Tier 4 Lethal Genetic Collapse Tick (every 20 ticks)
+        if (self.tickCount % 20 == 0 && DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION)) {
             AnimalLineageHelper.tickLethalCollapse(level, self);
         }
 
-        // Autonomous Wild Breeding Logic
-        if (!level.isClientSide() && self.getAge() == 0 && !self.isInLove()) {
+        // Dynamic Overgrazing Wear Check (staggered every 100 ticks per entity)
+        if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.OVERGRAZING)
+            && (self.getId() + level.getGameTime()) % 100 == 0) {
+            AnimalPastureHelper.processOvergrazing(level, self);
+        }
+
+        // Autonomous Wild Breeding Logic (Pregnant animals do not re-breed, staggered every 80 ticks per entity)
+        if (!level.isClientSide() && (self.getId() + level.getGameTime()) % 80 == 0 && self.getAge() == 0 && !self.isInLove() && !AnimalGestationHelper.isPregnant(self) && self.getHealth() >= self.getMaxHealth()) {
             if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED) && AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self)) {
                 int rate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
                 if (rate <= 0) {
                     rate = 24000;
                 }
 
-                int effectiveRate = rate;
+                int effectiveRate = Math.max(1, rate / 80);
                 if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY) && AnimalBiomeHelper.isNativeBiome(level, self)) {
-                    effectiveRate = Math.max(100, rate / 2); // 2x faster breeding checks in native biomes
+                    effectiveRate = Math.max(1, effectiveRate / 2); // 2x faster breeding checks in native biomes
                 }
 
-                if (self.getRandom().nextInt(effectiveRate) == 0 && self.getHealth() >= self.getMaxHealth()) {
+                boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
+                    && AnimalPastureHelper.isPastureEnriched(level, self.blockPosition());
+
+                if (isEnriched) {
+                    effectiveRate = Math.max(1, Math.round(effectiveRate * 0.75f)); // +25% faster breeding in enriched pastures
+                    if ((self.getId() + level.getGameTime()) % 120 == 0) {
+                        AnimalPastureHelper.emitWellNourishedParticles(level, self);
+                    }
+                }
+
+                if (self.getRandom().nextInt(effectiveRate) == 0) {
                     if (AnimalHabitatHelper.hasEnvironmentalBreedingConditions(level, self)) {
                         int densityCap = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DENSITY_CAP);
                         List<Animal> sameSpecies = level.getEntitiesOfClass(
@@ -65,7 +109,7 @@ public abstract class AnimalBreedingMixin {
                             List<Animal> potentialMates = level.getEntitiesOfClass(
                                 Animal.class,
                                 self.getBoundingBox().inflate(8.0),
-                                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive()
+                                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive() && !AnimalGestationHelper.isPregnant(e)
                             );
 
                             if (!potentialMates.isEmpty()) {
@@ -77,6 +121,46 @@ public abstract class AnimalBreedingMixin {
                     }
                 }
             }
+        }
+    }
+
+    @Inject(method = "spawnChildFromBreeding", at = @At("HEAD"), cancellable = true)
+    private void naturalreproduction$onSpawnChildGestationCheck(ServerLevel level, Animal mate, CallbackInfo ci) {
+        Animal parent1 = (Animal)(Object)this;
+
+        // Tamed dogs and pets use vanilla instant delivery (Better Dogs litters)
+        if (parent1 instanceof net.minecraft.world.entity.TamableAnimal tamable && tamable.isTame()) {
+            return;
+        }
+
+        boolean useGestation = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.GESTATION_PERIOD);
+        boolean manualAllowed = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.MANUAL_GESTATION);
+        boolean isManual = parent1.getLoveCause() != null || mate.getLoveCause() != null;
+
+        if (useGestation && (!isManual || manualAllowed)) {
+            int duration = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.GESTATION_DURATION);
+            AnimalGestationHelper.startGestation(level, parent1, mate, duration);
+
+            // Put parents on breeding cooldown
+            parent1.setAge(6000);
+            mate.setAge(6000);
+            parent1.resetLove();
+            mate.resetLove();
+
+            ci.cancel();
+            return;
+        }
+
+        // If not using gestation (or manual), check autonomous chicken 50/50 fertilized egg drop
+        if (!isManual && parent1.getType() == net.minecraft.world.entity.EntityTypes.CHICKEN
+            && DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS)
+            && parent1.getRandom().nextBoolean()) {
+            parent1.spawnAtLocation(level, net.vanillaoutsider.naturalreproduction.util.ChickenEggHelper.createFertilizedEgg(level, parent1, mate));
+            parent1.setAge(6000);
+            mate.setAge(6000);
+            parent1.resetLove();
+            mate.resetLove();
+            ci.cancel();
         }
     }
 
@@ -104,6 +188,17 @@ public abstract class AnimalBreedingMixin {
                 AnimalLineageHelper.applyLineageEffects(level, parent1, mate, baby);
             }
 
+            boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
+                && AnimalPastureHelper.isPastureEnriched(level, parent1.blockPosition());
+
+            if (isEnriched) {
+                float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
+                float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
+                float boostedScale = Math.clamp(currentScale * 1.10f, 0.25f, maxAllowed);
+                DasikAnimalGeneticsAPI.setScale(baby, boostedScale);
+                AnimalPastureHelper.emitWellNourishedParticles(level, baby);
+            }
+
             boolean enableVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
             boolean enableFertilityBoost = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
             AnimalBiomeHelper.applyBiomeVariantAndBoost(level, parent1, mate, baby, enableVariants, enableFertilityBoost);
@@ -122,6 +217,8 @@ public abstract class AnimalBreedingMixin {
                     statusNote = "Degraded Meat (T3)";
                 } else if (inbreedingTier > 0) {
                     statusNote = "Inbred Tier " + inbreedingTier;
+                } else if (isEnriched) {
+                    statusNote = "Enriched Pasture";
                 } else if (AnimalBiomeHelper.isNativeBiome(level, parent1)) {
                     statusNote = "Native Biome Boost";
                 } else if (babyScale <= 0.35f) {

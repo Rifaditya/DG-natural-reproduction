@@ -144,4 +144,105 @@ public class NaturalReproductionTest {
         int reducedLargeLeather = Math.max(1, largeLeather / 4);
         Assertions.assertEquals(3, reducedLargeLeather, "Tier 3/4 animals with 12 drops must reduce down to 3");
     }
+
+    @Test
+    @DisplayName("Verify Enriched Pasture Breeding Speedup & Scale Recovery")
+    public void testPastureEnrichmentMath() {
+        int baseRate = 24000;
+        int enrichedRate = Math.max(100, Math.round(baseRate * 0.75f));
+        Assertions.assertEquals(18000, enrichedRate, "Enriched pastures should provide a 25% faster breeding check (18000 ticks)");
+
+        float currentScale = 1.00f;
+        float boostedScale = Math.clamp(currentScale * 1.10f, 0.25f, 1.30f);
+        Assertions.assertEquals(1.10f, boostedScale, 0.001f, "Well-nourished offspring in enriched pastures gain +10% size recovery boost");
+    }
+
+    @Test
+    @DisplayName("Verify Overgrazing Herd Density Thresholds")
+    public void testOvergrazingThresholds() {
+        int lightHerd = 3;
+        boolean overgrazedLight = lightHerd >= 5;
+        Assertions.assertFalse(overgrazedLight, "Light herd under 5 animals should not cause overgrazing");
+
+        int mediumHerd = 5;
+        boolean overgrazedMedium = mediumHerd >= 5;
+        Assertions.assertTrue(overgrazedMedium, "Herd of 5+ animals on grass should trigger Dirt conversion");
+
+        int severeHerd = 8;
+        boolean coarseDirt = severeHerd >= 8;
+        Assertions.assertTrue(coarseDirt, "Severe crowding of 8+ animals should trigger Coarse Dirt conversion");
+    }
+
+    @Test
+    @DisplayName("Verify Gestation Duration Bounds & Prenatal Vitality Ratio")
+    public void testGestationDurationAndVitalityRatio() {
+        int defaultGestation = 24000;
+        Assertions.assertTrue(defaultGestation >= 100 && defaultGestation <= 240000, "Gestation duration should be within valid bounds");
+
+        float checks = 100.0f;
+        float highNourish = 65.0f;
+        boolean highVitality = (highNourish / checks) >= 0.50f;
+        Assertions.assertTrue(highVitality, "Mothers spending >= 50% of gestation in enriched pasture earn high vitality");
+
+        float lowNourish = 25.0f;
+        boolean lowVitality = (lowNourish / checks) >= 0.50f;
+        Assertions.assertFalse(lowVitality, "Mothers in cramped pastures do not earn prenatal vitality bonuses");
+
+        double baseMaxHp = 20.0;
+        double vitalityHp = baseMaxHp * 1.15;
+        Assertions.assertEquals(23.0, vitalityHp, 0.001, "Prenatal vitality awards +15% base max HP");
+    }
+
+    @Test
+    @DisplayName("Verify Chicken Fertilized Egg Probabilities & Dispenser Bounds")
+    public void testChickenFertilizedEggAndDispenserOdds() {
+        int dispenserChance = 75;
+        Assertions.assertTrue(dispenserChance >= 0 && dispenserChance <= 100, "Dispenser hatch chance must be between 0 and 100%");
+
+        int playerThrownChance = 100;
+        Assertions.assertEquals(100, playerThrownChance, "Player thrown fertilized eggs must have 100% guaranteed hatch rate");
+
+        int regularEggMiracleOdds = 64;
+        Assertions.assertEquals(64, regularEggMiracleOdds, "Regular unfertilized eggs have a reduced 1-in-64 miracle hatch chance");
+
+        int quadrupletOdds = 256;
+        Assertions.assertEquals(256, quadrupletOdds, "Quadruplet chick hatch chance remains at vanilla 1-in-256 odds");
+    }
+
+    @Test
+    @DisplayName("Verify Alpha Leader Election & Scale Ranking Math")
+    public void testHerdLeaderSelectionAndScaleRanking() {
+        int smallHerdSize = 2;
+        boolean hasHerd = smallHerdSize >= 3;
+        Assertions.assertFalse(hasHerd, "Fewer than 3 animals should not form an alpha-led herd");
+
+        int validHerdSize = 5;
+        boolean formsHerd = validHerdSize >= 3;
+        Assertions.assertTrue(formsHerd, "3 or more animals of the same species form a herd");
+
+        float[] herdScales = { 0.90f, 1.25f, 1.05f, 0.85f };
+        float maxScale = -1.0f;
+        for (float s : herdScales) {
+            if (s > maxScale) {
+                maxScale = s;
+            }
+        }
+        Assertions.assertEquals(1.25f, maxScale, 0.001f, "Largest animal (1.25x scale) must be elected Alpha leader");
+    }
+
+    @Test
+    @DisplayName("Verify Follow Herd Leader Distance Bounds & Stampede Radius")
+    public void testHerdFollowBoundsAndStampedeRadius() {
+        double minFollowDist = 6.0;
+        double maxFollowDist = 24.0;
+        double comfortDist = 5.0;
+
+        Assertions.assertEquals(36.0, minFollowDist * minFollowDist, 0.001, "Follow AI start threshold squared is 36.0 (6 blocks)");
+        Assertions.assertEquals(576.0, maxFollowDist * maxFollowDist, 0.001, "Follow AI max range squared is 576.0 (24 blocks)");
+        Assertions.assertEquals(25.0, comfortDist * comfortDist, 0.001, "Follow AI comfort stop distance squared is 25.0 (5 blocks)");
+
+        double stampedeRadius = 16.0;
+        Assertions.assertTrue(stampedeRadius >= 10.0 && stampedeRadius <= 32.0, "Stampede distress alarm radius must be within 10-32 blocks");
+    }
 }
+

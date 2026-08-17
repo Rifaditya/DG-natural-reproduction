@@ -32,6 +32,16 @@ public class YaclScreenHelper {
         boolean currentScaleDrops = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.SCALE_DROPS) : true;
         boolean currentCrampedPenalty = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY) : true;
         boolean currentInbreeding = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.INBREEDING_DEGRADATION) : true;
+        boolean currentPastureEnrichment = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.PASTURE_ENRICHMENT) : true;
+        boolean currentOvergrazing = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.OVERGRAZING) : true;
+        boolean currentGestation = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.GESTATION_PERIOD) : true;
+        boolean currentManualGestation = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.MANUAL_GESTATION) : true;
+        int currentGestationDuration = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.GESTATION_DURATION) : 24000;
+        boolean currentFertilizedEggs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS) : true;
+        boolean currentInfertileReg = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS) : true;
+        int currentDispenserRate = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE) : 75;
+        boolean currentHerdDynamics = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.HERD_DYNAMICS) : true;
+        boolean currentHerdStampede = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.HERD_STAMPEDE) : true;
         boolean currentBiomeFertility = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_FERTILITY) : true;
         boolean currentBiomeVariants = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_VARIANTS) : true;
         boolean currentTrackerLogs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.TRACKER_LOGS) : false;
@@ -202,6 +212,178 @@ public class YaclScreenHelper {
                 }
             );
             optionMethod.invoke(groupBuilder, inbreedingOption);
+
+            // Add Pasture Enrichment Option
+            Object pastureEnrichmentOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:pasture_enrichment"),
+                Component.translatable("gamerule.natural-reproduction:pasture_enrichment.description"),
+                true,
+                () -> currentPastureEnrichment,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.PASTURE_ENRICHMENT != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.PASTURE_ENRICHMENT, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, pastureEnrichmentOption);
+
+            // Add Overgrazing Option
+            Object overgrazingOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:overgrazing"),
+                Component.translatable("gamerule.natural-reproduction:overgrazing.description"),
+                true,
+                () -> currentOvergrazing,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.OVERGRAZING != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.OVERGRAZING, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, overgrazingOption);
+
+            // Add Gestation Period Option
+            Object gestationOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:gestation_period"),
+                Component.translatable("gamerule.natural-reproduction:gestation_period.description"),
+                true,
+                () -> currentGestation,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.GESTATION_PERIOD != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.GESTATION_PERIOD, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, gestationOption);
+
+            // Add Manual Gestation Option
+            Object manualGestationOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:manual_gestation"),
+                Component.translatable("gamerule.natural-reproduction:manual_gestation.description"),
+                true,
+                () -> currentManualGestation,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MANUAL_GESTATION != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.MANUAL_GESTATION, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, manualGestationOption);
+
+            // Add Gestation Duration Slider Option
+            Object gestationDurationOption = buildIntSliderOption(
+                Component.translatable("gamerule.natural-reproduction:gestation_duration"),
+                Component.translatable("gamerule.natural-reproduction:gestation_duration.description"),
+                24000,
+                100, 240000, 100,
+                () -> currentGestationDuration,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.GESTATION_DURATION != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.GESTATION_DURATION, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, gestationDurationOption);
+
+            // Add Fertilized Chicken Eggs Option
+            Object fertilizedEggsOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:fertilized_chicken_eggs"),
+                Component.translatable("gamerule.natural-reproduction:fertilized_chicken_eggs.description"),
+                true,
+                () -> currentFertilizedEggs,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, fertilizedEggsOption);
+
+            // Add Infertile Regular Eggs Option
+            Object infertileRegOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:chicken_infertile_regular_eggs"),
+                Component.translatable("gamerule.natural-reproduction:chicken_infertile_regular_eggs.description"),
+                true,
+                () -> currentInfertileReg,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, infertileRegOption);
+
+            // Add Dispenser Egg Hatch Chance Option
+            Object dispenserRateOption = buildIntSliderOption(
+                Component.translatable("gamerule.natural-reproduction:dispenser_egg_hatch_chance"),
+                Component.translatable("gamerule.natural-reproduction:dispenser_egg_hatch_chance.description"),
+                75,
+                0, 100, 5,
+                () -> currentDispenserRate,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, dispenserRateOption);
+
+            // Add Herd Dynamics Option
+            Object herdDynamicsOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:herd_dynamics"),
+                Component.translatable("gamerule.natural-reproduction:herd_dynamics.description"),
+                true,
+                () -> currentHerdDynamics,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.HERD_DYNAMICS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.HERD_DYNAMICS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, herdDynamicsOption);
+
+            // Add Herd Stampede Option
+            Object herdStampedeOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:herd_stampede"),
+                Component.translatable("gamerule.natural-reproduction:herd_stampede.description"),
+                true,
+                () -> currentHerdStampede,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.HERD_STAMPEDE != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.HERD_STAMPEDE, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, herdStampedeOption);
 
             // Add Biome Fertility Option
             Object biomeFertilityOption = buildBooleanOption(

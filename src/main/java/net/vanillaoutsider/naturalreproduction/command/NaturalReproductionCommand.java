@@ -21,7 +21,7 @@ import java.util.List;
 
 public class NaturalReproductionCommand {
 
-    public static final List<String> SPECIES_KEYS = List.of(
+    private static final List<String> SPECIES_KEYS = List.of(
         "allow_cow", "allow_pig", "allow_sheep", "allow_chicken", "allow_mooshroom",
         "allow_horse", "allow_donkey", "allow_mule", "allow_llama", "allow_trader_llama",
         "allow_camel", "allow_wolf", "allow_cat", "allow_fox", "allow_ocelot",
@@ -38,6 +38,16 @@ public class NaturalReproductionCommand {
             .then(Commands.literal("scale_drops").executes(ctx -> executeGetBool(ctx, "scale_drops")))
             .then(Commands.literal("cramped_space_penalty").executes(ctx -> executeGetBool(ctx, "cramped_space_penalty")))
             .then(Commands.literal("inbreeding_degradation").executes(ctx -> executeGetBool(ctx, "inbreeding_degradation")))
+            .then(Commands.literal("pasture_enrichment").executes(ctx -> executeGetBool(ctx, "pasture_enrichment")))
+            .then(Commands.literal("overgrazing").executes(ctx -> executeGetBool(ctx, "overgrazing")))
+            .then(Commands.literal("gestation_period").executes(ctx -> executeGetBool(ctx, "gestation_period")))
+            .then(Commands.literal("manual_gestation").executes(ctx -> executeGetBool(ctx, "manual_gestation")))
+            .then(Commands.literal("gestation_duration").executes(ctx -> executeGetInt(ctx, "gestation_duration")))
+            .then(Commands.literal("fertilized_chicken_eggs").executes(ctx -> executeGetBool(ctx, "fertilized_chicken_eggs")))
+            .then(Commands.literal("chicken_infertile_regular_eggs").executes(ctx -> executeGetBool(ctx, "chicken_infertile_regular_eggs")))
+            .then(Commands.literal("dispenser_egg_hatch_chance").executes(ctx -> executeGetInt(ctx, "dispenser_egg_hatch_chance")))
+            .then(Commands.literal("herd_dynamics").executes(ctx -> executeGetBool(ctx, "herd_dynamics")))
+            .then(Commands.literal("herd_stampede").executes(ctx -> executeGetBool(ctx, "herd_stampede")))
             .then(Commands.literal("biome_fertility").executes(ctx -> executeGetBool(ctx, "biome_fertility")))
             .then(Commands.literal("biome_variants").executes(ctx -> executeGetBool(ctx, "biome_variants")))
             .then(Commands.literal("tracker_logs").executes(ctx -> executeGetBool(ctx, "tracker_logs")))
@@ -73,6 +83,36 @@ public class NaturalReproductionCommand {
             .then(Commands.literal("inbreeding_degradation")
                 .then(Commands.argument("val", BoolArgumentType.bool())
                     .executes(ctx -> executeSetBool(ctx, "inbreeding_degradation", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("pasture_enrichment")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "pasture_enrichment", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("overgrazing")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "overgrazing", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("gestation_period")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "gestation_period", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("manual_gestation")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "manual_gestation", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("gestation_duration")
+                .then(Commands.argument("val", IntegerArgumentType.integer(100, 240000))
+                    .executes(ctx -> executeSetInt(ctx, "gestation_duration", IntegerArgumentType.getInteger(ctx, "val")))))
+            .then(Commands.literal("fertilized_chicken_eggs")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "fertilized_chicken_eggs", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("chicken_infertile_regular_eggs")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "chicken_infertile_regular_eggs", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("dispenser_egg_hatch_chance")
+                .then(Commands.argument("val", IntegerArgumentType.integer(0, 100))
+                    .executes(ctx -> executeSetInt(ctx, "dispenser_egg_hatch_chance", IntegerArgumentType.getInteger(ctx, "val")))))
+            .then(Commands.literal("herd_dynamics")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "herd_dynamics", BoolArgumentType.getBool(ctx, "val")))))
+            .then(Commands.literal("herd_stampede")
+                .then(Commands.argument("val", BoolArgumentType.bool())
+                    .executes(ctx -> executeSetBool(ctx, "herd_stampede", BoolArgumentType.getBool(ctx, "val")))))
             .then(Commands.literal("biome_fertility")
                 .then(Commands.argument("val", BoolArgumentType.bool())
                     .executes(ctx -> executeSetBool(ctx, "biome_fertility", BoolArgumentType.getBool(ctx, "val")))))
@@ -136,6 +176,16 @@ public class NaturalReproductionCommand {
         boolean scaleDrops = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS);
         boolean crampedPenalty = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY);
         boolean inbreeding = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION);
+        boolean pastureEnrichment = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT);
+        boolean overgrazing = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.OVERGRAZING);
+        boolean gestation = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.GESTATION_PERIOD);
+        boolean manualGestation = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.MANUAL_GESTATION);
+        int gestationDuration = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.GESTATION_DURATION);
+        boolean fertEggs = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS);
+        boolean infertileReg = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS);
+        int dispenserRate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE);
+        boolean herdDynamics = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.HERD_DYNAMICS);
+        boolean herdStampede = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.HERD_STAMPEDE);
         boolean biomeFertility = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
         boolean biomeVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
         boolean trackerLogs = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.TRACKER_LOGS);
@@ -149,7 +199,7 @@ public class NaturalReproductionCommand {
         final int enabledSpeciesCount = count;
 
         ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, maxScale, scaleDrops, crampedPenalty, inbreeding, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
+            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Pasture Enrichment=%b, Overgrazing=%b, Gestation=%b (Manual=%b, Duration=%d), Fertilized Eggs=%b, Infertile Reg Eggs=%b, Dispenser Hatch Rate=%d%%, Herd Dynamics=%b, Herd Stampede=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, maxScale, scaleDrops, crampedPenalty, inbreeding, pastureEnrichment, overgrazing, gestation, manualGestation, gestationDuration, fertEggs, infertileReg, dispenserRate, herdDynamics, herdStampede, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
         ), false);
         return 1;
     }
@@ -168,6 +218,30 @@ public class NaturalReproductionCommand {
         } else if ("inbreeding_degradation".equals(ruleName)) {
             boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:inbreeding_degradation = " + val), false);
+        } else if ("pasture_enrichment".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:pasture_enrichment = " + val), false);
+        } else if ("overgrazing".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.OVERGRAZING);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:overgrazing = " + val), false);
+        } else if ("gestation_period".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.GESTATION_PERIOD);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:gestation_period = " + val), false);
+        } else if ("manual_gestation".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.MANUAL_GESTATION);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:manual_gestation = " + val), false);
+        } else if ("fertilized_chicken_eggs".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:fertilized_chicken_eggs = " + val), false);
+        } else if ("chicken_infertile_regular_eggs".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:chicken_infertile_regular_eggs = " + val), false);
+        } else if ("herd_dynamics".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.HERD_DYNAMICS);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:herd_dynamics = " + val), false);
+        } else if ("herd_stampede".equals(ruleName)) {
+            boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.HERD_STAMPEDE);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:herd_stampede = " + val), false);
         } else if ("biome_fertility".equals(ruleName)) {
             boolean val = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:biome_fertility = " + val), false);
@@ -179,8 +253,10 @@ public class NaturalReproductionCommand {
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:tracker_logs = " + val), false);
         } else if (NaturalReproductionFabric.RULE_NAME_MAP.containsKey(ruleName)) {
             GameRule<Boolean> rule = NaturalReproductionFabric.RULE_NAME_MAP.get(ruleName);
-            boolean val = DynamicGameRuleManager.getBoolean(level, rule);
-            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:" + ruleName + " = " + val), false);
+            if (rule != null) {
+                boolean val = DynamicGameRuleManager.getBoolean(level, rule);
+                ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:" + ruleName + " = " + val), false);
+            }
         }
         return 1;
     }
@@ -193,6 +269,12 @@ public class NaturalReproductionCommand {
         } else if ("rate".equals(ruleName)) {
             int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:rate = " + val + " ticks"), false);
+        } else if ("gestation_duration".equals(ruleName)) {
+            int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.GESTATION_DURATION);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:gestation_duration = " + val + " ticks"), false);
+        } else if ("dispenser_egg_hatch_chance".equals(ruleName)) {
+            int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:dispenser_egg_hatch_chance = " + val + "%"), false);
         } else if ("min_scale".equals(ruleName)) {
             int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:min_scale = " + val + "%"), false);
@@ -217,6 +299,30 @@ public class NaturalReproductionCommand {
         } else if ("inbreeding_degradation".equals(ruleName) && NaturalReproductionFabric.INBREEDING_DEGRADATION != null) {
             level.getGameRules().set(NaturalReproductionFabric.INBREEDING_DEGRADATION, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:inbreeding_degradation to " + value), true);
+        } else if ("pasture_enrichment".equals(ruleName) && NaturalReproductionFabric.PASTURE_ENRICHMENT != null) {
+            level.getGameRules().set(NaturalReproductionFabric.PASTURE_ENRICHMENT, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:pasture_enrichment to " + value), true);
+        } else if ("overgrazing".equals(ruleName) && NaturalReproductionFabric.OVERGRAZING != null) {
+            level.getGameRules().set(NaturalReproductionFabric.OVERGRAZING, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:overgrazing to " + value), true);
+        } else if ("gestation_period".equals(ruleName) && NaturalReproductionFabric.GESTATION_PERIOD != null) {
+            level.getGameRules().set(NaturalReproductionFabric.GESTATION_PERIOD, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:gestation_period to " + value), true);
+        } else if ("manual_gestation".equals(ruleName) && NaturalReproductionFabric.MANUAL_GESTATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.MANUAL_GESTATION, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:manual_gestation to " + value), true);
+        } else if ("fertilized_chicken_eggs".equals(ruleName) && NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:fertilized_chicken_eggs to " + value), true);
+        } else if ("chicken_infertile_regular_eggs".equals(ruleName) && NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:chicken_infertile_regular_eggs to " + value), true);
+        } else if ("herd_dynamics".equals(ruleName) && NaturalReproductionFabric.HERD_DYNAMICS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.HERD_DYNAMICS, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:herd_dynamics to " + value), true);
+        } else if ("herd_stampede".equals(ruleName) && NaturalReproductionFabric.HERD_STAMPEDE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.HERD_STAMPEDE, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:herd_stampede to " + value), true);
         } else if ("biome_fertility".equals(ruleName) && NaturalReproductionFabric.BIOME_FERTILITY != null) {
             level.getGameRules().set(NaturalReproductionFabric.BIOME_FERTILITY, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:biome_fertility to " + value), true);
@@ -244,6 +350,12 @@ public class NaturalReproductionCommand {
         } else if ("rate".equals(ruleName) && NaturalReproductionFabric.RATE != null) {
             level.getGameRules().set(NaturalReproductionFabric.RATE, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:rate to " + value), true);
+        } else if ("gestation_duration".equals(ruleName) && NaturalReproductionFabric.GESTATION_DURATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.GESTATION_DURATION, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:gestation_duration to " + value), true);
+        } else if ("dispenser_egg_hatch_chance".equals(ruleName) && NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:dispenser_egg_hatch_chance to " + value + "%"), true);
         } else if ("min_scale".equals(ruleName) && NaturalReproductionFabric.MIN_SCALE != null) {
             level.getGameRules().set(NaturalReproductionFabric.MIN_SCALE, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:min_scale to " + value + "%"), true);
@@ -279,6 +391,36 @@ public class NaturalReproductionCommand {
         }
         if (NaturalReproductionFabric.INBREEDING_DEGRADATION != null) {
             level.getGameRules().set(NaturalReproductionFabric.INBREEDING_DEGRADATION, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.PASTURE_ENRICHMENT != null) {
+            level.getGameRules().set(NaturalReproductionFabric.PASTURE_ENRICHMENT, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.OVERGRAZING != null) {
+            level.getGameRules().set(NaturalReproductionFabric.OVERGRAZING, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.GESTATION_PERIOD != null) {
+            level.getGameRules().set(NaturalReproductionFabric.GESTATION_PERIOD, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.MANUAL_GESTATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.MANUAL_GESTATION, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.GESTATION_DURATION != null) {
+            level.getGameRules().set(NaturalReproductionFabric.GESTATION_DURATION, 24000, level.getServer());
+        }
+        if (NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE, 75, level.getServer());
+        }
+        if (NaturalReproductionFabric.HERD_DYNAMICS != null) {
+            level.getGameRules().set(NaturalReproductionFabric.HERD_DYNAMICS, true, level.getServer());
+        }
+        if (NaturalReproductionFabric.HERD_STAMPEDE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.HERD_STAMPEDE, true, level.getServer());
         }
         if (NaturalReproductionFabric.BIOME_FERTILITY != null) {
             level.getGameRules().set(NaturalReproductionFabric.BIOME_FERTILITY, true, level.getServer());
@@ -325,7 +467,7 @@ public class NaturalReproductionCommand {
 
     private static int executeClearLogs(CommandContext<CommandSourceStack> ctx) {
         BreedingTrackerLogger.clear();
-        ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction Logs]§r Cleared all autonomous breeding event logs."), true);
+        ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction Logs]§r All logged autonomous reproduction events cleared."), true);
         return 1;
     }
 }

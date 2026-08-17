@@ -17,9 +17,9 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | ID | Category | Title | Priority | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | `[BL-NR-001]` | `[FEATURE]` | Multi-Generational Inbreeding Lineage Degradation & Hybrid Vigor System | `[HIGH]` | `✅ RESOLVED` |
-| `[BL-NR-002]` | `[FEATURE]` | Pasture Enrichment, Rotational Grazing & Feeding Trough Dynamics | `[HIGH]` | `📌 DEFERRED` |
-| `[BL-NR-003]` | `[FEATURE]` | Autonomous Gestation Timers & Prenatal Pasture Vitality | `[MEDIUM]` | `📌 DEFERRED` |
-| `[BL-NR-004]` | `[FEATURE]` | Herd Social Cohesion, Alpha Leadership & Flock Movement AI | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-002]` | `[FEATURE]` | Pasture Enrichment, Rotational Grazing & Feeding Trough Dynamics | `[HIGH]` | `✅ RESOLVED` |
+| `[BL-NR-003]` | `[FEATURE]` | Autonomous Gestation Timers & Prenatal Pasture Vitality | `[MEDIUM]` | `✅ RESOLVED` |
+| `[BL-NR-004]` | `[FEATURE]` | Herd Social Cohesion, Alpha Leadership & Flock Movement AI | `[MEDIUM]` | `✅ RESOLVED` |
 | `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `📌 DEFERRED` |
 | `[BL-NR-006]` | `[TECH_DEBT]` | Automated Headless JUnit & Fabric GameTest Verification Suite | `[MEDIUM]` | `📌 DEFERRED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting & 1 Jar 1 Version Matrix (`1.20.1`, `1.21.1`, `1.21.11`, `26.3+`) | `[MEDIUM]` | `📌 DEFERRED` |
@@ -109,7 +109,7 @@ public final class AnimalLineageHelper {
 ### [BL-NR-002] Pasture Enrichment, Rotational Grazing & Feeding Trough Dynamics
 - **Category**: `[FEATURE]`
 - **Priority**: `[HIGH]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Asset Mode**: `Strictly Code-Only (Vanilla Interactive Blocks + Native Particles)`
 - **Target Component(s)**: `[AnimalPastureHelper.java](src/main/java/net/vanillaoutsider/naturalreproduction/util/AnimalPastureHelper.java)`, `[PastureGrazingGoal.java](src/main/java/net/vanillaoutsider/naturalreproduction/ai/PastureGrazingGoal.java)`, `[AnimalBreedingMixin.java](src/main/java/net/vanillaoutsider/naturalreproduction/mixin/AnimalBreedingMixin.java)`
 - **Date Added**: 2026-08-15
@@ -152,7 +152,7 @@ public final class AnimalLineageHelper {
 ### [BL-NR-003] Autonomous Gestation Timers & Prenatal Pasture Vitality
 - **Category**: `[FEATURE]`
 - **Priority**: `[MEDIUM]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Asset Mode**: `Strictly Code-Only (NBT Attachments + Pacing AI + Vanilla Egg Blocks)`
 - **Target Component(s)**: `[AnimalGestationHelper.java](src/main/java/net/vanillaoutsider/naturalreproduction/util/AnimalGestationHelper.java)`, `[AnimalBreedingMixin.java](src/main/java/net/vanillaoutsider/naturalreproduction/mixin/AnimalBreedingMixin.java)`
 - **Date Added**: 2026-08-15
@@ -193,7 +193,7 @@ In vanilla Minecraft, animal breeding is instantaneous: as soon as two animals t
 ### [BL-NR-004] Herd Social Cohesion, Alpha Leadership & Flock Movement AI
 - **Category**: `[FEATURE]`
 - **Priority**: `[MEDIUM]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Asset Mode**: `Strictly Code-Only (Custom AI Goal + Vector Math + Vanilla Sounds)`
 - **Target Component(s)**: `[HerdLeaderGoal.java](src/main/java/net/vanillaoutsider/naturalreproduction/ai/HerdLeaderGoal.java)`, `[HerdSocialHelper.java](src/main/java/net/vanillaoutsider/naturalreproduction/util/HerdSocialHelper.java)`
 - **Date Added**: 2026-08-15
