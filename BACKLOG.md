@@ -20,7 +20,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-002]` | `[FEATURE]` | Pasture Enrichment, Rotational Grazing & Feeding Trough Dynamics | `[HIGH]` | `✅ RESOLVED` |
 | `[BL-NR-003]` | `[FEATURE]` | Autonomous Gestation Timers & Prenatal Pasture Vitality | `[MEDIUM]` | `✅ RESOLVED` |
 | `[BL-NR-004]` | `[FEATURE]` | Herd Social Cohesion, Alpha Leadership & Flock Movement AI | `[MEDIUM]` | `✅ RESOLVED` |
-| `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `📌 DEFERRED` |
+| `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `✅ RESOLVED` |
 | `[BL-NR-006]` | `[TECH_DEBT]` | Automated Headless JUnit & Fabric GameTest Verification Suite | `[MEDIUM]` | `📌 DEFERRED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting & 1 Jar 1 Version Matrix (`1.20.1`, `1.21.1`, `1.21.11`, `26.3+`) | `[MEDIUM]` | `📌 DEFERRED` |
 
@@ -230,7 +230,7 @@ Livestock in pastures wander completely independently as isolated entities witho
 ### [BL-NR-005] Zero-Allocation Spatial Partitioning & High-Mob Density Throttling
 - **Category**: `[PERF]`
 - **Priority**: `[HIGH]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Asset Mode**: `Strictly Code-Only (Spatial Hash Grid + Object Pool)`
 - **Target Component(s)**: `[SpatialBreedingCacheHelper.java](src/main/java/net/vanillaoutsider/naturalreproduction/util/SpatialBreedingCacheHelper.java)`, `[AnimalBreedingMixin.java](src/main/java/net/vanillaoutsider/naturalreproduction/mixin/AnimalBreedingMixin.java)`
 - **Date Added**: 2026-08-15
@@ -257,9 +257,9 @@ In `AnimalBreedingMixin.java`, `customServerAiStep` executes broad-phase boundin
    - Reduce entity lookup overhead by `>80%` on servers with 200+ livestock entities.
 
 #### 🎯 Acceptance Criteria
-- [ ] Server tick time (MSPT) remains constant with 200+ passive livestock in loaded chunks.
-- [ ] Zero object allocation in per-tick entity query paths during steady state.
-- [ ] Autonomous reproduction rate and density checks remain accurate and responsive.
+- [x] Server tick time (MSPT) remains constant with 200+ passive livestock in loaded chunks.
+- [x] Zero object allocation in per-tick entity query paths during steady state.
+- [x] Autonomous reproduction rate and density checks remain accurate and responsive.
 
 ---
 
