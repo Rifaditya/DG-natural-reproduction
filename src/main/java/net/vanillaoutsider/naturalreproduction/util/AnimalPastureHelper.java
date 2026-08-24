@@ -22,13 +22,17 @@ public final class AnimalPastureHelper {
             return false;
         }
 
+        return SpatialBreedingCacheHelper.isPastureEnrichedCached(level, center, pos -> computePastureEnrichment(level, pos));
+    }
+
+    private static boolean computePastureEnrichment(ServerLevel level, BlockPos center) {
         int score = 0;
         boolean foundTrough = false;
         boolean foundHay = false;
         boolean foundWater = false;
 
-        // Scan 16x8x16 radius for enrichment elements
-        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-12, -4, -12), center.offset(12, 4, 12))) {
+        // Scan compact 17x7x17 radius (8 horizontally, 3 vertically) for enrichment elements
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-8, -3, -8), center.offset(8, 3, 8))) {
             BlockState state = level.getBlockState(pos);
 
             if (!foundTrough && (state.is(Blocks.CAULDRON) || state.is(Blocks.WATER_CAULDRON) || state.is(Blocks.COMPOSTER))) {
@@ -42,8 +46,8 @@ public final class AnimalPastureHelper {
                 foundWater = true;
             }
 
-            if (score >= 3) {
-                break;
+            if (score >= 2) {
+                return true;
             }
         }
 
@@ -52,7 +56,6 @@ public final class AnimalPastureHelper {
             score++;
         }
 
-        // Enriched if at least 2 distinct enrichment elements are present
         return score >= 2;
     }
 

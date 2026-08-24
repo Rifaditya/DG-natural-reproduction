@@ -17,6 +17,7 @@ import net.vanillaoutsider.naturalreproduction.util.AnimalHabitatHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalLineageHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalPastureHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
+import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -73,53 +74,66 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             AnimalPastureHelper.processOvergrazing(level, self);
         }
 
-        // Autonomous Wild Breeding Logic (Pregnant animals do not re-breed, staggered every 80 ticks per entity)
-        if (!level.isClientSide() && (self.getId() + level.getGameTime()) % 80 == 0 && self.getAge() == 0 && !self.isInLove() && !AnimalGestationHelper.isPregnant(self) && self.getHealth() >= self.getMaxHealth()) {
-            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED) && AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self)) {
-                int rate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
-                if (rate <= 0) {
-                    rate = 24000;
-                }
+        // Autonomous Wild Breeding Logic (Staggered 100-tick modulo = 5 seconds per entity)
+        if (!level.isClientSide() && (self.getId() + level.getGameTime()) % 100 == 0) {
+            // Fast-Fail 1: Health, love status, age, pregnancy
+            if (self.getAge() != 0 || self.isInLove() || AnimalGestationHelper.isPregnant(self) || self.getHealth() < self.getMaxHealth()) {
+                return;
+            }
 
-                int effectiveRate = Math.max(1, rate / 80);
-                if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY) && AnimalBiomeHelper.isNativeBiome(level, self)) {
-                    effectiveRate = Math.max(1, effectiveRate / 2); // 2x faster breeding checks in native biomes
-                }
+            // Fast-Fail 2: Global & Species GameRule toggles
+            if (!DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ENABLED) || !AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self)) {
+                return;
+            }
 
-                boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
-                    && AnimalPastureHelper.isPastureEnriched(level, self.blockPosition());
+            int rate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
+            if (rate <= 0) {
+                rate = 24000;
+            }
 
-                if (isEnriched) {
-                    effectiveRate = Math.max(1, Math.round(effectiveRate * 0.75f)); // +25% faster breeding in enriched pastures
-                    if ((self.getId() + level.getGameTime()) % 120 == 0) {
-                        AnimalPastureHelper.emitWellNourishedParticles(level, self);
-                    }
-                }
+            // Staggered probability: 1 check every 100 ticks
+            int effectiveRate = Math.max(1, rate / 100);
 
-                if (self.getRandom().nextInt(effectiveRate) == 0) {
-                    if (AnimalHabitatHelper.hasEnvironmentalBreedingConditions(level, self)) {
-                        int densityCap = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DENSITY_CAP);
-                        List<Animal> sameSpecies = level.getEntitiesOfClass(
-                            Animal.class,
-                            self.getBoundingBox().inflate(16.0),
-                            e -> e.getType() == self.getType() && e.isAlive()
-                        );
+            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY) && AnimalBiomeHelper.isNativeBiome(level, self)) {
+                effectiveRate = Math.max(1, effectiveRate / 2); // 2x faster breeding in native biomes
+            }
 
-                        if (sameSpecies.size() <= densityCap) {
-                            List<Animal> potentialMates = level.getEntitiesOfClass(
-                                Animal.class,
-                                self.getBoundingBox().inflate(8.0),
-                                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive() && !AnimalGestationHelper.isPregnant(e)
-                            );
+            boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
+                && AnimalPastureHelper.isPastureEnriched(level, self.blockPosition());
 
-                            if (!potentialMates.isEmpty()) {
-                                Animal mate = potentialMates.get(0);
-                                self.setInLove(null);
-                                mate.setInLove(null);
-                            }
-                        }
-                    }
-                }
+            if (isEnriched) {
+                effectiveRate = Math.max(1, Math.round(effectiveRate * 0.75f)); // +25% faster breeding in enriched pastures
+                AnimalPastureHelper.emitWellNourishedParticles(level, self);
+            }
+
+            // Fast-Fail 3: Probability check before expensive spatial & entity queries
+            if (self.getRandom().nextInt(effectiveRate) != 0) {
+                return;
+            }
+
+            // Only on passing the random check: verify habitat conditions
+            if (!AnimalHabitatHelper.hasEnvironmentalBreedingConditions(level, self)) {
+                return;
+            }
+
+            // Fast-Fail 4: Spatial entity density check via 100-tick cached density
+            int densityCap = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DENSITY_CAP);
+            int nearbyCount = SpatialBreedingCacheHelper.getNearbySameSpeciesCount(level, self, 16.0);
+            if (nearbyCount > densityCap) {
+                return;
+            }
+
+            // Targeted mate search in 8-block radius
+            List<Animal> potentialMates = level.getEntitiesOfClass(
+                Animal.class,
+                self.getBoundingBox().inflate(8.0),
+                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive() && !e.isInLove() && !AnimalGestationHelper.isPregnant(e) && !(e instanceof net.minecraft.world.entity.TamableAnimal)
+            );
+
+            if (!potentialMates.isEmpty()) {
+                Animal mate = potentialMates.get(0);
+                self.setInLove(null);
+                mate.setInLove(null);
             }
         }
     }

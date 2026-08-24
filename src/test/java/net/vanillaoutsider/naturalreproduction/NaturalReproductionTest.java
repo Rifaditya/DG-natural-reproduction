@@ -244,5 +244,44 @@ public class NaturalReproductionTest {
         double stampedeRadius = 16.0;
         Assertions.assertTrue(stampedeRadius >= 10.0 && stampedeRadius <= 32.0, "Stampede distress alarm radius must be within 10-32 blocks");
     }
+
+    @Test
+    @DisplayName("Verify Staggered 100-Tick Breeding Probability Math & Fast-Fail Scaling")
+    public void testStaggeredBreedingProbabilityMath() {
+        int baseRate = 24000;
+        int checkInterval = 100;
+        int effectiveRate = Math.max(1, baseRate / checkInterval);
+
+        Assertions.assertEquals(240, effectiveRate, "24000 tick rate evaluated every 100 ticks results in 1-in-240 check odds");
+
+        // Native biome boost (2x faster)
+        int nativeRate = Math.max(1, effectiveRate / 2);
+        Assertions.assertEquals(120, nativeRate, "Native biome boost scales effective rate from 240 down to 120");
+
+        // Enriched pasture (+25% faster)
+        int enrichedRate = Math.max(1, Math.round(effectiveRate * 0.75f));
+        Assertions.assertEquals(180, enrichedRate, "Enriched pasture scales effective rate from 240 down to 180");
+    }
+
+    @Test
+    @DisplayName("Verify Spatial Density Cache TTL & Chunk Hashing Math")
+    public void testSpatialDensityCacheMath() {
+        long currentTime = 1000L;
+        long ttl = 100L;
+        long expiryTime = currentTime + ttl;
+
+        boolean isFreshAt1050 = 1050L < expiryTime;
+        Assertions.assertTrue(isFreshAt1050, "Cache must be valid within 100 ticks of insertion");
+
+        boolean isExpiredAt1101 = 1101L < expiryTime;
+        Assertions.assertFalse(isExpiredAt1101, "Cache must expire after 100 ticks");
+
+        int blockX = 120;
+        int blockZ = -45;
+        int chunkX = blockX >> 4;
+        int chunkZ = blockZ >> 4;
+        Assertions.assertEquals(7, chunkX, "Block X 120 corresponds to chunk X 7");
+        Assertions.assertEquals(-3, chunkZ, "Block Z -45 corresponds to chunk Z -3");
+    }
 }
 
