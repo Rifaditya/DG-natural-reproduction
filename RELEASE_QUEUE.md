@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.9+26.2`** (2026-08-30) - **Simplified Chinese (`zh_cn`) Language Translation: Full Simplified Chinese localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.8+26.2`** (2026-08-30) - **Indonesian (`id_id`) Language Translation: Full Indonesian localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [x] **`1.4.7+26.2`** (2026-08-30) - **Scale Attribute Modifier Fix & Dynamic Reload Refresh**: Integrated DasikLibrary 1.8.35 scale modifier delta fix, preventing animals from becoming 2.0x gigantic, and updated `/naturalreproduction reload` to dynamically refresh loaded animal genetics and scale modifiers.
 - [ ] **`1.4.6+26.2`** (2026-08-17) - **Zero-Allocation Spatial Partitioning, High-Mob Density Throttling & Pet Protection**: Distributed livestock breeding checks across staggered 100-tick cycles (`(id + gameTime) % 100 == 0`) with fast-fail probability ordering, implemented `SpatialBreedingCacheHelper` (sub-chunk entity density & pasture caching with 100/200-tick TTL), exempted tamed animals from autonomous wild breeding, preserved vanilla instant delivery for tamed dogs, and optimized pasture scanning bounds.

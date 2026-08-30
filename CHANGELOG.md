@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.9+26.2] - 2026-08-30
+
+### Added
+- **Simplified Chinese (zh_cn) Translation**: Complete localization across all 105 configuration strings, GameRules, item names, and species toggles.
+
 ## [1.4.8+26.2] - 2026-08-30
 
 ### Added
