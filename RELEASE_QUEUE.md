@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.10+26.2`** (2026-08-30) - **Traditional Chinese (`zh_tw`) Language Translation: Full Traditional Chinese localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.9+26.2`** (2026-08-30) - **Simplified Chinese (`zh_cn`) Language Translation: Full Simplified Chinese localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.8+26.2`** (2026-08-30) - **Indonesian (`id_id`) Language Translation: Full Indonesian localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [x] **`1.4.7+26.2`** (2026-08-30) - **Scale Attribute Modifier Fix & Dynamic Reload Refresh**: Integrated DasikLibrary 1.8.35 scale modifier delta fix, preventing animals from becoming 2.0x gigantic, and updated `/naturalreproduction reload` to dynamically refresh loaded animal genetics and scale modifiers.
