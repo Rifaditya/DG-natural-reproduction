@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.11+26.2] - 2026-08-30
+
+### Added
+- **Russian (ru_ru) Translation**: Complete localization across all 105 configuration strings, GameRules, item names, and species toggles.
+
 ## [1.4.10+26.2] - 2026-08-30
 
 ### Added
