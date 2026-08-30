@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.7+26.2] - 2026-08-30
+
+### Fixed & Enhanced
+- **Scale Attribute Modifier Fix Integration (`DasikLibrary 1.8.35`)**: Updated dependency to DasikLibrary 1.8.35, resolving the issue where vanilla animals unintentionally doubled in size (2.0x scale) on entity spawn and initial genetics roll.
+- **Dynamic Entity Scale Refresh on `/naturalreproduction reload`**: Enhanced `/naturalreproduction reload` command to iterate all loaded entities in world memory and dynamically re-apply and clamp genetics scale modifiers against updated `min_scale` and `max_scale` GameRules.
+
 ## [1.4.6+26.2] - 2026-08-17
 
 ### Added & Optimized

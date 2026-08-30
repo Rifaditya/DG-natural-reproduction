@@ -23,6 +23,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `✅ RESOLVED` |
 | `[BL-NR-006]` | `[TECH_DEBT]` | Automated Headless JUnit & Fabric GameTest Verification Suite | `[MEDIUM]` | `📌 DEFERRED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting & 1 Jar 1 Version Matrix (`1.20.1`, `1.21.1`, `1.21.11`, `26.3+`) | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-008]` | `[BUGFIX]` | Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes | `[HIGH]` | `✅ RESOLVED` |
 
 ---
 
@@ -326,3 +327,63 @@ Natural Reproduction is currently built only for Minecraft 26.2. Under the works
 - [ ] Release JARs archived into `Archive Jar of all versions/MC <Version>/`.
 
 ---
+
+### [BL-NR-008] Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes
+- **Category**: `[BUGFIX]`
+- **Priority**: `[HIGH]`
+- **Status**: `📌 DEFERRED`
+- **Asset Mode**: `Strictly Code-Only (AttributeModifier Math & Trait Configuration)`
+- **Target Component(s)**: `[NaturalReproductionFabric.java](src/main/java/net/vanillaoutsider/naturalreproduction/NaturalReproductionFabric.java)`, `[GeneticsEngine.java](../../DasikLibrary-Rebuilt/src/main/java/net/dasik/social/api/genetics/GeneticsEngine.java)`, `[DasikAnimalGeneticsAPI.java](../../DasikLibrary-Rebuilt/src/main/java/net/dasik/social/api/genetics/DasikAnimalGeneticsAPI.java)`
+- **Date Added**: 2026-08-27
+
+#### ❓ Problem / Context
+As reported from live in-game testing (ref: screenshot `2026-08-27_08.28.52_4k.png`), all passive animals and reproduction offspring render at giant, oversized dimensions:
+1. In Minecraft 26.2+, the native base value of the `minecraft:scale` (`Attributes.SCALE`) attribute is `1.0` (100% normal vanilla scale).
+2. In `NaturalReproductionFabric.java`, the `"scale"` trait is registered as:
+   ```java
+   "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.50f, 1.30f)
+   ```
+   with mutation rule:
+   ```java
+   "scale", new MutationRule("uniform", 0.50f, 1.30f)
+   ```
+3. When `GeneticsEngine.applyGeneticsModifiers` applies the rolled trait value directly using `AttributeModifier.Operation.ADD_VALUE`:
+   - The rolled value `val` (between `0.50` and `1.30`) is added **directly on top** of the base scale `1.0`.
+   - **Baseline Roll (`1.00`)**: `1.0 + 1.00 = 2.00x` scale (200% size — twice as large as normal).
+   - **Max Potential Roll (`1.30`)**: `1.0 + 1.30 = 2.30x` scale (230% size — massive giant).
+   - **Minimum Stunted Roll (`0.50`)**: `1.0 + 0.50 = 1.50x` scale (150% size — still 50% larger than vanilla adults, instead of a small runt).
+4. Consequently, 100% of animals spawn and grow into giant entities because `scale` was treated as an absolute scale multiplier rather than an attribute offset from base `1.0`.
+
+#### 💡 Proposed Solution & Technical Specifications
+1. **Scale Attribute Offset Computation (`GeneticsEngine.java` / `NaturalReproduction`)**:
+   - For `minecraft:scale` (or any attribute where `1.0` is the default baseline), the applied `ADD_VALUE` modifier must be computed as the offset:
+     $$\Delta \text{scale} = \text{val} - 1.0\text{f}$$
+   - In `GeneticsEngine.applyGeneticsModifiers(LivingEntity entity)`:
+     ```java
+     float modifierVal = val;
+     if ("minecraft:scale".equals(trait.attributeId())) {
+         modifierVal = val - 1.0f; // Offset from vanilla 1.0 base
+     }
+     
+     if (Math.abs(modifierVal) > 0.0001f) {
+         attribute.addPermanentModifier(new AttributeModifier(modifierId, modifierVal, trait.getOperation()));
+     }
+     ```
+   - **Mathematical Verification**:
+     - $\text{Trait } 1.00 \implies \Delta = +0.00 \implies \text{Final Scale } = 1.00\text{x}$ (Exact vanilla size).
+     - $\text{Trait } 1.30 \implies \Delta = +0.30 \implies \text{Final Scale } = 1.30\text{x}$ (+30% Alpha/Well-Nourished).
+     - $\text{Trait } 0.50 \implies \Delta = -0.50 \implies \text{Final Scale } = 0.50\text{x}$ (-50% Stunted/Inbred Runt).
+
+2. **Wild Spawn Baseline Distribution Refinement**:
+   - Refine wild spawn mutation rule from `uniform(0.50, 1.30)` to a bell curve / triangular distribution centered closely around `1.00` (e.g., `triangular(0.90, 1.10, 1.00)` or `triangular(0.85, 1.15, 1.00)`).
+   - Wild natural animals will spawn at authentic near-vanilla sizes (`0.95x`–`1.05x`), while extreme scale variations (`0.50x` runts or `1.30x` heavyweights) develop dynamically through player pasture enrichment, inbreeding degradation, and cramped pen conditions.
+
+#### 🎯 Acceptance Criteria
+- [x] Animals spawn at authentic vanilla scale ($\sim 1.00\text{x}$) by default instead of giant sizes ($2.0\text{x}-2.3\text{x}$).
+- [x] `minecraft:scale` modifier correctly computes $(val - 1.0\text{f})$ offset so configured range `[0.50, 1.30]` maps accurately to $[0.50\text{x}, 1.30\text{x}]$ physical entity size.
+- [x] Stunted animals scale down cleanly to $0.50\text{x}$ without giant base inflation.
+- [x] Well-nourished alpha animals reach up to $1.30\text{x}$ maximum scale.
+- [x] Headless unit tests assert exact $(val - 1.0\text{f})$ offset math.
+
+---
+

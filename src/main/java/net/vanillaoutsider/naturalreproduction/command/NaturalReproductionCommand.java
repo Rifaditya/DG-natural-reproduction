@@ -8,10 +8,15 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
+import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.vanillaoutsider.naturalreproduction.util.BreedingLogEntry;
@@ -441,7 +446,21 @@ public class NaturalReproductionCommand {
     }
 
     private static int executeReload(CommandContext<CommandSourceStack> ctx) {
-        ctx.getSource().sendSuccess(() -> Component.literal("Natural Reproduction configuration reloaded."), true);
+        MinecraftServer server = ctx.getSource().getServer();
+        int refreshedCount = 0;
+        if (server != null) {
+            for (ServerLevel sl : server.getAllLevels()) {
+                for (Entity entity : sl.getAllEntities()) {
+                    if (entity instanceof LivingEntity living && DasikAnimalGeneticsAPI.hasGenetics(living)) {
+                        GeneticsEngine.applyGeneticsModifiers(living);
+                        refreshedCount++;
+                    }
+                }
+            }
+        }
+        int finalCount = refreshedCount;
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            String.format("Natural Reproduction configuration reloaded. Refreshed genetics & scale modifiers on %d loaded animal(s).", finalCount)), true);
         return 1;
     }
 

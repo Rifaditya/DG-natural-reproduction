@@ -1,92 +1,475 @@
-<h1 align="center">Natural Reproduction</h1>
-<p align="center">
-    <strong>Delayed Gratification Collection</strong> | <em>Pasture Management & Multi-Generational Investment</em>
-</p>
+<div align="center">
+    <a href="https://curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
+    <a href="https://curseforge.com/minecraft/mc-mods/dasik-library"><img src="https://img.shields.io/badge/Requires-Dasik_Library-purple?style=for-the-badge" alt="Requires Dasik Library"></a>
+    <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
+    <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
+</div>
 
-<p align="center">
-    <a href="https://minecraft.net"><img src="https://img.shields.io/badge/Minecraft-26.2%2B-brightgreen.svg" alt="Minecraft"></a>
-    <a href="https://fabricmc.net"><img src="https://img.shields.io/badge/ModLoader-Fabric-blue.svg" alt="Fabric"></a>
-    <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License"></a>
-    <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/DasikLibrary-%3E%3D1.8.15-orange.svg" alt="DasikLibrary"></a>
-</p>
+<h2>🐑 Natural Reproduction - Autonomous Livestock Husbandry & Ecological Genetics</h2>
+
+<blockquote>
+    <p><b>"Nature does not wait for player intervention to blossom."</b></p>
+</blockquote>
+
+<p>In vanilla Minecraft, animals stand frozen in cramped pens, completely helpless until a player right-clicks them with wheat. In real ecosystems, animals graze, form structured herds led by alpha animals, gestate over time, and thrive in rich pastures while suffering severe degradation in overcrowded conditions.</p>
+
+<p><b>Natural Reproduction</b> transforms Minecraft's passive fauna into a dynamic, living ecosystem. Wild animals autonomously mate when their environmental habitat needs are met, while pastoral farmers are rewarded for spacious pastures, rotational grazing, and careful genetic stewardship.</p>
+
+<p>Part of the <b>Delayed Gratification Collection</b> — mods that reward long-term planning, multi-generational investment, and strategic animal husbandry.</p>
 
 <hr>
 
-<p>Animals in the wild should not depend solely on players for survival and growth. <strong>Natural Reproduction</strong> allows all passive mobs in Minecraft to autonomously breed and multiply when environmental conditions are ideal, while rewarding thoughtful pasture management, native climate alignment, and multi-generational size genetics investment.</p>
+<h2>✨ Comprehensive Feature Catalog</h2>
 
-<h3>🌟 Key Features</h3>
-
+<h3>🌿 Autonomous Ecosystem Breeding & Food Blocks</h3>
+<p>Wild animals no longer require manual player hand-feeding to reproduce. When animals are healthy and surrounded by species-appropriate environmental blocks, they autonomously enter love mode:</p>
 <ul>
-    <li><strong>🌾 Autonomous Wild Breeding:</strong> Healthy, well-fed animals naturally enter Love Mode when surrounded by compatible mates and environmental habitat blocks.</li>
-    <li><strong>🏞️ Native Biome Climate Fertility Boost:</strong> Animals in their native climate biomes (e.g. Wolves in Taigas, Frogs in Swamps, Cows/Sheep in Plains, Polar Bears in Ice Plains) receive <strong>2x faster breeding frequency</strong> and <strong>+15% offspring genetics quality boost</strong>.</li>
-    <li><strong>🎨 Biome Variant Skin Adaptation:</strong> Offspring born in specific biomes dynamically adapt visual skin variants (e.g. Desert Frogs become Warm variant, Taiga Wolves become Pale/Black variant, Snowy Rabbits become White variant).</li>
-    <li><strong>🐺 Variant-Specific Environmental Habitat Triggers:</strong> Animals require variant-tailored habitat blocks (e.g. Snowy Wolves & Foxes require snow/ice blocks; Warm Frogs & Gold Rabbits require sand/cactus).</li>
-    <li><strong>🏚️ Cramped Space Penalty vs. 🌾 Spacious Pasture Recovery:</strong> Breeding in cramped 4x4 factory farm pens (4+ mobs) stunts offspring scale down to <code>0.25x</code>. Moving animals to spacious open pastures (+30% recovery per generation) restores physical size potential up to <code>1.30x</code>!</li>
-    <li><strong>⚖️ Scale-Based Item Drops:</strong> Item drop yield on death/harvest scales proportionally with physical body scale attribute.</li>
-    <li><strong>⚙️ 27 Per-Species GameRule Toggles:</strong> Full granular control over every single animal species under a dedicated <code>Natural Reproduction - Species Toggles</code> category (all enabled by default).</li>
+    <li><b>Cows, Sheep & Goats</b>: Require nearby grass blocks, tall grass, or hay bales.</li>
+    <li><b>Pigs</b>: Seek mud blocks, farmland crops, or carrots/potatoes.</li>
+    <li><b>Chickens</b>: Require seed crops, hay bales, or grassy turf.</li>
+    <li><b>Wolves & Foxes</b>: Seek biome-specific den blocks (snow/ice for Snowy variants, podzol/spruce for Taigas).</li>
+    <li><b>Frogs & Turtles</b>: Require water bodies, lily pads, sand, or mangrove mud.</li>
+    <li><i>Supports all 27+ vanilla Minecraft animal species!</i></li>
 </ul>
 
-<h3>📋 Dynamic GameRules</h3>
-
+<h3>👑 Herd Social Dynamics & Alpha Leadership</h3>
+<p>Animals no longer scatter randomly. They form organic pastoral herds:</p>
 <ul>
-    <li><code>natural-reproduction:enabled</code> (Boolean, Default: <code>true</code>) &mdash; Master switch for autonomous wild breeding.</li>
-    <li><code>natural-reproduction:density_cap</code> (Integer, Default: <code>10</code>) &mdash; Maximum same-species animals permitted within a 16-block radius.</li>
-    <li><code>natural-reproduction:rate</code> (Integer, Default: <code>24000</code>) &mdash; Average tick interval between breeding checks (24000 = 1 MC Day).</li>
-    <li><code>natural-reproduction:scale_drops</code> (Boolean, Default: <code>true</code>) &mdash; Scale-proportional item drop yields.</li>
-    <li><code>natural-reproduction:cramped_space_penalty</code> (Boolean, Default: <code>true</code>) &mdash; Confined pen stunting vs spacious pasture size recovery.</li>
-    <li><code>natural-reproduction:biome_fertility</code> (Boolean, Default: <code>true</code>) &mdash; 2x breeding speed and +15% quality in native biomes.</li>
-    <li><code>natural-reproduction:biome_variants</code> (Boolean, Default: <code>true</code>) &mdash; Dynamic biome variant skin adaptation for offspring.</li>
-    <li><code>natural-reproduction:allow_&lt;species&gt;</code> (Boolean, Default: <code>true</code>) &mdash; 27 individual species toggles under <em>Natural Reproduction - Species Toggles</em> category (Cows, Pigs, Sheep, Chickens, Horses, Wolves, Frogs, Bees, Hoglins, etc.).</li>
+    <li><b>Alpha Leader Election</b>: The herd dynamically elects the largest physical animal (by scale genetics) as their Alpha leader.</li>
+    <li><b>Pastoral Flocking</b>: Herd members stay within 5–16 blocks of their leader, grazing together during daylight hours and seeking sheltered pens at night.</li>
+    <li><b>Herd Distress Stampede Panic</b>: If a predator or player attacks any herd member, all nearby animals panic in a synchronized 5-second stampede away from danger!</li>
 </ul>
 
-<h3>💬 Brigadier Command Suite</h3>
-
-<p>Manage all mod settings in-game via <code>/naturalreproduction</code> with tab completion:</p>
+<h3>⏳ Pregnancy Gestation Timers & Prenatal Vitality</h3>
+<p>No more instant baby pops. Mating initiates a natural pregnancy countdown:</p>
 <ul>
-    <li><code>/naturalreproduction status</code> &mdash; Display active states of all core rules and 27 species toggles.</li>
-    <li><code>/naturalreproduction get &lt;rule&gt;</code> &mdash; Query the current value of a specific rule.</li>
-    <li><code>/naturalreproduction set &lt;rule&gt; &lt;value&gt;</code> &mdash; Dynamically update any core rule or species toggle.</li>
-    <li><code>/naturalreproduction trackerlogs list|clear|enable|disable</code> &mdash; Inspect and manage autonomous breeding event logs.</li>
-    <li><code>/naturalreproduction reset</code> &mdash; Reset all rules and 27 species toggles to defaults.</li>
+    <li><b>Autonomous Gestation</b>: Default duration of 24,000 ticks (1 in-game Minecraft Day).</li>
+    <li><b>Prenatal Pasture Vitality</b>: Mothers kept in enriched, spacious pastures during pregnancy bestow <b>Prenatal Vitality</b> onto their offspring (+15% max health, +10% speed, and +10% baseline scale)!</li>
 </ul>
 
-<h3>🛠️ Installation Requirements</h3>
-
+<h3>🥚 Dedicated Chicken Reproduction & Fertilized Eggs</h3>
+<p>Chickens feature an authentic, separate reproduction cycle:</p>
 <ul>
-    <li><strong>Fabric Loader:</strong> &gt;= 0.19.1</li>
-    <li><strong>Minecraft:</strong> 26.2+</li>
-    <li><strong>Fabric API:</strong> Required</li>
-    <li><strong>DasikLibrary:</strong> &gt;= 1.8.15 (Required)</li>
-    <li><strong>YetAnotherConfigLib (YACL v3):</strong> Optional (Client GUI)</li>
-    <li><strong>ModMenu:</strong> Optional (Client GUI)</li>
+    <li><b>Autonomous Mating</b>: When chickens breed autonomously, they roll a 50/50 chance to either hatch an immediate baby chick or lay a <b>Fertilized Egg</b>.</li>
+    <li><b>Guaranteed Hatch Rate</b>: Fertilized Eggs have a <b>100% hatch rate</b> when thrown by players, and a <b>75% hatch rate</b> when fired from automated dispensers!</li>
+    <li><b>Infertile Regular Eggs</b>: Ordinary unfertilized eggs have a reduced 1/64 miracle hatch chance, isolating egg farms from runaway entity lag.</li>
 </ul>
 
-<h3>👥 Credits</h3>
+<h3>🛑 Cramped Factory Farm Penalty vs. Spacious Pasture Recovery</h3>
+<p>Factory farming has realistic consequences:</p>
+<ul>
+    <li><b>Cramped Space Stunting</b>: Confining breeding animals to 1x1 pit holes or tight, overcrowded pens gradually stunts offspring genetics down to <b>0.25x scale</b> (yielding minimal meat and drops).</li>
+    <li><b>Spacious Pasture Recovery</b>: Moving stunted animals into open, spacious green pastures grants <b>+10% to +30% genetic size recovery per generation</b>, gradually restoring their pedigree back to full potential!</li>
+</ul>
+
+<h3>🧬 Lineage Inbreeding Degradation & Hybrid Vigor</h3>
+<p>Closed-herd inbreeding carries authentic biological penalties:</p>
+<ul>
+    <li><b>Lineage Tracking</b>: Every animal tracks parental lineage across generations.</li>
+    <li><b>Inbreeding Tiers (T0 to T4)</b>: Repeated sibling and parent-offspring mating causes severe genetic collapse. At Tier 3/Tier 4, animals yield <b>Rotten Flesh & Bones</b> instead of prime meat, and Tier 4 animals suffer lethal health decay.</li>
+    <li><b>Hybrid Vigor</b>: Outcrossing unrelated bloodlines grants a <b>+15% scale boost</b> and superior genetic vitality!</li>
+</ul>
+
+<h3>🏡 Pasture Enrichment, Rotational Grazing & Shelter</h3>
+<p>Invest in your pastures to reap rich agricultural rewards:</p>
+<ul>
+    <li><b>Pasture Enrichment</b>: Providing water cauldrons, composters, hay bales, and barn roof shelters grants animals the <b>Well-Nourished</b> state (+25% faster breeding checks, +10% offspring scale, golden sparkle particles).</li>
+    <li><b>Overgrazing Terrain Wear</b>: Overcrowding too many animals on a single pasture causes grass blocks to gradually degrade into dirt and coarse dirt, encouraging rotational grazing.</li>
+</ul>
+
+<h3>🌍 Biome Variant Adaptation & Climate Fertility</h3>
+<ul>
+    <li><b>Native Biome Fertility</b>: Breeding animals in their native climate biomes (Taigas for Wolves, Deserts for Camels, Swamps for Frogs) grants <b>2x faster breeding frequency</b> and <b>+15% genetics quality</b>.</li>
+    <li><b>Variant Skin Adaptation</b>: Offspring born in specialized biomes naturally adapt their visual variant skins (e.g. Snowy Wolves, Warm/Cold Frogs, Desert Rabbits).</li>
+</ul>
+
+<h3>📏 Physical Scale-Based Harvest Drops</h3>
+<p>Size directly dictates harvest yields:</p>
+<ul>
+    <li>Scaled animal drops dynamically scale from <b>0.50x to 1.30x</b> meat, leather, and wool. Larger livestock reward thoughtful breeding!</li>
+</ul>
+
+<h3>🧩 Compatibility & HUD Integrations</h3>
+<ul>
+    <li><b>Server-Side Compatible</b>: Works seamlessly on dedicated servers — vanilla clients can connect without installing the mod.</li>
+    <li><b>In-Game GUI</b>: Full <b>YetAnotherConfigLib (YACL v3)</b> and <b>ModMenu</b> configuration screen.</li>
+    <li><b>Data-Driven Genetics</b>: Powered by <b>DasikLibrary API</b> and <code>EntityGeneticsRegistry</code>.</li>
+</ul>
+
+<hr>
+
+<h2>📊 Quick Reference & Mechanics Matrix</h2>
+
+<h3>🐾 Species Environmental Habitat Triggers (27 Species)</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Species Category</th>
+            <th>Example Animals</th>
+            <th>Required Habitat Blocks</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Bovines & Equines</b></td>
+            <td>Cows, Mooshrooms, Horses, Donkeys, Mules</td>
+            <td><code>GRASS_BLOCK</code>, <code>SHORT_GRASS</code>, <code>TALL_GRASS</code>, <code>HAY_BLOCK</code></td>
+        </tr>
+        <tr>
+            <td><b>Ovine & Caprine</b></td>
+            <td>Sheep, Goats, Llamas, Camels</td>
+            <td><code>GRASS_BLOCK</code>, <code>SHORT_GRASS</code>, <code>HAY_BLOCK</code>, <code>SAND</code></td>
+        </tr>
+        <tr>
+            <td><b>Porcines</b></td>
+            <td>Pigs, Hoglins</td>
+            <td><code>MUD</code>, <code>FARMLAND</code>, <code>CARROTS</code>, <code>POTATOES</code>, <code>CRIMSON_NYLIUM</code></td>
+        </tr>
+        <tr>
+            <td><b>Avians & Small Fauna</b></td>
+            <td>Chickens, Rabbits, Bees</td>
+            <td><code>WHEAT_SEEDS</code>, <code>HAY_BLOCK</code>, <code>CARROTS</code>, <code>FLOWERS</code></td>
+        </tr>
+        <tr>
+            <td><b>Canines & Felines</b></td>
+            <td>Wolves, Foxes, Cats, Ocelots</td>
+            <td><code>PODZOL</code>, <code>SPRUCE_LEAVES</code>, <code>SNOW_BLOCK</code>, <code>GRASS_BLOCK</code></td>
+        </tr>
+        <tr>
+            <td><b>Aquatics & Amphibians</b></td>
+            <td>Frogs, Turtles, Axolotls</td>
+            <td><code>WATER</code>, <code>LILY_PAD</code>, <code>MUD</code>, <code>SAND</code>, <code>SEAGRASS</code></td>
+        </tr>
+        <tr>
+            <td><b>Nether & Exotic</b></td>
+            <td>Striders, Sniffers, Armadillos, Polar Bears</td>
+            <td><code>LAVA</code>, <code>WARPED_NYLIUM</code>, <code>MOSS_BLOCK</code>, <code>ICE</code>, <code>PACKED_ICE</code></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<h3>🧬 Inbreeding Degradation Matrix</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Tier</th>
+            <th>Generation Status</th>
+            <th>Genetic Effects</th>
+            <th>Harvest Drop Penalties</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>T0</b></td>
+            <td>Clean Bloodline / Wild</td>
+            <td>Full genetic baseline (1.00x scale)</td>
+            <td>Normal drops</td>
+        </tr>
+        <tr>
+            <td><b>T1</b></td>
+            <td>First Inbred Generation</td>
+            <td>-10% Max HP, -5% Movement Speed</td>
+            <td>Normal drops</td>
+        </tr>
+        <tr>
+            <td><b>T2</b></td>
+            <td>Second Inbred Generation</td>
+            <td>-20% Max HP, -10% Movement Speed, Stunted Scale</td>
+            <td>-25% Item Yield</td>
+        </tr>
+        <tr>
+            <td><b>T3</b></td>
+            <td>Severe Lineage Inbreeding</td>
+            <td>-35% Max HP, Genetic Defects, Severe Stunting</td>
+            <td><b>Meat turns into Rotten Flesh & Bones</b></td>
+        </tr>
+        <tr>
+            <td><b>T4</b></td>
+            <td>Lethal Lineage Collapse</td>
+            <td><b>Lethal Health Decay (1 dmg/sec)</b></td>
+            <td><b>100% Rotten Flesh & Bones Only</b></td>
+        </tr>
+        <tr>
+            <td><b>HV</b></td>
+            <td><b>Hybrid Vigor (Outcross)</b></td>
+            <td><b>+15% Scale, +20% Max HP, +10% Speed</b></td>
+            <td><b>+25% Bonus Prime Drops</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>💻 In-Game Commands</h2>
+
+<p>The mod includes a full <code>/naturalreproduction</code> Brigadier command suite with tab-completion (requires permission level 2 / cheat access):</p>
+
+<pre><code>/naturalreproduction help                           - Displays all available commands
+/naturalreproduction status                         - Prints active breeding settings and density limits
+/naturalreproduction get &lt;gamerule&gt;                 - Inspects the live value of a specific setting
+/naturalreproduction set &lt;gamerule&gt; &lt;val&gt;           - Adjusts a setting live (e.g. /naturalreproduction set min_scale 60)
+/naturalreproduction reset                          - Restores all GameRules to default settings
+/naturalreproduction reload                         - Dynamically refreshes scale and modifiers on all loaded mobs
+/naturalreproduction trackerlogs list               - Views recent autonomous wild reproduction events
+/naturalreproduction trackerlogs enable/disable     - Toggles autonomous reproduction event logging
+/naturalreproduction trackerlogs clear              - Clears the breeding tracker log history</code></pre>
+
+<hr>
+
+<h2>⚙️ Native Namespaced GameRules</h2>
+
+<blockquote>
+    <p><b>Important: Global Config vs. In-Game GameRules</b><br>
+    The global configuration file only defines <b>default values for brand-new worlds</b> at creation time. If you have <b>already created or opened a world</b>, changing the config file will have no effect. You must adjust settings in-game using the <b>Edit Game Rules</b> UI screen or the <code>/naturalreproduction set</code> / <code>/gamerule</code> commands.</p>
+</blockquote>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>GameRule</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>natural-reproduction:enabled</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Master toggle for autonomous wild animal reproduction.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:density_cap</code></td>
+            <td>Integer</td>
+            <td><code>10</code></td>
+            <td>Maximum same-species animals within 16 blocks for breeding.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:rate</code></td>
+            <td>Integer</td>
+            <td><code>24000</code></td>
+            <td>Average tick interval between breeding attempts (24000 = 1 MC Day).</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:min_scale</code></td>
+            <td>Integer</td>
+            <td><code>50</code></td>
+            <td>Minimum animal scale percentage (50 = 0.50x scale).</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:max_scale</code></td>
+            <td>Integer</td>
+            <td><code>130</code></td>
+            <td>Maximum animal scale percentage (130 = 1.30x scale).</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:scale_drops</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Multiplies item drops based on physical body scale.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:cramped_space_penalty</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Enables size stunting in tight pens and spacious pasture recovery.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:inbreeding_degradation</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Enables multi-generational inbreeding genetic collapse.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:pasture_enrichment</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Enables bonuses from feeding troughs, hay, water, and shelter.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:overgrazing</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>High-density herds convert grass blocks to dirt/coarse dirt.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:gestation_period</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Enables pregnancy countdown timer for autonomous breeding.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:manual_gestation</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Applies pregnancy gestation timers to manual player feeding.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:gestation_duration</code></td>
+            <td>Integer</td>
+            <td><code>24000</code></td>
+            <td>Duration of pregnancy countdown in ticks (24000 = 1 MC Day).</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:fertilized_chicken_eggs</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Chickens lay 100% hatch Fertilized Eggs during wild breeding.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:chicken_infertile_regular_eggs</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Reduces unfertilized regular egg hatch chance to 1/64.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:dispenser_egg_hatch_chance</code></td>
+            <td>Integer</td>
+            <td><code>75</code></td>
+            <td>Hatch chance percentage for dispenser-fired Fertilized Eggs.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:herd_dynamics</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Animals elect Alpha leaders and maintain pastoral flocking.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:herd_stampede</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Herds panic in synchronized stampedes when attacked.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:biome_fertility</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Animals in native biomes gain 2x breeding speed and +15% quality.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:biome_variants</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>Offspring adapt visual variant skins in specialized biomes.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:tracker_logs</code></td>
+            <td>Boolean</td>
+            <td><code>false</code></td>
+            <td>Records autonomous reproduction events to console and log.</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:allow_&lt;species&gt;</code></td>
+            <td>Boolean</td>
+            <td><code>true</code></td>
+            <td>27 individual toggles to enable/disable specific species.</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>📖 In-Depth How-To & Gameplay Playbook</h2>
+
+<p>Mastering animal husbandry in Natural Reproduction requires thoughtful ecosystem management:</p>
+
+<h3>1. Designing an Enriched Pasture</h3>
+<ul>
+    <li>Build pastures with at least <b>8x8 to 16x16 blocks of open grass</b>.</li>
+    <li>Place <b>Hay Bales</b>, <b>Water Cauldrons</b>, and <b>Composters</b> near grazing areas.</li>
+    <li>Build a roofed shelter (wood/stone roof with open fence gates). Animals grazing in enriched pastures gain the <b>Well-Nourished</b> state (+25% faster breeding checks, +10% offspring scale, golden sparkles).</li>
+</ul>
+
+<h3>2. Establishing Herds & Alpha Leadership</h3>
+<ul>
+    <li>Introduce at least 3–4 animals of the same species into your pasture.</li>
+    <li>The largest animal automatically becomes the <b>Alpha leader</b>. Surrounding animals will follow the leader during daytime grazing and retreat to shelter at dusk.</li>
+</ul>
+
+<h3>3. Managing Gestation & Prenatal Care</h3>
+<ul>
+    <li>When animals mate, the mother enters pregnancy gestation (1 Minecraft Day).</li>
+    <li>Ensure pregnant mothers have access to enriched pastures to guarantee their offspring receive <b>Prenatal Vitality</b> (+15% HP, +10% Speed, +10% Scale).</li>
+</ul>
+
+<h3>4. Preventing Inbreeding Collapse</h3>
+<ul>
+    <li>Never breed consecutive generations of the same closed family.</li>
+    <li>If you notice animals shrinking or dropping <b>Rotten Flesh</b>, capture a wild animal from a distant biome and introduce it to your herd. Outcrossing triggers <b>Hybrid Vigor</b> (+15% scale boost and complete pedigree recovery).</li>
+</ul>
+
+<h3>5. Managing Chicken Flocks</h3>
+<ul>
+    <li>Collect <b>Fertilized Eggs</b> laid by breeding chickens. Throw them manually for a guaranteed 100% baby chick hatch, or load them into Dispensers (75% hatch chance) for automated hatchery systems.</li>
+</ul>
+
+<h3>6. Live In-Game Configuration</h3>
+<ul>
+    <li>Adjust scale limits on the fly using <code>/naturalreproduction set min_scale 50</code> and <code>/naturalreproduction set max_scale 130</code>.</li>
+    <li>Run <code>/naturalreproduction reload</code> to immediately clamp and update all active animals across loaded chunks!</li>
+</ul>
+
+<hr>
+
+<h2>☕ Support My Work</h2>
+
+<p>If you enjoy the <b>Delayed Gratification Collection</b> and want to support ongoing updates:</p>
+
+<div align="center">
+    <a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+    <a href="https://sociabuzz.com/dasikigaijin/tribe"><img src="https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge" alt="SocioBuzz"></a>
+    <a href="https://saweria.co/DasikIgaijinn"><img src="https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge" alt="Saweria"></a>
+</div>
+
+<blockquote>
+    <p><b>Indonesian Users:</b> SocioBuzz and Saweria support local payment methods (GoPay, OVO, DANA, QRIS) if you wish to support me locally!</p>
+</blockquote>
+
+<hr>
+
+<h2>📦 Modpack Permissions & Licensing</h2>
+
+<blockquote>
+    <p><b>Modpack Distribution Policy:</b><br>
+    You are free to include this mod in any modpack, provided that the modpack is hosted on the same platform where you obtained this mod (e.g. CurseForge modpacks on CurseForge, Modrinth modpacks on Modrinth). Cross-platform redistribution is strictly prohibited to support the creator and ensure legitimate downloads.</p>
+</blockquote>
+
+<hr>
+
+<h2>📜 Credits</h2>
 
 <table border="1" cellpadding="6" cellspacing="0">
     <thead>
         <tr>
             <th>Role</th>
-            <th>Contributor</th>
+            <th>Author</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><strong>Lead Developer & Author</strong></td>
-            <td>Dasik (Rifaditya)</td>
+            <td><b>Creator & Developer</b></td>
+            <td><b>Dasik</b> (Rifaditya)</td>
         </tr>
         <tr>
-            <td><strong>Genetics & GameRule Engine</strong></td>
-            <td>DasikLibrary Team</td>
+            <td><b>Collection</b></td>
+            <td>Delayed Gratification Collection</td>
+        </tr>
+        <tr>
+            <td><b>License</b></td>
+            <td>GPLv3</td>
         </tr>
     </tbody>
 </table>
 
-<h3>📄 License & Modpack Usage</h3>
+<hr>
 
-<blockquote>
-    <p>This mod is licensed under the <strong>GNU General Public License v3.0 (GPLv3)</strong>.</p>
-    <p>You are welcome to include <strong>Natural Reproduction</strong> in any modpack published on CurseForge or Modrinth!</p>
-</blockquote>
-
-<p align="center"><em>Made with ❤️ by Dasik (Rifaditya)</em></p>
+<div align="center">
+    <p><b>Made with ❤️ for the Minecraft community</b></p>
+    <p><i>Part of the Delayed Gratification Collection</i></p>
+</div>
