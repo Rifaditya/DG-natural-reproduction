@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.14+26.2`** (2026-08-30) - **French (`fr_fr`) Language Translation: Full French localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.13+26.2`** (2026-08-30) - **German (`de_de`) Language Translation: Full German localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.12+26.2`** (2026-08-30) - **Spanish (`es_es`) Language Translation: Full Spanish localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.11+26.2`** (2026-08-30) - **Russian (`ru_ru`) Language Translation: Full Russian localization across all 105 configuration strings, GameRules, items, and species toggles.**
