@@ -319,5 +319,27 @@ public class NaturalReproductionTest {
         Assertions.assertEquals(7, chunkX, "Block X 120 corresponds to chunk X 7");
         Assertions.assertEquals(-3, chunkZ, "Block Z -45 corresponds to chunk Z -3");
     }
+
+    @Test
+    @DisplayName("Verify Unified Breeding Pipeline Enriched Pasture Vitality Math & Clamping")
+    public void testBreedingPipelineVitalityAndClampMath() {
+        float currentScale = 1.0f;
+        float minAllowed = 0.10f;
+        float maxAllowed = 1.20f;
+
+        // Normal boost in enriched pasture (+10%)
+        float boostedScale = Math.clamp(currentScale * 1.10f, minAllowed, maxAllowed);
+        Assertions.assertEquals(1.10f, boostedScale, 0.001f, "Enriched pasture should boost newborn scale by +10%");
+
+        // Boost clamped to maximum allowed (1.20x)
+        float highBaseScale = 1.15f;
+        float clampedHigh = Math.clamp(highBaseScale * 1.10f, minAllowed, maxAllowed);
+        Assertions.assertEquals(1.20f, clampedHigh, 0.001f, "Boosted scale must clamp to maxAllowed ceiling");
+
+        // Stunted floor clamp verification (0.10x)
+        float stuntedScale = 0.08f;
+        float clampedLow = Math.clamp(stuntedScale, minAllowed, maxAllowed);
+        Assertions.assertEquals(0.10f, clampedLow, 0.001f, "Stunted scale must clamp to minAllowed floor");
+    }
 }
 

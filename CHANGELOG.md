@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.22+26.2] - 2026-09-03
+
+### Added & Refactored
+- **Unified Post-Birth Lifecycle Pipeline (`BreedingPipelineHelper`)**:
+  - Centralized all newborn post-birth subsystems into a cohesive helper (`BreedingPipelineHelper.finalizeNewborn(...)`).
+  - Standardized the sequential execution of genetics inheritance, cramped space stunting vs. spacious pasture recovery, inbreeding lineage effects, pasture enrichment vitality boosts (+10% scale), and biome variant/climate adaptations.
+  - Added native ambient birth audio cue on successful newborn delivery.
+  - Refactored `AnimalBreedingMixin` (`onSpawnChildFromBreeding` at `TAIL`) to delegate directly to `BreedingPipelineHelper`, eliminating duplicate mixin code.
+
 ## [1.4.21+26.2] - 2026-09-03
 
 ### Changed

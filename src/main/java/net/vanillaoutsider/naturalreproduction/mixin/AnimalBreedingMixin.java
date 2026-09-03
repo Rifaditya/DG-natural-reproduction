@@ -16,6 +16,7 @@ import net.vanillaoutsider.naturalreproduction.util.AnimalGestationHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalHabitatHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalLineageHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalPastureHelper;
+import net.vanillaoutsider.naturalreproduction.util.BreedingPipelineHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -188,66 +189,11 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             e -> e.getType() == parent1.getType() && e.isBaby()
         );
 
+        boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
+            && AnimalPastureHelper.isPastureEnriched(level, parent1.blockPosition());
+
         for (AgeableMob baby : babies) {
-            if (!DasikAnimalGeneticsAPI.hasGenetics(baby)) {
-                DasikAnimalGeneticsAPI.inherit(baby, parent1, mate, "default");
-                GeneticsEngine.applyGeneticsModifiers(baby);
-            }
-
-            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY)) {
-                AnimalCrampedSpaceHelper.applyConfinementOrRecovery(level, parent1, mate, baby);
-            }
-
-            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.INBREEDING_DEGRADATION)) {
-                AnimalLineageHelper.applyLineageEffects(level, parent1, mate, baby);
-            }
-
-            boolean isEnriched = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
-                && AnimalPastureHelper.isPastureEnriched(level, parent1.blockPosition());
-
-            if (isEnriched) {
-                float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-                float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
-                float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
-                if (minAllowed <= 0) minAllowed = 0.10f;
-                if (maxAllowed <= 0) maxAllowed = 1.20f;
-                float boostedScale = Math.clamp(currentScale * 1.10f, minAllowed, maxAllowed);
-                DasikAnimalGeneticsAPI.setScale(baby, boostedScale);
-                AnimalPastureHelper.emitWellNourishedParticles(level, baby);
-            }
-
-            boolean enableVariants = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_VARIANTS);
-            boolean enableFertilityBoost = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.BIOME_FERTILITY);
-            AnimalBiomeHelper.applyBiomeVariantAndBoost(level, parent1, mate, baby, enableVariants, enableFertilityBoost);
-
-            // Log autonomous reproduction event to tracker if manually enabled
-            if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.TRACKER_LOGS)) {
-                float babyScale = DasikAnimalGeneticsAPI.getScale(baby);
-                String biomeId = level.getBiome(baby.blockPosition()).unwrapKey().map(k -> k.identifier().toString()).orElse("unknown");
-                String speciesName = baby.getType().getDescription().getString();
-                int inbreedingTier = AnimalLineageHelper.getInbreedingTier(baby);
-
-                String statusNote = "Standard";
-                if (inbreedingTier >= 4) {
-                    statusNote = "Lethal Collapse (T4)";
-                } else if (inbreedingTier == 3) {
-                    statusNote = "Degraded Meat (T3)";
-                } else if (inbreedingTier > 0) {
-                    statusNote = "Inbred Tier " + inbreedingTier;
-                } else if (isEnriched) {
-                    statusNote = "Enriched Pasture";
-                } else if (AnimalBiomeHelper.isNativeBiome(level, parent1)) {
-                    statusNote = "Native Biome Boost";
-                } else if (babyScale <= 0.35f) {
-                    statusNote = "Cramped Stunted";
-                } else if (babyScale >= 1.20f) {
-                    statusNote = "Spacious Pasture";
-                }
-
-                BreedingTrackerLogger.logBreeding(
-                    level, speciesName, baby.blockPosition(), biomeId, babyScale, statusNote
-                );
-            }
+            BreedingPipelineHelper.finalizeNewborn(level, parent1, mate, baby, isEnriched);
         }
     }
 }
