@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.25+26.2] - 2026-09-03
+
+### Fixed & Refactored
+- **World-Reload Safe Herd Social Follow AI (`AnimalBreedingMixin`)**:
+  - Replaced persistent NBT trait `nr_herd_goal` check with active in-memory `GoalSelector` inspection (`naturalreproduction$hasHerdGoal()`).
+  - Resolved issue where animals reloading from disk or across chunk unloads permanently lost their `FollowHerdLeaderGoal` because persistent genetics flags prevented re-attaching runtime goals.
+  - Animals now seamlessly retain active herd/pack follow behavior across server restarts, chunk unloads, and dimension changes.
+
 ## [1.4.24+26.2] - 2026-09-03
 
 ### Changed & Refined

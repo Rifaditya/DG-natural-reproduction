@@ -19,7 +19,9 @@ import net.vanillaoutsider.naturalreproduction.util.AnimalPastureHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingPipelineHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -48,10 +50,9 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             GeneticsEngine.applyGeneticsModifiers(self);
         }
 
-        // Attach Herd Social Follow Goal dynamically
-        if (DasikAnimalGeneticsAPI.getTrait(self, "nr_herd_goal", 0.0f) == 0.0f) {
+        // Attach Herd Social Follow Goal dynamically (world-reload safe)
+        if (!naturalreproduction$hasHerdGoal()) {
             this.goalSelector.addGoal(6, new net.vanillaoutsider.naturalreproduction.ai.FollowHerdLeaderGoal(self, 1.0D));
-            DasikAnimalGeneticsAPI.setTrait(self, "nr_herd_goal", 1.0f);
         }
 
         // Herd Predator Distress Alarm Check
@@ -195,5 +196,15 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
         for (AgeableMob baby : babies) {
             BreedingPipelineHelper.finalizeNewborn(level, parent1, mate, baby, isEnriched);
         }
+    }
+
+    @Unique
+    private boolean naturalreproduction$hasHerdGoal() {
+        for (WrappedGoal wrapped : this.goalSelector.getAvailableGoals()) {
+            if (wrapped.getGoal() instanceof net.vanillaoutsider.naturalreproduction.ai.FollowHerdLeaderGoal) {
+                return true;
+            }
+        }
+        return false;
     }
 }

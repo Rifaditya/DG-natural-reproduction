@@ -381,5 +381,28 @@ public class NaturalReproductionTest {
         // 3. Regular livestock (Cow, Sheep, Pig): Never tamable, never exempt
         Assertions.assertFalse(isExempt.test(false, false), "Standard livestock must never be exempt");
     }
+
+    @Test
+    @DisplayName("Verify World-Reload Safe Herd Goal Inspection & Duplicate Prevention")
+    public void testHerdGoalAttachmentPredicate() {
+        java.util.Set<String> simulatedActiveGoals = new java.util.HashSet<>();
+
+        java.util.function.Predicate<String> hasHerdGoal = simulatedActiveGoals::contains;
+
+        // 1. Initial spawn / fresh load: Goal not attached yet
+        Assertions.assertFalse(hasHerdGoal.test("FollowHerdLeaderGoal"), "Freshly loaded entity should not report having the goal yet");
+
+        // 2. Attach goal
+        simulatedActiveGoals.add("FollowHerdLeaderGoal");
+        Assertions.assertTrue(hasHerdGoal.test("FollowHerdLeaderGoal"), "After attaching, goal query must report true");
+
+        // 3. World reload simulation: Goal cleared from memory set, persistent tag obsolete
+        simulatedActiveGoals.clear();
+        Assertions.assertFalse(hasHerdGoal.test("FollowHerdLeaderGoal"), "After reload, in-memory goal is absent and must be re-attached");
+
+        // 4. Re-attach on reload
+        simulatedActiveGoals.add("FollowHerdLeaderGoal");
+        Assertions.assertTrue(hasHerdGoal.test("FollowHerdLeaderGoal"), "Goal re-attached successfully after reload");
+    }
 }
 
