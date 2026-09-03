@@ -2,12 +2,14 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.naturalreproduction.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
@@ -72,7 +74,11 @@ public final class AnimalBiomeHelper {
         // 1. Biome Climate Genetics Quality Boost
         if (enableFertilityBoost && nativeBiome) {
             float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-            float boostedScale = Math.clamp(currentScale * 1.15f, 0.25f, 1.30f);
+            float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
+            float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
+            if (minAllowed <= 0) minAllowed = 0.10f;
+            if (maxAllowed <= 0) maxAllowed = 1.20f;
+            float boostedScale = Math.clamp(currentScale * 1.15f, minAllowed, maxAllowed);
             DasikAnimalGeneticsAPI.setScale(baby, boostedScale);
 
             level.sendParticles(

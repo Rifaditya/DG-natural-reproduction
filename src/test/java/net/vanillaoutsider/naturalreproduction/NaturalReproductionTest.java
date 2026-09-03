@@ -72,16 +72,26 @@ public class NaturalReproductionTest {
     @Test
     @DisplayName("Verify Cramped Space Stunting & Spacious Recovery Math")
     public void testCrampedSpaceAndSpaciousRecoveryMath() {
-        float initialGeneticsScale = 1.00f;
-        int crampedDensity = 8;
-        float penaltyMultiplier = crampedDensity >= 8 ? 0.30f : 0.85f;
+        float minScale = 0.10f;
+        float maxScale = 1.20f;
+        float initialGeneticsScale = 0.95f;
+        int crampedDensity = 15; // heavily overcrowded
+        float penaltyMultiplier = Math.max(0.95f - (crampedDensity * 0.05f), 0.20f);
 
-        float stuntedScale = Math.clamp(initialGeneticsScale * penaltyMultiplier, 0.25f, 2.0f);
-        Assertions.assertEquals(0.30f, stuntedScale, 0.001f, "Extreme cramped breeding (8+ mobs) should stunt offspring scale down to 0.30x");
+        float stuntedScale = Math.clamp(initialGeneticsScale * penaltyMultiplier, minScale, maxScale);
+        Assertions.assertEquals(0.19f, stuntedScale, 0.001f, "Extreme cramped breeding should stunt offspring scale down to ~0.19x");
 
-        float recoveryBoost = 1.30f;
-        float recoveredScale = Math.clamp(stuntedScale * recoveryBoost, 0.25f, 1.30f);
-        Assertions.assertEquals(0.39f, recoveredScale, 0.001f, "Breeding in spacious pastures should apply +30% scale recovery boost per generation");
+        // Stunting clamp floor verification
+        float extremeStunted = Math.clamp(0.05f, minScale, maxScale);
+        Assertions.assertEquals(0.10f, extremeStunted, 0.001f, "Severe stunting must clamp to 0.10x floor");
+
+        float recoveryBoost = 1.15f;
+        float recoveredScale = Math.clamp(stuntedScale * recoveryBoost, minScale, maxScale);
+        Assertions.assertEquals(0.2185f, recoveredScale, 0.001f, "Breeding in spacious pastures should apply +15% scale recovery boost");
+
+        // Recovery ceiling clamp verification
+        float overboosted = Math.clamp(1.35f, minScale, maxScale);
+        Assertions.assertEquals(1.20f, overboosted, 0.001f, "Spacious recovery must clamp to 1.20x max ceiling");
     }
 
     @Test
@@ -93,9 +103,9 @@ public class NaturalReproductionTest {
 
         Assertions.assertEquals(12000, effectiveRate, "Animals in native biomes should receive a 2x breeding frequency boost (12000 ticks)");
 
-        float initialScale = 1.0f;
-        float boostedScale = Math.clamp(initialScale * 1.15f, 0.25f, 1.30f);
-        Assertions.assertEquals(1.15f, boostedScale, 0.001f, "Offspring born in native biomes should receive +15% genetics quality boost");
+        float initialScale = 0.95f;
+        float boostedScale = Math.clamp(initialScale * 1.15f, 0.10f, 1.20f);
+        Assertions.assertEquals(1.0925f, boostedScale, 0.001f, "Offspring born in native biomes should receive +15% genetics quality boost");
     }
 
     @Test

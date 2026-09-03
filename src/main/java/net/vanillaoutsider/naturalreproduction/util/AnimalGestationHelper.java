@@ -153,8 +153,11 @@ public final class AnimalGestationHelper {
 
                 if (highVitality) {
                     float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
+                    float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
                     float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
-                    DasikAnimalGeneticsAPI.setScale(baby, Math.clamp(currentScale * 1.10f, 0.25f, maxAllowed));
+                    if (minAllowed <= 0) minAllowed = 0.10f;
+                    if (maxAllowed <= 0) maxAllowed = 1.20f;
+                    DasikAnimalGeneticsAPI.setScale(baby, Math.clamp(currentScale * 1.10f, minAllowed, maxAllowed));
 
                     if (baby.getAttribute(Attributes.MAX_HEALTH) != null) {
                         baby.getAttribute(Attributes.MAX_HEALTH).setBaseValue(

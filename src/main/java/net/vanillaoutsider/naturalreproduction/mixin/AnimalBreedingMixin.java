@@ -207,8 +207,11 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
 
             if (isEnriched) {
                 float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
+                float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
                 float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
-                float boostedScale = Math.clamp(currentScale * 1.10f, 0.25f, maxAllowed);
+                if (minAllowed <= 0) minAllowed = 0.10f;
+                if (maxAllowed <= 0) maxAllowed = 1.20f;
+                float boostedScale = Math.clamp(currentScale * 1.10f, minAllowed, maxAllowed);
                 DasikAnimalGeneticsAPI.setScale(baby, boostedScale);
                 AnimalPastureHelper.emitWellNourishedParticles(level, baby);
             }

@@ -1,5 +1,15 @@
 # Natural Reproduction - Version History
 
+## [1.4.20+26.2] - 2026-09-03
+
+### Changed
+- **Harmonized Scale Bounds Synchronization**: Replaced legacy static scale bounds with dynamic queries to `natural-reproduction:min_scale` (`0.10x` default) and `natural-reproduction:max_scale` (`1.20x` default) across all breeding subsystems:
+  - **Cramped Space Stunting**: Tight feedlots and pit holes now stunt runts down to the true floor (`0.10x`).
+  - **Spacious Pasture Recovery**: Restores stunted genetics up to the live `max_scale` ceiling (`1.20x`).
+  - **Pasture Enrichment & Prenatal Gestation**: Enriched feeding troughs and prenatal pasture vitality clamp between live `min_scale` and `max_scale`.
+  - **Inbreeding Lineage Degradation**: Lethal collapse (Tier 4) drops to live `min_scale` (`0.10x`), and Hybrid Vigor outcrossing respects live `max_scale` (`1.20x`).
+  - **Biome Genetics Quality Boost**: Native biome quality boost clamps dynamically between `min_scale` and `max_scale`.
+
 ## [1.4.19+26.2] - 2026-09-03
 
 ### Changed

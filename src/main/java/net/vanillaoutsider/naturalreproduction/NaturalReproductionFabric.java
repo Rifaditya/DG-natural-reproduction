@@ -124,7 +124,7 @@ public class NaturalReproductionFabric implements ModInitializer {
 
         CRAMPED_SPACE_PENALTY = DynamicGameRuleManager.booleanRule("natural-reproduction:cramped_space_penalty", CATEGORY, true)
             .name("Cramped Space Penalty & Recovery")
-            .description("When true, breeding in cramped spaces stunting offspring scale down to 0.25x; breeding in spacious pastures recovers size genetics.")
+            .description("When true, breeding in cramped spaces stunts offspring scale down to 0.10x; breeding in spacious pastures recovers size genetics.")
             .register();
 
         INBREEDING_DEGRADATION = DynamicGameRuleManager.booleanRule("natural-reproduction:inbreeding_degradation", CATEGORY, true)

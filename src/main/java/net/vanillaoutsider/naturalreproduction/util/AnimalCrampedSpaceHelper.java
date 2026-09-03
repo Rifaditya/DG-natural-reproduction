@@ -38,10 +38,15 @@ public final class AnimalCrampedSpaceHelper {
         float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
         boolean isOvercrowded = isConfinedPen || extraLocalCount >= 3;
 
+        float minAllowed = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(level, net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.MIN_SCALE) / 100.0f;
+        float maxAllowed = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(level, net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.MAX_SCALE) / 100.0f;
+        if (minAllowed <= 0) minAllowed = 0.10f;
+        if (maxAllowed <= 0) maxAllowed = 1.20f;
+
         if (isOvercrowded && extraLocalCount >= 1) {
             // Cramped Space Penalty: smooth gradual scale stunting (-5% per extra local mob)
-            float penaltyMultiplier = Math.max(0.95f - (extraLocalCount * 0.05f), 0.40f);
-            float newScale = Math.clamp(currentScale * penaltyMultiplier, 0.25f, 2.0f);
+            float penaltyMultiplier = Math.max(0.95f - (extraLocalCount * 0.05f), 0.20f);
+            float newScale = Math.clamp(currentScale * penaltyMultiplier, minAllowed, maxAllowed);
             DasikAnimalGeneticsAPI.setScale(baby, newScale);
 
             // Visual particle feedback for cramped stunting
@@ -56,16 +61,14 @@ public final class AnimalCrampedSpaceHelper {
                 2, 0.2, 0.2, 0.2, 0.02
             );
         } else {
-            // Open Pasture / Spacious Recovery: boost scale towards MAX_SCALE (default 1.30x)
+            // Open Pasture / Spacious Recovery: boost scale towards MAX_SCALE (default 1.20x)
             float parent1Scale = DasikAnimalGeneticsAPI.getScale(parent1);
             float parent2Scale = DasikAnimalGeneticsAPI.getScale(parent2);
             float avgParentScale = (parent1Scale + parent2Scale) / 2.0f;
 
-            float maxAllowed = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(level, net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.MAX_SCALE) / 100.0f;
-
             if (avgParentScale < maxAllowed || currentScale < maxAllowed) {
                 float recoveryBoost = 1.15f;
-                float newScale = Math.clamp(currentScale * recoveryBoost, 0.25f, maxAllowed);
+                float newScale = Math.clamp(currentScale * recoveryBoost, minAllowed, maxAllowed);
                 DasikAnimalGeneticsAPI.setScale(baby, newScale);
 
                 // Visual particle feedback for spacious pasture size recovery

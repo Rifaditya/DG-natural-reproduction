@@ -2,10 +2,12 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.naturalreproduction.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -59,13 +61,18 @@ public final class AnimalLineageHelper {
         int p2Tier = getInbreedingTier(parent2);
         int tier = computeInbreedingTier(level, parent1, parent2);
 
+        float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
+        float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
+        if (minAllowed <= 0) minAllowed = 0.10f;
+        if (maxAllowed <= 0) maxAllowed = 1.20f;
+
         DasikAnimalGeneticsAPI.setTrait(baby, TRAIT_INBREEDING_TIER, (float) tier);
 
         if (tier == 0) {
             // Check if Tier 0 was achieved via Outcrossing Dilution from degraded lineage -> Hybrid Vigor
             if (p1Tier > 0 || p2Tier > 0) {
                 float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-                float boostedScale = Math.clamp(currentScale * 1.15f, 0.25f, 1.30f);
+                float boostedScale = Math.clamp(currentScale * 1.15f, minAllowed, maxAllowed);
                 DasikAnimalGeneticsAPI.setScale(baby, boostedScale);
 
                 level.sendParticles(
@@ -77,7 +84,7 @@ public final class AnimalLineageHelper {
         } else if (tier == 1) {
             // Tier 1: Mild stunting (-10% scale), birth smoke puff
             float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-            float stuntedScale = Math.clamp(currentScale * 0.90f, 0.25f, 1.30f);
+            float stuntedScale = Math.clamp(currentScale * 0.90f, minAllowed, maxAllowed);
             DasikAnimalGeneticsAPI.setScale(baby, stuntedScale);
 
             level.sendParticles(
@@ -88,7 +95,7 @@ public final class AnimalLineageHelper {
         } else if (tier == 2) {
             // Tier 2: Moderate stunting (-25% scale), -20% speed, smoke & angry villager puff
             float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-            float stuntedScale = Math.clamp(currentScale * 0.75f, 0.25f, 1.30f);
+            float stuntedScale = Math.clamp(currentScale * 0.75f, minAllowed, maxAllowed);
             DasikAnimalGeneticsAPI.setScale(baby, stuntedScale);
 
             applySpeedPenalty(baby, -0.20f);
@@ -104,8 +111,8 @@ public final class AnimalLineageHelper {
                 1, 0.2, 0.2, 0.2, 0.02
             );
         } else if (tier == 3) {
-            // Tier 3: Severe degradation (0.35x miniature scale), -30% speed, squid ink & angry villager
-            DasikAnimalGeneticsAPI.setScale(baby, 0.35f);
+            // Tier 3: Severe degradation (miniature scale), -30% speed, squid ink & angry villager
+            DasikAnimalGeneticsAPI.setScale(baby, Math.max(minAllowed, 0.20f));
             applySpeedPenalty(baby, -0.30f);
 
             level.sendParticles(
@@ -119,8 +126,8 @@ public final class AnimalLineageHelper {
                 3, 0.2, 0.2, 0.2, 0.02
             );
         } else if (tier >= 4) {
-            // Tier 4: Lethal genetic collapse (0.25x scale), -50% speed, heavy squid ink & smoke
-            DasikAnimalGeneticsAPI.setScale(baby, 0.25f);
+            // Tier 4: Lethal genetic collapse (min scale), -50% speed, heavy squid ink & smoke
+            DasikAnimalGeneticsAPI.setScale(baby, minAllowed);
             applySpeedPenalty(baby, -0.50f);
 
             level.sendParticles(
