@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.18+26.2] - 2026-09-03
+
+### Changed
+- **Wild Spawn Scale Rebalance**: Tightened initial wild animal scale rolls to `0.80x` – `0.95x`, preventing newly spawned wild animals from rolling excessively large sizes.
+- **Scale GameRule Boundary Tuning**: Updated `natural-reproduction:min_scale` default from `50` to `10` (`0.10x`) and `natural-reproduction:max_scale` default from `130` to `120` (`1.20x`).
+
+### Added
+- **Normal Scale GameRule (`natural-reproduction:normal_scale`)**: Registered new integer GameRule defaulting to `95` (`0.95x`) defining the standard baseline animal scale.
+- **YACL Configuration Sliders**: Added GUI slider for Normal Scale (50%–150%) and updated sliders for Min Scale (5%–100%) and Max Scale (100%–200%).
+- **Brigadier Command Expansion**: Integrated `normal_scale` into `/naturalreproduction get`, `set`, `status`, and `reset`.
+- **11-Language Localization**: Full translation coverage for `normal_scale` across all 11 supported languages.
+
 ## [1.4.17+26.2] - 2026-08-30
 
 ### Added

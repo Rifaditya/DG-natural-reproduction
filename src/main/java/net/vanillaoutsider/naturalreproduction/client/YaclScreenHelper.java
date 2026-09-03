@@ -46,8 +46,9 @@ public class YaclScreenHelper {
         boolean currentBiomeVariants = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_VARIANTS) : true;
         boolean currentTrackerLogs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.TRACKER_LOGS) : false;
 
-        int currentMinScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MIN_SCALE) : 50;
-        int currentMaxScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MAX_SCALE) : 130;
+        int currentMinScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MIN_SCALE) : 10;
+        int currentNormalScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.NORMAL_SCALE) : 95;
+        int currentMaxScale = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.MAX_SCALE) : 120;
 
         try {
             Class<?> yaclClass = Class.forName("dev.isxander.yacl3.api.YetAnotherConfigLib");
@@ -130,8 +131,8 @@ public class YaclScreenHelper {
             Object minScaleOption = buildIntSliderOption(
                 Component.translatable("gamerule.natural-reproduction:min_scale"),
                 Component.translatable("gamerule.natural-reproduction:min_scale.description"),
-                50,
-                10, 100, 5,
+                10,
+                5, 100, 5,
                 () -> currentMinScale,
                 val -> {
                     if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MIN_SCALE != null) {
@@ -144,12 +145,30 @@ public class YaclScreenHelper {
             );
             optionMethod.invoke(groupBuilder, minScaleOption);
 
+            // Add Normal Scale Option
+            Object normalScaleOption = buildIntSliderOption(
+                Component.translatable("gamerule.natural-reproduction:normal_scale"),
+                Component.translatable("gamerule.natural-reproduction:normal_scale.description"),
+                95,
+                50, 150, 5,
+                () -> currentNormalScale,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.NORMAL_SCALE != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.NORMAL_SCALE, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, normalScaleOption);
+
             // Add Max Scale Option
             Object maxScaleOption = buildIntSliderOption(
                 Component.translatable("gamerule.natural-reproduction:max_scale"),
                 Component.translatable("gamerule.natural-reproduction:max_scale.description"),
-                130,
-                100, 300, 5,
+                120,
+                100, 200, 5,
                 () -> currentMaxScale,
                 val -> {
                     if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MAX_SCALE != null) {

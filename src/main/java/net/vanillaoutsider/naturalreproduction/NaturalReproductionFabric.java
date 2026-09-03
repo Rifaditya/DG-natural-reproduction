@@ -55,6 +55,7 @@ public class NaturalReproductionFabric implements ModInitializer {
     public static GameRule<Boolean> BIOME_FERTILITY;
     public static GameRule<Boolean> BIOME_VARIANTS;
     public static GameRule<Integer> MIN_SCALE;
+    public static GameRule<Integer> NORMAL_SCALE;
     public static GameRule<Integer> MAX_SCALE;
     public static GameRule<Boolean> TRACKER_LOGS;
 
@@ -191,14 +192,19 @@ public class NaturalReproductionFabric implements ModInitializer {
             .description("When true, offspring born in specific biomes dynamically adapt their visual entity variant skin (e.g. Snowy Wolves, Desert Frogs).")
             .register();
 
-        MIN_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:min_scale", CATEGORY, 50)
+        MIN_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:min_scale", CATEGORY, 10)
             .name("Minimum Size Percentage")
-            .description("Minimum animal scale percentage (50 = 0.5x scale).")
+            .description("Minimum animal scale percentage (10 = 0.1x scale).")
             .register();
 
-        MAX_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:max_scale", CATEGORY, 130)
+        NORMAL_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:normal_scale", CATEGORY, 95)
+            .name("Normal Baseline Size Percentage")
+            .description("Standard baseline animal scale percentage (95 = 0.95x scale).")
+            .register();
+
+        MAX_SCALE = DynamicGameRuleManager.integerRule("natural-reproduction:max_scale", CATEGORY, 120)
             .name("Maximum Size Percentage")
-            .description("Maximum animal scale percentage (130 = 1.3x scale).")
+            .description("Maximum animal scale percentage (120 = 1.2x scale).")
             .register();
 
         TRACKER_LOGS = DynamicGameRuleManager.booleanRule("natural-reproduction:tracker_logs", CATEGORY, false)
@@ -241,14 +247,14 @@ public class NaturalReproductionFabric implements ModInitializer {
 
         // Register Data-Driven Animal Genetics with DasikLibrary API across ALL vanilla animal species
         Map<String, TraitConfig> animalTraits = Map.of(
-            "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.50f, 1.30f),
+            "scale", new TraitConfig("scale", "minecraft:scale", "ADD_VALUE", 0.0f, 1.0f, 0.10f, 1.20f),
             "max_health", new TraitConfig("max_health", "minecraft:generic.max_health", "ADD_VALUE", 2.0f, 0.5f, -4.0f, 12.0f),
             "movement_speed", new TraitConfig("movement_speed", "minecraft:generic.movement_speed", "ADD_MULTIPLIED_BASE", 0.05f, 0.5f, -0.04f, 0.08f)
         );
 
         Map<String, Map<String, MutationRule>> animalMutations = Map.of(
             "default", Map.of(
-                "scale", new MutationRule("uniform", 0.50f, 1.30f),
+                "scale", new MutationRule("uniform", 0.80f, 0.95f),
                 "max_health", new MutationRule("triangular", -2.0f, 8.0f),
                 "movement_speed", new MutationRule("triangular", -0.03f, 0.06f)
             )
@@ -272,13 +278,13 @@ public class NaturalReproductionFabric implements ModInitializer {
                 if (entity.level() instanceof ServerLevel sl) {
                     return DynamicGameRuleManager.getInt(sl, MIN_SCALE) / 100.0f;
                 }
-                return 0.50f;
+                return 0.10f;
             });
             GeneticsLimitRegistry.registerMax(type, "scale", (entity, defaultMax) -> {
                 if (entity.level() instanceof ServerLevel sl) {
                     return DynamicGameRuleManager.getInt(sl, MAX_SCALE) / 100.0f;
                 }
-                return 1.30f;
+                return 1.20f;
             });
         }
 

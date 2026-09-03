@@ -24,6 +24,8 @@ For an animal to enter **Love Mode** naturally without player feeding, it must s
 
 ## 🐾 Complete 27 Animal Species Breeding Reference
 
+> 💡 **Passive Detection vs. Eating**: Animals **do not consume or destroy** their required habitat blocks (e.g., chickens and cows do not eat the grass or wheat blocks to breed; they merely detect their nearby presence). If grass blocks in your pens are turning into dirt, this is caused by the **Overgrazing** mechanic (`natural-reproduction:overgrazing`), where 5+ crowded animals in a 4-block radius compact and wear down the turf into dirt.
+
 All 27 supported animal species scan a **5x3x5 area** around themselves for specific habitat blocks. Breeding in their **Native Climate Biome** grants **2x faster breeding frequency** and **+15% offspring genetics quality boost**.
 
 | Animal Species | Required Habitat Blocks (within 2 blocks) | Native Climate Biomes (2x Speed & +15% Quality) | Skin Variant Triggers & Notes |

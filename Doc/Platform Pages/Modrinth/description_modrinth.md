@@ -16,6 +16,12 @@ In vanilla Minecraft, animals stand frozen in cramped pens, completely helpless 
 
 Part of the **Delayed Gratification Collection** — mods that reward long-term planning, multi-generational investment, and strategic animal husbandry.
 
+> [!IMPORTANT]
+> **Dependencies & 1 Jar 1 Version Policy:**
+> - **Modern (MC 26.x / 26.1.2 / 26.2 / 26.3+)**: Requires **[Fabric API](https://modrinth.com/mod/fabric-api)** and **[Dasik Library](https://modrinth.com/mod/dasik-library)** (v1.8.15+).
+> - **Legacy Anchor (MC 1.20.1 / 1.21.x)**: Self-contained (only requires **[Fabric API](https://modrinth.com/mod/fabric-api)**; Dasik Library is not needed).
+> - **1 Jar 1 Version Policy**: I build 1 dedicated JAR for each Minecraft version. Please download the exact build that matches your Minecraft installation.
+
 ---
 
 ## ✨ Comprehensive Feature Catalog

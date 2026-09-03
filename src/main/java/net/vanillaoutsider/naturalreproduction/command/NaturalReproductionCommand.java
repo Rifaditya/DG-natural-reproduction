@@ -57,6 +57,7 @@ public class NaturalReproductionCommand {
             .then(Commands.literal("biome_variants").executes(ctx -> executeGetBool(ctx, "biome_variants")))
             .then(Commands.literal("tracker_logs").executes(ctx -> executeGetBool(ctx, "tracker_logs")))
             .then(Commands.literal("min_scale").executes(ctx -> executeGetInt(ctx, "min_scale")))
+            .then(Commands.literal("normal_scale").executes(ctx -> executeGetInt(ctx, "normal_scale")))
             .then(Commands.literal("max_scale").executes(ctx -> executeGetInt(ctx, "max_scale")));
 
         for (String key : SPECIES_KEYS) {
@@ -74,10 +75,13 @@ public class NaturalReproductionCommand {
                 .then(Commands.argument("val", IntegerArgumentType.integer(100, 240000))
                     .executes(ctx -> executeSetInt(ctx, "rate", IntegerArgumentType.getInteger(ctx, "val")))))
             .then(Commands.literal("min_scale")
-                .then(Commands.argument("val", IntegerArgumentType.integer(10, 100))
+                .then(Commands.argument("val", IntegerArgumentType.integer(5, 100))
                     .executes(ctx -> executeSetInt(ctx, "min_scale", IntegerArgumentType.getInteger(ctx, "val")))))
+            .then(Commands.literal("normal_scale")
+                .then(Commands.argument("val", IntegerArgumentType.integer(50, 150))
+                    .executes(ctx -> executeSetInt(ctx, "normal_scale", IntegerArgumentType.getInteger(ctx, "val")))))
             .then(Commands.literal("max_scale")
-                .then(Commands.argument("val", IntegerArgumentType.integer(100, 300))
+                .then(Commands.argument("val", IntegerArgumentType.integer(100, 200))
                     .executes(ctx -> executeSetInt(ctx, "max_scale", IntegerArgumentType.getInteger(ctx, "val")))))
             .then(Commands.literal("scale_drops")
                 .then(Commands.argument("val", BoolArgumentType.bool())
@@ -177,6 +181,7 @@ public class NaturalReproductionCommand {
         int cap = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.DENSITY_CAP);
         int rate = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.RATE);
         int minScale = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE);
+        int normalScale = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.NORMAL_SCALE);
         int maxScale = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE);
         boolean scaleDrops = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS);
         boolean crampedPenalty = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.CRAMPED_SPACE_PENALTY);
@@ -204,7 +209,7 @@ public class NaturalReproductionCommand {
         final int enabledSpeciesCount = count;
 
         ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Pasture Enrichment=%b, Overgrazing=%b, Gestation=%b (Manual=%b, Duration=%d), Fertilized Eggs=%b, Infertile Reg Eggs=%b, Dispenser Hatch Rate=%d%%, Herd Dynamics=%b, Herd Stampede=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, maxScale, scaleDrops, crampedPenalty, inbreeding, pastureEnrichment, overgrazing, gestation, manualGestation, gestationDuration, fertEggs, infertileReg, dispenserRate, herdDynamics, herdStampede, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
+            String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Normal Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Pasture Enrichment=%b, Overgrazing=%b, Gestation=%b (Manual=%b, Duration=%d), Fertilized Eggs=%b, Infertile Reg Eggs=%b, Dispenser Hatch Rate=%d%%, Herd Dynamics=%b, Herd Stampede=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, normalScale, maxScale, scaleDrops, crampedPenalty, inbreeding, pastureEnrichment, overgrazing, gestation, manualGestation, gestationDuration, fertEggs, infertileReg, dispenserRate, herdDynamics, herdStampede, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
         ), false);
         return 1;
     }
@@ -283,6 +288,9 @@ public class NaturalReproductionCommand {
         } else if ("min_scale".equals(ruleName)) {
             int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:min_scale = " + val + "%"), false);
+        } else if ("normal_scale".equals(ruleName)) {
+            int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.NORMAL_SCALE);
+            ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:normal_scale = " + val + "%"), false);
         } else if ("max_scale".equals(ruleName)) {
             int val = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE);
             ctx.getSource().sendSuccess(() -> Component.literal("natural-reproduction:max_scale = " + val + "%"), false);
@@ -364,6 +372,9 @@ public class NaturalReproductionCommand {
         } else if ("min_scale".equals(ruleName) && NaturalReproductionFabric.MIN_SCALE != null) {
             level.getGameRules().set(NaturalReproductionFabric.MIN_SCALE, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:min_scale to " + value + "%"), true);
+        } else if ("normal_scale".equals(ruleName) && NaturalReproductionFabric.NORMAL_SCALE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.NORMAL_SCALE, value, level.getServer());
+            ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:normal_scale to " + value + "%"), true);
         } else if ("max_scale".equals(ruleName) && NaturalReproductionFabric.MAX_SCALE != null) {
             level.getGameRules().set(NaturalReproductionFabric.MAX_SCALE, value, level.getServer());
             ctx.getSource().sendSuccess(() -> Component.literal("Set natural-reproduction:max_scale to " + value + "%"), true);
@@ -383,10 +394,13 @@ public class NaturalReproductionCommand {
             level.getGameRules().set(NaturalReproductionFabric.RATE, 24000, level.getServer());
         }
         if (NaturalReproductionFabric.MIN_SCALE != null) {
-            level.getGameRules().set(NaturalReproductionFabric.MIN_SCALE, 50, level.getServer());
+            level.getGameRules().set(NaturalReproductionFabric.MIN_SCALE, 10, level.getServer());
+        }
+        if (NaturalReproductionFabric.NORMAL_SCALE != null) {
+            level.getGameRules().set(NaturalReproductionFabric.NORMAL_SCALE, 95, level.getServer());
         }
         if (NaturalReproductionFabric.MAX_SCALE != null) {
-            level.getGameRules().set(NaturalReproductionFabric.MAX_SCALE, 130, level.getServer());
+            level.getGameRules().set(NaturalReproductionFabric.MAX_SCALE, 120, level.getServer());
         }
         if (NaturalReproductionFabric.SCALE_DROPS != null) {
             level.getGameRules().set(NaturalReproductionFabric.SCALE_DROPS, true, level.getServer());
