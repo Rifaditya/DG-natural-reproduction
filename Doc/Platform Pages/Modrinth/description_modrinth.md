@@ -54,8 +54,8 @@ Chickens feature an authentic, separate reproduction cycle:
 
 ### 🛑 Cramped Factory Farm Penalty vs. Spacious Pasture Recovery
 Factory farming has realistic consequences:
-- **Cramped Space Stunting**: Confining breeding animals to 1x1 pit holes or tight, overcrowded pens gradually stunts offspring genetics down to **0.25x scale** (yielding minimal meat and drops).
-- **Spacious Pasture Recovery**: Moving stunted animals into open, spacious green pastures grants **+10% to +30% genetic size recovery per generation**, gradually restoring their pedigree back to full potential!
+- **Cramped Space Stunting**: Confining breeding animals to 1x1 pit holes or tight, overcrowded pens gradually stunts offspring genetics down to **0.10x scale** (yielding 0 drops at minimum floor).
+- **Spacious Pasture Recovery**: Moving stunted animals into open, spacious green pastures grants **+15% genetic size recovery per generation**, gradually restoring their pedigree back to full potential (up to **1.20x scale**)!
 
 ### 🧬 Lineage Inbreeding Degradation & Hybrid Vigor
 Closed-herd inbreeding carries authentic biological penalties:
@@ -74,7 +74,7 @@ Invest in your pastures to reap rich agricultural rewards:
 
 ### 📏 Physical Scale-Based Harvest Drops
 Size directly dictates harvest yields:
-- Scaled animal drops dynamically scale from **0.50x to 1.30x** meat, leather, and wool. Larger livestock reward thoughtful breeding!
+- Scaled animal drops dynamically scale centered at **0.95x baseline** (100% drops). Heavyweight champions (**1.20x scale**) yield up to **+50% bonus drops**, while severely confined runts (**0.10x scale**) yield **0 drops**! Larger livestock reward thoughtful breeding!
 
 ### 🧩 Compatibility & HUD Integrations
 - **Server-Side Compatible**: Works seamlessly on dedicated servers — vanilla clients can connect without installing the mod.
@@ -140,10 +140,11 @@ The mod includes a full `/naturalreproduction` Brigadier command suite with tab-
 | `natural-reproduction:enabled` | Boolean | `true` | Master toggle for autonomous wild animal reproduction. |
 | `natural-reproduction:density_cap` | Integer | `10` | Maximum same-species animals within 16 blocks for breeding. |
 | `natural-reproduction:rate` | Integer | `24000` | Average tick interval between breeding attempts (24000 = 1 MC Day). |
-| `natural-reproduction:min_scale` | Integer | `50` | Minimum animal scale percentage (`50` = `0.50x` scale). |
-| `natural-reproduction:max_scale` | Integer | `130` | Maximum animal scale percentage (`130` = `1.30x` scale). |
-| `natural-reproduction:scale_drops` | Boolean | `true` | Multiplies item drops based on physical body scale. |
-| `natural-reproduction:cramped_space_penalty` | Boolean | `true` | Enables size stunting in tight pens and spacious pasture recovery. |
+| `natural-reproduction:min_scale` | Integer | `10` | Minimum animal scale percentage (`10` = `0.10x` scale). |
+| `natural-reproduction:normal_scale` | Integer | `95` | Normal baseline animal scale percentage (`95` = `0.95x` scale). |
+| `natural-reproduction:max_scale` | Integer | `120` | Maximum animal scale percentage (`120` = `1.20x` scale). |
+| `natural-reproduction:scale_drops` | Boolean | `true` | Dynamically scales item drops based on physical body scale. |
+| `natural-reproduction:cramped_space_penalty` | Boolean | `true` | Enables size stunting in tight pens down to 0.10x and spacious pasture recovery up to 1.20x. |
 | `natural-reproduction:inbreeding_degradation` | Boolean | `true` | Enables multi-generational inbreeding genetic collapse. |
 | `natural-reproduction:pasture_enrichment` | Boolean | `true` | Enables bonuses from feeding troughs, hay, water, and shelter. |
 | `natural-reproduction:overgrazing` | Boolean | `true` | High-density herds convert grass blocks to dirt/coarse dirt. |

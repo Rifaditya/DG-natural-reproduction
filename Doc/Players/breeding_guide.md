@@ -62,26 +62,40 @@ All 27 supported animal species scan a **5x3x5 area** around themselves for spec
 
 ## 🧬 Pasture Management & Genetics
 
-### 🏚️ Cramped Space Penalty vs. 🌾 Spacious Size Recovery
-- **Confined Pens & Overcrowded Pastures**: Breeding in tight enclosed pens/pits OR in overcrowded sections of large pastures (>= 3 local crowding mobs) causes offspring to suffer smooth, gradual size stunting (-5% scale per extra crowding entity down to `0.25x` floor).
-- **Spacious Pasture Recovery (<= 2 Mobs in 4x4 Area)**: Moving stunted animals to open pastures boosts offspring scale genetics (+30% recovery per generation) up to **1.30x max scale**.
+- **Physical Size Scaling**: Animals vary in size from `0.10x` (runt) to `1.20x` (champion), with wild spawns rolling organically between `0.80x` and `0.95x`, and standard baseline centered at `0.95x`.
+- **Attribute Modifiers**: Movement speed and max health scale dynamically based on genetic traits.
+- **Pedigree & Inheritance**: Offspring inherit size, speed, and health traits from parent animals.
+- **🍖 Dynamic Scale-Based Item Drop Yield**:
+  - **Large Animals (`scale >= 0.95x`)**: Item drops scale smoothly up to a **+50% bonus drop** at maximum scale (`1.20x`).
+  - **Standard Animals (`scale == 0.95x`)**: Yield standard 100% vanilla drops.
+  - **Stunted Runts (`scale < 0.95x`)**: Item drops gradually decrease down to **0% drops** at minimum scale (`0.10x`).
+- **🏚️ Cramped Space Penalty vs. 🌾 Spacious Size Recovery**:
+  - **Confined Factory Farming (>= 3 Extra Mobs or 1x1/2x2 Pits)**: Breeding animals in overcrowded pens causes offspring to suffer gradual size stunting down to `0.10x` scale (severely reducing item drops).
+  - **Spacious Pasture Recovery (< 3 Mobs in Spacious Pasture)**: Moving stunted animals to open pastures gradually recovers offspring size genetics (+15% scale boost per generation up to `1.20x`).
+  - Can be toggled via `natural-reproduction:cramped_space_penalty` GameRule or YACL config screen.
+- **🏞️ Biome Climate Fertility & Biome Variant Adaptation**:
+  - **Native Biome Boost (2x Rate & +15% Quality)**: Breeding animals in their native biome (e.g. Wolves in Taigas, Frogs in Swamps, Camels in Deserts, Polar Bears in Ice Plains) grants 2x faster breeding frequency and +15% genetics quality.
+  - **Visual Variant Skin Adaptation**: Offspring born in specific biomes dynamically adapt their visual entity variant skin (e.g. Snowy Wolves, Desert Frogs, White Rabbits) or inherit parent variants.
+  - Controlled via `natural-reproduction:biome_fertility` and `natural-reproduction:biome_variants` GameRules.
 
 ---
 
-## ⚙️ Configuration & Dynamic GameRules
+## ⚙️ Configuration & GameRules
 
-All settings can be configured via `/gamerule`, `/naturalreproduction set`, or the ModMenu / YACL v3 GUI:
+Server operators and singleplayer worlds can customize breeding mechanics via native namespaced **GameRules** or the optional **ModMenu / YACL v3** GUI screen:
 
-### Core Configuration Rules
 | GameRule | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
 | `natural-reproduction:enabled` | Boolean | `true` | Enables or disables autonomous natural breeding globally. |
-| `natural-reproduction:density_cap` | Integer | `10` | Maximum same-species animals permitted in a 16-block radius. |
-| `natural-reproduction:rate` | Integer | `24000` | Average breeding attempt frequency per mob (24000 ticks = 1 MC Day). |
-| `natural-reproduction:scale_drops` | Boolean | `true` | Item drop yield scales proportionally with physical body scale attribute. |
-| `natural-reproduction:cramped_space_penalty` | Boolean | `true` | Confined pen stunting vs spacious pasture size recovery. |
-| `natural-reproduction:biome_fertility` | Boolean | `true` | 2x breeding frequency & +15% genetics quality in native biomes. |
-| `natural-reproduction:biome_variants` | Boolean | `true` | Offspring born in specific biomes adapt visual entity variant skins. |
+| `natural-reproduction:rate` | Integer | `24000` | Average breeding attempt frequency per mob (in ticks). `24000` ticks = 1 Minecraft Day. |
+| `natural-reproduction:density_cap` | Integer | `10` | Maximum number of same-species animals permitted in a 16-block radius before breeding stops. |
+| `natural-reproduction:min_scale` | Integer | `10` | Minimum physical body scale percentage (`10` = `0.10x`). |
+| `natural-reproduction:normal_scale` | Integer | `95` | Standard baseline animal scale percentage (`95` = `0.95x`). |
+| `natural-reproduction:max_scale` | Integer | `120` | Maximum physical body scale percentage (`120` = `1.20x`). |
+| `natural-reproduction:scale_drops` | Boolean | `true` | When true, animal item drop yield dynamically scales with physical body scale. |
+| `natural-reproduction:cramped_space_penalty` | Boolean | `true` | When true, breeding in cramped pens stunts offspring scale down to 0.10x; breeding in spacious pastures recovers size genetics. |
+| `natural-reproduction:biome_fertility` | Boolean | `true` | When true, animals in native biomes get 2x faster breeding frequency and +15% offspring genetics quality. |
+| `natural-reproduction:biome_variants` | Boolean | `true` | When true, offspring born in specific biomes adapt their visual entity variant skin (e.g. Snowy Wolves, Desert Frogs). |
 
 ### 🐾 27 Per-Species Toggles (`Natural Reproduction - Species Toggles`)
 Each animal species has a dedicated boolean GameRule (`natural-reproduction:allow_<species>`, default `true`):

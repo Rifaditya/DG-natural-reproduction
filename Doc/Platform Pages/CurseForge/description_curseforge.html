@@ -68,8 +68,8 @@
 <h3>🛑 Cramped Factory Farm Penalty vs. Spacious Pasture Recovery</h3>
 <p>Factory farming has realistic consequences:</p>
 <ul>
-    <li><b>Cramped Space Stunting</b>: Confining breeding animals to 1x1 pit holes or tight, overcrowded pens gradually stunts offspring genetics down to <b>0.25x scale</b> (yielding minimal meat and drops).</li>
-    <li><b>Spacious Pasture Recovery</b>: Moving stunted animals into open, spacious green pastures grants <b>+10% to +30% genetic size recovery per generation</b>, gradually restoring their pedigree back to full potential!</li>
+    <li><b>Cramped Space Stunting</b>: Confining breeding animals to 1x1 pit holes or tight, overcrowded pens gradually stunts offspring genetics down to <b>0.10x scale</b> (yielding 0 drops at minimum floor).</li>
+    <li><b>Spacious Pasture Recovery</b>: Moving stunted animals into open, spacious green pastures grants <b>+15% genetic size recovery per generation</b>, gradually restoring their pedigree back to full potential (up to <b>1.20x scale</b>)!</li>
 </ul>
 
 <h3>🧬 Lineage Inbreeding Degradation & Hybrid Vigor</h3>
@@ -96,7 +96,7 @@
 <h3>📏 Physical Scale-Based Harvest Drops</h3>
 <p>Size directly dictates harvest yields:</p>
 <ul>
-    <li>Scaled animal drops dynamically scale from <b>0.50x to 1.30x</b> meat, leather, and wool. Larger livestock reward thoughtful breeding!</li>
+    <li>Scaled animal drops dynamically scale centered at <b>0.95x baseline</b> (100% drops). Heavyweight champions (<b>1.20x scale</b>) yield up to <b>+50% bonus drops</b>, while severely confined runts (<b>0.10x scale</b>) yield <b>0 drops</b>! Larger livestock reward thoughtful breeding!</li>
 </ul>
 
 <h3>🧩 Compatibility & HUD Integrations</h3>
@@ -268,26 +268,32 @@
         <tr>
             <td><code>natural-reproduction:min_scale</code></td>
             <td>Integer</td>
-            <td><code>50</code></td>
-            <td>Minimum animal scale percentage (50 = 0.50x scale).</td>
+            <td><code>10</code></td>
+            <td>Minimum animal scale percentage (10 = 0.10x scale).</td>
+        </tr>
+        <tr>
+            <td><code>natural-reproduction:normal_scale</code></td>
+            <td>Integer</td>
+            <td><code>95</code></td>
+            <td>Normal baseline animal scale percentage (95 = 0.95x scale).</td>
         </tr>
         <tr>
             <td><code>natural-reproduction:max_scale</code></td>
             <td>Integer</td>
-            <td><code>130</code></td>
-            <td>Maximum animal scale percentage (130 = 1.30x scale).</td>
+            <td><code>120</code></td>
+            <td>Maximum animal scale percentage (120 = 1.20x scale).</td>
         </tr>
         <tr>
             <td><code>natural-reproduction:scale_drops</code></td>
             <td>Boolean</td>
             <td><code>true</code></td>
-            <td>Multiplies item drops based on physical body scale.</td>
+            <td>Dynamically scales item drops based on physical body scale.</td>
         </tr>
         <tr>
             <td><code>natural-reproduction:cramped_space_penalty</code></td>
             <td>Boolean</td>
             <td><code>true</code></td>
-            <td>Enables size stunting in tight pens and spacious pasture recovery.</td>
+            <td>Enables size stunting in tight pens down to 0.10x and spacious pasture recovery up to 1.20x.</td>
         </tr>
         <tr>
             <td><code>natural-reproduction:inbreeding_degradation</code></td>

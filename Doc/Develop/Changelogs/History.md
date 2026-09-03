@@ -1,5 +1,14 @@
 # Natural Reproduction - Version History
 
+## [1.4.21+26.2] - 2026-09-03
+
+### Changed
+- **Documentation, Wiki & Player Guide Synchronization**: Completely updated and verified encyclopedic wiki pages, player guides, storefront descriptions, and configuration references across all channels:
+  - **Scale Bounds & Genetics**: Documented the organic `0.80x`–`0.95x` wild spawn roll, `0.95x` normal baseline, `0.10x` minimum floor, and `1.20x` maximum ceiling.
+  - **Dynamic Drop Rate Formulas**: Documented the continuous mathematical drop curve centered at `normal_scale` (+50% bonus at `1.20x`, 0% at `0.10x`, and empty item entity cancellation).
+  - **Confinement & Pasture Recovery**: Updated mathematical degradation tables, continuous crowding penalty step, and spacious pasture recovery boost (+15% per generation).
+  - **Platform Storefronts**: Synchronized Modrinth Markdown and CurseForge HTML description documents and GameRules master tables.
+
 ## [1.4.20+26.2] - 2026-09-03
 
 ### Changed
