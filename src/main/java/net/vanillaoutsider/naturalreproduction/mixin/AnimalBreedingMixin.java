@@ -37,8 +37,8 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
     private void naturalreproduction$onCustomServerAiStep(ServerLevel level, CallbackInfo ci) {
         Animal self = (Animal)(Object)this;
 
-        // Better Dogs & Pet Priority: completely exempt TamableAnimal (wolves, cats, parrots, etc.)
-        if (self instanceof net.minecraft.world.entity.TamableAnimal) {
+        // Better Dogs & Pet Priority: completely exempt tamed player pets (wolves, cats, etc.)
+        if (self instanceof net.minecraft.world.entity.TamableAnimal tamable && tamable.isTame()) {
             return;
         }
 
@@ -128,7 +128,7 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             List<Animal> potentialMates = level.getEntitiesOfClass(
                 Animal.class,
                 self.getBoundingBox().inflate(8.0),
-                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive() && !e.isInLove() && !AnimalGestationHelper.isPregnant(e) && !(e instanceof net.minecraft.world.entity.TamableAnimal)
+                e -> e != self && e.getType() == self.getType() && e.getAge() == 0 && e.isAlive() && !e.isInLove() && !AnimalGestationHelper.isPregnant(e) && !(e instanceof net.minecraft.world.entity.TamableAnimal tamable && tamable.isTame())
             );
 
             if (!potentialMates.isEmpty()) {

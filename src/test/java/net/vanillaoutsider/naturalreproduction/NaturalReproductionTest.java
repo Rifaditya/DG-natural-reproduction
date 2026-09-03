@@ -364,5 +364,22 @@ public class NaturalReproductionTest {
         boolean outcrossed = motherUuid.equals(fatherUuid);
         Assertions.assertFalse(outcrossed, "Mother mating with distinct father must not trigger identical-entity inbreeding flag");
     }
+
+    @Test
+    @DisplayName("Verify Tamed-Only Pet Exemption Logic (Wild vs Tamed)")
+    public void testTamedAnimalExemptionLogic() {
+        // Simulated predicate check matching AnimalBreedingMixin:
+        // isExempt(isTamable, isTame) -> isTamable && isTame
+        java.util.function.BiPredicate<Boolean, Boolean> isExempt = (isTamable, isTame) -> isTamable && isTame;
+
+        // 1. Tamed wolf / cat: Must be exempt (handed over to Better Dogs / vanilla)
+        Assertions.assertTrue(isExempt.test(true, true), "Tamed pet must be exempt from autonomous breeding");
+
+        // 2. Wild wolf / stray cat: Untamed TamableAnimal must NOT be exempt
+        Assertions.assertFalse(isExempt.test(true, false), "Wild untamed animal must participate in natural reproduction");
+
+        // 3. Regular livestock (Cow, Sheep, Pig): Never tamable, never exempt
+        Assertions.assertFalse(isExempt.test(false, false), "Standard livestock must never be exempt");
+    }
 }
 

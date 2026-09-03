@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.24+26.2] - 2026-09-03
+
+### Changed & Refined
+- **Tamed-Only Pet Exemption Filter (`AnimalBreedingMixin`)**:
+  - Refined entity gating filter from blanket `self instanceof TamableAnimal` to `self instanceof TamableAnimal tamable && tamable.isTame()`.
+  - Tamed player pets (wolves, cats) remain fully protected and exclusively handled by vanilla / Better Dogs mechanics.
+  - Wild wolves and stray cats now actively participate in Natural Reproduction: autonomous breeding, alpha herd/pack leadership, gestation, and genetics.
+  - Updated 8-block mate search to permit wild untamed canines and felines while continuing to exclude tamed pets.
+
 ## [1.4.23+26.2] - 2026-09-03
 
 ### Fixed & Refactored
