@@ -7,6 +7,7 @@ import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
 import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 
@@ -106,5 +107,34 @@ public final class BreedingPipelineHelper {
         BreedingTrackerLogger.logBreeding(
             level, speciesName, baby.blockPosition(), biomeId, babyScale, statusNote
         );
+    }
+
+    public static int determineLitterSize(ServerLevel level, Animal mother, boolean isEnriched) {
+        if (mother == null) {
+            return 1;
+        }
+
+        var type = mother.getType();
+        var random = mother.getRandom();
+
+        // Multiparous swine & lagomorphs (Pigs, Rabbits)
+        if (type == EntityTypes.PIG || type == EntityTypes.RABBIT) {
+            if (isEnriched && random.nextFloat() < 0.35f) {
+                return 3;
+            }
+            return random.nextBoolean() ? 2 : 1;
+        }
+
+        // Small predators & canines/felines (Wolves, Foxes, Cats, Ocelots)
+        if (type == EntityTypes.WOLF || type == EntityTypes.FOX || type == EntityTypes.CAT || type == EntityTypes.OCELOT) {
+            return (isEnriched && random.nextFloat() < 0.40f) ? 2 : 1;
+        }
+
+        // Large ungulates (Cow, Sheep, Goat, Horse, Donkey, Mule, Camel, Llama) - rare twin birth in enriched pastures
+        if (isEnriched && random.nextFloat() < 0.05f) {
+            return 2;
+        }
+
+        return 1;
     }
 }

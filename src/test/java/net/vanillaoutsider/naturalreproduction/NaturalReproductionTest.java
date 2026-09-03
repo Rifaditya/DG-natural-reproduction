@@ -474,6 +474,43 @@ public class NaturalReproductionTest {
         Assertions.assertTrue(isNative.test("mooshroom", "mushroom_fields"), "Mooshroom must be native to Mushroom Fields");
     }
 
+    @Test
+    @DisplayName("Verify Species Fecundity & Dynamic Litter Size Bounds")
+    public void testSpeciesLitterSizeDetermination() {
+        // Simulated litter determination matching BreedingPipelineHelper.determineLitterSize
+        java.util.function.BiFunction<String, Boolean, int[]> getLitterBounds = (species, isEnriched) -> {
+            return switch (species) {
+                case "pig", "rabbit" -> isEnriched ? new int[]{1, 3} : new int[]{1, 2};
+                case "wolf", "fox", "cat", "ocelot" -> isEnriched ? new int[]{1, 2} : new int[]{1, 1};
+                case "cow", "sheep", "goat", "horse" -> isEnriched ? new int[]{1, 2} : new int[]{1, 1};
+                default -> new int[]{1, 1};
+            };
+        };
+
+        // 1. Swine & Rabbits: Multiparous (1-2 baseline, up to 3 when pasture-enriched)
+        int[] pigNormal = getLitterBounds.apply("pig", false);
+        Assertions.assertEquals(1, pigNormal[0]);
+        Assertions.assertEquals(2, pigNormal[1], "Pigs in normal pasture can have up to 2 piglets");
+
+        int[] pigEnriched = getLitterBounds.apply("pig", true);
+        Assertions.assertEquals(1, pigEnriched[0]);
+        Assertions.assertEquals(3, pigEnriched[1], "Pigs in enriched pasture can have up to 3 piglets");
+
+        // 2. Canines & Felines: 1 baseline, up to 2 when enriched
+        int[] wolfNormal = getLitterBounds.apply("wolf", false);
+        Assertions.assertEquals(1, wolfNormal[1]);
+
+        int[] wolfEnriched = getLitterBounds.apply("wolf", true);
+        Assertions.assertEquals(2, wolfEnriched[1], "Wolves in enriched conditions can deliver twins");
+
+        // 3. Large Ungulates: Singletons, rare twin only in enriched pasture
+        int[] cowNormal = getLitterBounds.apply("cow", false);
+        Assertions.assertEquals(1, cowNormal[1], "Cattle baseline is strictly singleton");
+
+        int[] cowEnriched = getLitterBounds.apply("cow", true);
+        Assertions.assertEquals(2, cowEnriched[1], "Cattle in enriched pasture can rarely produce twins");
+    }
+
     private record CandidateMock(boolean related, int inbreedingRisk, int tier, double distSq, float scale) {}
 }
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.28+26.2] - 2026-09-03
+
+### Added & Refactored
+- **Species Fecundity & Dynamic Litter Sizes (`BreedingPipelineHelper` & `AnimalGestationHelper`)**:
+  - Implemented `BreedingPipelineHelper.determineLitterSize(...)` modeling biological litter scaling based on maternal species and pasture enrichment.
+  - Multiparous swine & lagomorphs (Pigs, Rabbits) deliver litters of 1–2 piglets/kits, increasing up to 3 when pasture-enriched and well-nourished.
+  - Small predators (Wolves, Foxes, Cats, Ocelots) deliver litters of 1–2 pups/kittens.
+  - Large ungulates (Cattle, Sheep, Goats, Equines, Camels) maintain realistic singleton births with a rare 5% twin chance when grazing in enriched pastures.
+  - Updated `AnimalGestationHelper.deliverOffspringOrEgg` to spawn and finalize all litter offspring through `BreedingPipelineHelper.finalizeNewborn(...)`.
+
 ## [1.4.27+26.2] - 2026-09-03
 
 ### Added & Expanded

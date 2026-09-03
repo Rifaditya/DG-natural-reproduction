@@ -182,12 +182,17 @@ public final class AnimalGestationHelper {
             }
         } else {
             // Viviparous Mammals (Cow, Pig, Sheep, Horse, Wolf, Goat, etc.)
-            AgeableMob baby = (AgeableMob)mother.getType().create(level, EntitySpawnReason.BREEDING);
-            if (baby != null) {
-                baby.setBaby(true);
-                baby.setPos(mother.getX(), mother.getY(), mother.getZ());
-                level.addFreshEntity(baby);
-                BreedingPipelineHelper.finalizeNewborn(level, mother, father, baby, isEnriched);
+            int litterSize = BreedingPipelineHelper.determineLitterSize(level, mother, isEnriched);
+            for (int i = 0; i < litterSize; i++) {
+                AgeableMob baby = (AgeableMob)mother.getType().create(level, EntitySpawnReason.BREEDING);
+                if (baby != null) {
+                    baby.setBaby(true);
+                    double offsetX = (litterSize > 1) ? (mother.getRandom().nextDouble() - 0.5) * 0.5 : 0.0;
+                    double offsetZ = (litterSize > 1) ? (mother.getRandom().nextDouble() - 0.5) * 0.5 : 0.0;
+                    baby.setPos(mother.getX() + offsetX, mother.getY(), mother.getZ() + offsetZ);
+                    level.addFreshEntity(baby);
+                    BreedingPipelineHelper.finalizeNewborn(level, mother, father, baby, isEnriched);
+                }
             }
         }
 
