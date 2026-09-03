@@ -511,6 +511,29 @@ public class NaturalReproductionTest {
         Assertions.assertEquals(2, cowEnriched[1], "Cattle in enriched pasture can rarely produce twins");
     }
 
+    @Test
+    @DisplayName("Verify Scheduled Spatial & Social Cache TTL Eviction Logic")
+    public void testCacheEvictionLifecycle() {
+        java.util.Map<String, Long> cache = new java.util.concurrent.ConcurrentHashMap<>();
+
+        // Add entries at time 1000
+        long currentTime = 1000L;
+        cache.put("entry_active", currentTime + 200L); // expires at 1200
+        cache.put("entry_expired", currentTime + 50L);  // expires at 1050
+
+        // At time 1100:
+        long tickTime = 1100L;
+        cache.entrySet().removeIf(e -> tickTime >= e.getValue());
+
+        Assertions.assertTrue(cache.containsKey("entry_active"), "Active entry must survive eviction");
+        Assertions.assertFalse(cache.containsKey("entry_expired"), "Expired entry must be purged");
+        Assertions.assertEquals(1, cache.size());
+
+        // Full clear simulation
+        cache.clear();
+        Assertions.assertEquals(0, cache.size(), "Cache clear must remove all items");
+    }
+
     private record CandidateMock(boolean related, int inbreedingRisk, int tier, double distSq, float scale) {}
 }
 

@@ -18,6 +18,7 @@ import net.vanillaoutsider.naturalreproduction.util.AnimalLineageHelper;
 import net.vanillaoutsider.naturalreproduction.util.AnimalPastureHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingPipelineHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
+import net.vanillaoutsider.naturalreproduction.util.HerdSocialHelper;
 import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import org.spongepowered.asm.mixin.Mixin;
@@ -74,6 +75,12 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
         if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.OVERGRAZING)
             && (self.getId() + level.getGameTime()) % 100 == 0) {
             AnimalPastureHelper.processOvergrazing(level, self);
+        }
+
+        // Periodic Spatial & Social Cache Maintenance (Modulo 600 ticks = 30 seconds)
+        if (level.getGameTime() % 600L == 0L && self.getId() % 16 == 0) {
+            SpatialBreedingCacheHelper.purgeExpired(level.getGameTime());
+            HerdSocialHelper.purgeExpired(level.getGameTime());
         }
 
         // Autonomous Wild Breeding Logic (Staggered 100-tick modulo = 5 seconds per entity)

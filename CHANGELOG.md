@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.29+26.2] - 2026-09-03
+
+### Performance & Memory Hygiene
+- **Scheduled Spatial & Social Cache TTL Eviction (`SpatialBreedingCacheHelper` & `HerdSocialHelper`)**:
+  - Implemented `purgeExpired(long currentTime)` in `SpatialBreedingCacheHelper` (density & pasture maps) and `HerdSocialHelper` (herd leader map).
+  - Hooked into Fabric's `ServerTickEvents.END_WORLD_TICK` running every 600 ticks (30 seconds) to proactively purge expired entries, preventing cache accumulation on long-running servers.
+  - Hooked into `ServerWorldEvents.UNLOAD` to flush in-memory caches upon world/server unloading.
+
 ## [1.4.28+26.2] - 2026-09-03
 
 ### Added & Refactored

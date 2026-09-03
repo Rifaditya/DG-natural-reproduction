@@ -72,6 +72,19 @@ public final class SpatialBreedingCacheHelper {
         return enriched;
     }
 
+    public static void purgeExpired(long currentTime) {
+        DENSITY_CACHE.entrySet().removeIf(entry -> currentTime >= entry.getValue().expiryTime());
+        PASTURE_CACHE.entrySet().removeIf(entry -> currentTime >= entry.getValue().expiryTime());
+    }
+
+    public static int getDensityCacheSize() {
+        return DENSITY_CACHE.size();
+    }
+
+    public static int getPastureCacheSize() {
+        return PASTURE_CACHE.size();
+    }
+
     public static void clearCaches() {
         DENSITY_CACHE.clear();
         PASTURE_CACHE.clear();

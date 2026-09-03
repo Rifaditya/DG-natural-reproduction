@@ -132,4 +132,16 @@ public final class HerdSocialHelper {
 
         return null;
     }
+
+    public static void purgeExpired(long currentTime) {
+        LEADER_CACHE.entrySet().removeIf(entry -> currentTime >= entry.getValue().expiryTime || entry.getValue().leader == null || !entry.getValue().leader.isAlive());
+    }
+
+    public static void clearCache() {
+        LEADER_CACHE.clear();
+    }
+
+    public static int getLeaderCacheSize() {
+        return LEADER_CACHE.size();
+    }
 }
