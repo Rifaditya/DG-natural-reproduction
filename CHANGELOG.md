@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.27+26.2] - 2026-09-03
+
+### Added & Expanded
+- **Complete 27-Species Biome Ecology Mapping (`AnimalBiomeHelper`)**:
+  - Expanded `AnimalBiomeHelper.isNativeBiome(...)` from 8 species to all 27 vanilla animal species.
+  - Added native biome habitats for Arid & Mountain fauna (Camel, Armadillo, Goat, Llama, Trader Llama), Jungle specialists (Panda, Ocelot, Parrot), Forest & Meadow foragers (Bee, Fox, Cat), Equines (Horse, Donkey, Mule), Nether dwellers (Strider, Hoglin), and Aquatic/Amphibian/Ancient species (Mooshroom, Turtle, Axolotl, Sniffer).
+  - Animals reproducing within their natural home biomes now universally qualify for the +15% climate genetics quality boost.
+
 ## [1.4.26+26.2] - 2026-09-03
 
 ### Added & Refactored

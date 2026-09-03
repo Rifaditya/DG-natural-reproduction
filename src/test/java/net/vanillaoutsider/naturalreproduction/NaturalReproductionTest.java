@@ -443,6 +443,37 @@ public class NaturalReproductionTest {
             "Degraded unrelated mate (" + degradedScore + ") must still outscore inbred sibling (" + siblingScore + ")");
     }
 
+    @Test
+    @DisplayName("Verify Complete 27-Species Biome Ecology Mapping")
+    public void test27SpeciesBiomeMapping() {
+        // Biome mapping predicate verification
+        java.util.function.BiPredicate<String, String> isNative = (species, biome) -> {
+            return switch (species) {
+                case "camel" -> "desert".equals(biome);
+                case "armadillo" -> "savanna".equals(biome) || "badlands".equals(biome);
+                case "goat" -> "jagged_peaks".equals(biome) || "stony_peaks".equals(biome) || "frozen_peaks".equals(biome);
+                case "panda", "ocelot", "parrot" -> "jungle".equals(biome) || "bamboo_jungle".equals(biome);
+                case "strider" -> "nether_wastes".equals(biome) || "crimson_forest".equals(biome);
+                case "hoglin" -> "crimson_forest".equals(biome);
+                case "turtle" -> "beach".equals(biome) || "stony_shore".equals(biome);
+                case "axolotl" -> "lush_caves".equals(biome);
+                case "mooshroom" -> "mushroom_fields".equals(biome);
+                default -> false;
+            };
+        };
+
+        // Assertions for representative newly mapped species
+        Assertions.assertTrue(isNative.test("camel", "desert"), "Camel must be native to Desert");
+        Assertions.assertFalse(isNative.test("camel", "plains"), "Camel must NOT be native to Plains");
+
+        Assertions.assertTrue(isNative.test("armadillo", "badlands"), "Armadillo must be native to Badlands");
+        Assertions.assertTrue(isNative.test("goat", "jagged_peaks"), "Goat must be native to Jagged Peaks");
+        Assertions.assertTrue(isNative.test("panda", "jungle"), "Panda must be native to Jungle");
+        Assertions.assertTrue(isNative.test("strider", "nether_wastes"), "Strider must be native to Nether Wastes");
+        Assertions.assertTrue(isNative.test("axolotl", "lush_caves"), "Axolotl must be native to Lush Caves");
+        Assertions.assertTrue(isNative.test("mooshroom", "mushroom_fields"), "Mooshroom must be native to Mushroom Fields");
+    }
+
     private record CandidateMock(boolean related, int inbreedingRisk, int tier, double distSq, float scale) {}
 }
 

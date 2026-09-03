@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.cow.Cow;
@@ -47,16 +48,63 @@ public final class AnimalBiomeHelper {
 
         ResourceKey<Biome> key = biomeKey.get();
 
+        var type = animal.getType();
+
+        // 1. Canines & Felines
         if (animal instanceof Wolf) {
-            return key.equals(Biomes.TAIGA) || key.equals(Biomes.SNOWY_TAIGA) || key.equals(Biomes.OLD_GROWTH_PINE_TAIGA) || key.equals(Biomes.OLD_GROWTH_SPRUCE_TAIGA);
+            return key.equals(Biomes.TAIGA) || key.equals(Biomes.SNOWY_TAIGA) || key.equals(Biomes.OLD_GROWTH_PINE_TAIGA) || key.equals(Biomes.OLD_GROWTH_SPRUCE_TAIGA) || key.equals(Biomes.GROVE);
+        } else if (type == EntityTypes.FOX) {
+            return key.equals(Biomes.TAIGA) || key.equals(Biomes.SNOWY_TAIGA) || key.equals(Biomes.OLD_GROWTH_PINE_TAIGA) || key.equals(Biomes.OLD_GROWTH_SPRUCE_TAIGA) || key.equals(Biomes.GROVE);
+        } else if (type == EntityTypes.OCELOT) {
+            return key.equals(Biomes.JUNGLE) || key.equals(Biomes.BAMBOO_JUNGLE) || key.equals(Biomes.SPARSE_JUNGLE);
+        } else if (type == EntityTypes.CAT) {
+            return key.equals(Biomes.PLAINS) || key.equals(Biomes.DESERT) || key.equals(Biomes.SAVANNA) || key.equals(Biomes.TAIGA) || key.equals(Biomes.MEADOW);
+
+        // 2. Amphibians & Cold Climate Fauna
         } else if (animal instanceof Frog) {
             return key.equals(Biomes.SWAMP) || key.equals(Biomes.MANGROVE_SWAMP);
         } else if (animal instanceof PolarBear) {
             return key.equals(Biomes.SNOWY_PLAINS) || key.equals(Biomes.ICE_SPIKES) || key.equals(Biomes.FROZEN_OCEAN);
         } else if (animal instanceof Rabbit) {
             return key.equals(Biomes.DESERT) || key.equals(Biomes.SNOWY_PLAINS) || key.equals(Biomes.FLOWER_FOREST);
+
+        // 3. Arid & Mountain Animals
+        } else if (type == EntityTypes.CAMEL) {
+            return key.equals(Biomes.DESERT);
+        } else if (type == EntityTypes.ARMADILLO) {
+            return key.equals(Biomes.SAVANNA) || key.equals(Biomes.SAVANNA_PLATEAU) || key.equals(Biomes.WINDSWEPT_SAVANNA) || key.equals(Biomes.BADLANDS) || key.equals(Biomes.ERODED_BADLANDS) || key.equals(Biomes.WOODED_BADLANDS);
+        } else if (type == EntityTypes.GOAT) {
+            return key.equals(Biomes.JAGGED_PEAKS) || key.equals(Biomes.FROZEN_PEAKS) || key.equals(Biomes.STONY_PEAKS) || key.equals(Biomes.SNOWY_SLOPES);
+        } else if (type == EntityTypes.LLAMA || type == EntityTypes.TRADER_LLAMA) {
+            return key.equals(Biomes.WINDSWEPT_HILLS) || key.equals(Biomes.WINDSWEPT_GRAVELLY_HILLS) || key.equals(Biomes.WINDSWEPT_FOREST) || key.equals(Biomes.SAVANNA);
+
+        // 4. Jungle & Forest Specialists
+        } else if (type == EntityTypes.PANDA || type == EntityTypes.PARROT) {
+            return key.equals(Biomes.JUNGLE) || key.equals(Biomes.BAMBOO_JUNGLE) || key.equals(Biomes.SPARSE_JUNGLE);
+        } else if (type == EntityTypes.BEE) {
+            return key.equals(Biomes.MEADOW) || key.equals(Biomes.FLOWER_FOREST) || key.equals(Biomes.PLAINS) || key.equals(Biomes.SUNFLOWER_PLAINS) || key.equals(Biomes.FOREST) || key.equals(Biomes.BIRCH_FOREST);
+
+        // 5. Equines & Traditional Pasture Livestock
         } else if (animal instanceof Cow || animal instanceof Sheep || animal instanceof Pig || animal instanceof Chicken) {
             return key.equals(Biomes.PLAINS) || key.equals(Biomes.MEADOW) || key.equals(Biomes.SUNFLOWER_PLAINS) || key.equals(Biomes.SAVANNA);
+        } else if (type == EntityTypes.HORSE || type == EntityTypes.DONKEY || type == EntityTypes.MULE) {
+            return key.equals(Biomes.PLAINS) || key.equals(Biomes.SAVANNA) || key.equals(Biomes.MEADOW) || key.equals(Biomes.SUNFLOWER_PLAINS);
+
+        // 6. Aquatic, Wetland & Ancient Animals
+        } else if (type == EntityTypes.MOOSHROOM) {
+            return key.equals(Biomes.MUSHROOM_FIELDS);
+        } else if (type == EntityTypes.TURTLE) {
+            return key.equals(Biomes.BEACH) || key.equals(Biomes.STONY_SHORE);
+        } else if (type == EntityTypes.AXOLOTL) {
+            return key.equals(Biomes.LUSH_CAVES);
+        } else if (type == EntityTypes.SNIFFER) {
+            return key.equals(Biomes.MEADOW) || key.equals(Biomes.PLAINS) || key.equals(Biomes.LUSH_CAVES);
+
+        // 7. Nether Animals
+        } else if (type == EntityTypes.STRIDER) {
+            return key.equals(Biomes.NETHER_WASTES) || key.equals(Biomes.CRIMSON_FOREST) || key.equals(Biomes.WARPED_FOREST) || key.equals(Biomes.BASALT_DELTAS);
+        } else if (type == EntityTypes.HOGLIN) {
+            return key.equals(Biomes.CRIMSON_FOREST);
         }
 
         return false;
