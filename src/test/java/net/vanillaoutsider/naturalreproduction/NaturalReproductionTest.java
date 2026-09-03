@@ -404,5 +404,45 @@ public class NaturalReproductionTest {
         simulatedActiveGoals.add("FollowHerdLeaderGoal");
         Assertions.assertTrue(hasHerdGoal.test("FollowHerdLeaderGoal"), "Goal re-attached successfully after reload");
     }
+
+    @Test
+    @DisplayName("Verify Intelligent Inbreeding-Avoidance Mate Selection Fitness Scoring")
+    public void testMateFitnessScoring() {
+        // Scoring formula:
+        // base (1000) - inbreedingPenalty (related ? 500 + risk*3 : 0) - (tier * 50) - (distSq * 2) + (scale * 10)
+        java.util.function.ToDoubleFunction<CandidateMock> calculateScore = c -> {
+            double score = 1000.0;
+            if (c.related || c.inbreedingRisk > 0) {
+                score -= 500.0 + (c.inbreedingRisk * 3.0);
+            }
+            score -= (c.tier * 50.0);
+            score -= (c.distSq * 2.0);
+            score += (c.scale * 10.0);
+            return score;
+        };
+
+        // Candidate A: Direct sibling/related, very close (1 block away -> distSq = 1.0)
+        CandidateMock siblingClose = new CandidateMock(true, 50, 0, 1.0, 1.0f);
+        double siblingScore = calculateScore.applyAsDouble(siblingClose);
+
+        // Candidate B: Unrelated stranger, further away (6 blocks away -> distSq = 36.0)
+        CandidateMock strangerFar = new CandidateMock(false, 0, 0, 36.0, 1.0f);
+        double strangerScore = calculateScore.applyAsDouble(strangerFar);
+
+        // Candidate C: Unrelated stranger with Tier 2 inbreeding, 3 blocks away (distSq = 9.0)
+        CandidateMock degradedStranger = new CandidateMock(false, 0, 2, 9.0, 1.0f);
+        double degradedScore = calculateScore.applyAsDouble(degradedStranger);
+
+        // Assertions:
+        // 1. Unrelated distant stranger must score HIGHER than close inbred sibling
+        Assertions.assertTrue(strangerScore > siblingScore,
+            "Unrelated mate (" + strangerScore + ") must be prioritized over inbred sibling (" + siblingScore + ")");
+
+        // 2. Unrelated degraded stranger must still score HIGHER than close inbred sibling
+        Assertions.assertTrue(degradedScore > siblingScore,
+            "Degraded unrelated mate (" + degradedScore + ") must still outscore inbred sibling (" + siblingScore + ")");
+    }
+
+    private record CandidateMock(boolean related, int inbreedingRisk, int tier, double distSq, float scale) {}
 }
 

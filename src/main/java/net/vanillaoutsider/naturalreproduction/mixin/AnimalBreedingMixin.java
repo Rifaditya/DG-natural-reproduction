@@ -133,9 +133,11 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             );
 
             if (!potentialMates.isEmpty()) {
-                Animal mate = potentialMates.get(0);
-                self.setInLove(null);
-                mate.setInLove(null);
+                Animal mate = naturalreproduction$selectBestMate(self, potentialMates);
+                if (mate != null) {
+                    self.setInLove(null);
+                    mate.setInLove(null);
+                }
             }
         }
     }
@@ -206,5 +208,49 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             }
         }
         return false;
+    }
+
+    @Unique
+    private Animal naturalreproduction$selectBestMate(Animal self, List<Animal> candidates) {
+        if (candidates == null || candidates.isEmpty()) {
+            return null;
+        }
+        if (candidates.size() == 1) {
+            return candidates.get(0);
+        }
+
+        Animal bestCandidate = null;
+        double bestScore = -Double.MAX_VALUE;
+
+        for (Animal candidate : candidates) {
+            double score = 1000.0;
+
+            // Inbreeding risk / kinship penalty
+            boolean related = DasikAnimalGeneticsAPI.isRelated(self, candidate);
+            int inbreedingRisk = DasikAnimalGeneticsAPI.predictInbreedingRiskPercent(self, candidate);
+
+            if (related || inbreedingRisk > 0) {
+                score -= 500.0 + (inbreedingRisk * 3.0);
+            }
+
+            // Inbreeding tier penalty
+            int candidateTier = AnimalLineageHelper.getInbreedingTier(candidate);
+            score -= (candidateTier * 50.0);
+
+            // Proximity preference (distance-squared)
+            double distSq = self.distanceToSqr(candidate);
+            score -= (distSq * 2.0);
+
+            // Genetic scale bonus
+            float candidateScale = DasikAnimalGeneticsAPI.getScale(candidate);
+            score += (candidateScale * 10.0);
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestCandidate = candidate;
+            }
+        }
+
+        return bestCandidate != null ? bestCandidate : candidates.get(0);
     }
 }

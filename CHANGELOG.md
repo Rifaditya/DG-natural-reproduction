@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.26+26.2] - 2026-09-03
+
+### Added & Refactored
+- **Intelligent Inbreeding-Avoidance Mate Selection (`AnimalBreedingMixin`)**:
+  - Replaced naive index-0 candidate picking with `naturalreproduction$selectBestMate(self, potentialMates)` candidate fitness scoring.
+  - Penalizes related mates (`isRelated` or `predictInbreedingRiskPercent > 0`) by -500.0+ points, ensuring unrelated mates standing further away are prioritized over close inbred siblings.
+  - Factors in existing candidate inbreeding tier (-50.0/tier), spatial proximity (-2.0 × distance-squared), and genetic scale bonus (+10.0 × scale).
+  - Preserves zero heap allocations during the evaluation loop and seamlessly falls back to the closest least-inbred candidate if all nearby animals are related.
+
 ## [1.4.25+26.2] - 2026-09-03
 
 ### Fixed & Refactored
