@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.19+26.2`** (2026-09-03) - **Dynamic Gradual Drop Scaling**: Dynamic drop rate formula giving 100% drops at `normal_scale`, scaling smoothly up to +50% bonus drops at `max_scale` and down to 0% at `min_scale`, with empty drop entity spawn cancellation.
 - [ ] **`1.4.18+26.2`** (2026-09-03) - **Wild Spawn Scale Rebalance, Normal Scale GameRule & YACL Sliders**: Tightened initial wild animal scale rolls to `0.80x`–`0.95x`, registered `natural-reproduction:normal_scale` (`95`), updated `min_scale` (`10`) and `max_scale` (`120`), and expanded YACL sliders and Brigadier commands.
 - [ ] **`1.4.17+26.2`** (2026-08-30) - **Korean (`ko_kr`) Language Translation: Full Korean localization across all 105 configuration strings, GameRules, items, and species toggles.**
 - [ ] **`1.4.16+26.2`** (2026-08-30) - **Japanese (`ja_jp`) Language Translation: Full Japanese localization across all 105 configuration strings, GameRules, items, and species toggles.**

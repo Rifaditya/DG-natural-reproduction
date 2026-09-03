@@ -2,11 +2,15 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.naturalreproduction.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 
 public final class AnimalDropHelper {
 
@@ -19,13 +23,43 @@ public final class AnimalDropHelper {
         }
 
         float scale = DasikAnimalGeneticsAPI.getScale(animal);
-        if (scale > 1.0f) {
-            int extraCount = Math.round(stack.getCount() * (scale - 1.0f));
+        float normalScale = 0.95f;
+        float minScale = 0.10f;
+        float maxScale = 1.20f;
+
+        if (animal.level() instanceof ServerLevel serverLevel) {
+            int normalRule = DynamicGameRuleManager.getInt(serverLevel, NaturalReproductionFabric.NORMAL_SCALE);
+            int minRule = DynamicGameRuleManager.getInt(serverLevel, NaturalReproductionFabric.MIN_SCALE);
+            int maxRule = DynamicGameRuleManager.getInt(serverLevel, NaturalReproductionFabric.MAX_SCALE);
+
+            if (normalRule > 0) {
+                normalScale = normalRule / 100.0f;
+            }
+            if (minRule > 0) {
+                minScale = minRule / 100.0f;
+            }
+            if (maxRule > 0) {
+                maxScale = maxRule / 100.0f;
+            }
+        }
+
+        // Guard bounds to prevent zero-division
+        minScale = Math.min(minScale, normalScale - 0.01f);
+        maxScale = Math.max(maxScale, normalScale + 0.01f);
+
+        if (scale >= normalScale) {
+            // Gradual dynamic bonus scaling up to +50% (+0.50x) at maxScale
+            float ratio = (scale - normalScale) / (maxScale - normalScale);
+            float bonusFraction = Mth.clamp(ratio, 0.0f, 1.0f) * 0.50f;
+            int extraCount = Math.round(stack.getCount() * bonusFraction);
             if (extraCount > 0) {
                 stack.grow(extraCount);
             }
-        } else if (scale < 1.0f) {
-            int newCount = Math.max(1, Math.round(stack.getCount() * scale));
+        } else {
+            // Gradual dynamic decrease down to 0% at minScale
+            float ratio = (scale - minScale) / (normalScale - minScale);
+            float fraction = Mth.clamp(ratio, 0.0f, 1.0f);
+            int newCount = Math.round(stack.getCount() * fraction);
             stack.setCount(newCount);
         }
     }

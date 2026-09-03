@@ -29,18 +29,44 @@ public class NaturalReproductionTest {
     }
 
     @Test
-    @DisplayName("Verify Scale Drop Multiplier Math")
+    @DisplayName("Verify Dynamic Scale Drop Multiplier Math")
     public void testScaleDropMath() {
+        float normalScale = 0.95f;
+        float minScale = 0.10f;
+        float maxScale = 1.20f;
         int initialCount = 10;
-        float largeScale = 1.30f;
-        float smallScale = 0.75f;
 
-        int extraCountLarge = Math.round(initialCount * (largeScale - 1.0f));
-        int totalLargeCount = initialCount + extraCountLarge;
-        Assertions.assertEquals(13, totalLargeCount, "Giant animal (1.30x scale) should yield 13 drops from 10 initial items");
+        // Baseline (0.95x): 100% drops
+        float baselineScale = 0.95f;
+        float baselineRatio = Math.clamp((baselineScale - normalScale) / (maxScale - normalScale), 0.0f, 1.0f);
+        int extraBaseline = Math.round(initialCount * (baselineRatio * 0.50f));
+        Assertions.assertEquals(0, extraBaseline, "Normal baseline animal (0.95x) must yield 0 extra drops");
+        Assertions.assertEquals(10, initialCount + extraBaseline, "Normal baseline animal (0.95x) must yield 100% drops");
 
-        int totalSmallCount = Math.max(1, Math.round(initialCount * smallScale));
-        Assertions.assertEquals(8, totalSmallCount, "Runt animal (0.75x scale) should yield 8 drops from 10 initial items");
+        // Maximum scale (1.20x): +50% bonus drops
+        float maxAnimalScale = 1.20f;
+        float maxRatio = Math.clamp((maxAnimalScale - normalScale) / (maxScale - normalScale), 0.0f, 1.0f);
+        int extraMax = Math.round(initialCount * (maxRatio * 0.50f));
+        Assertions.assertEquals(5, extraMax, "Max scale animal (1.20x) must yield +50% extra drops");
+        Assertions.assertEquals(15, initialCount + extraMax, "Max scale animal (1.20x) must yield 15 drops from 10 initial items");
+
+        // Midpoint above normal (1.075x): +25% bonus drops
+        float midHighScale = 1.075f;
+        float midHighRatio = Math.clamp((midHighScale - normalScale) / (maxScale - normalScale), 0.0f, 1.0f);
+        int extraMidHigh = Math.round(initialCount * (midHighRatio * 0.50f));
+        Assertions.assertEquals(3, extraMidHigh, "Mid-high animal (1.075x) must yield +25% (rounded to 3) extra drops from 10 items");
+
+        // Minimum floor scale (0.10x): 0% drops
+        float minAnimalScale = 0.10f;
+        float minRatio = Math.clamp((minAnimalScale - minScale) / (normalScale - minScale), 0.0f, 1.0f);
+        int countMin = Math.round(initialCount * minRatio);
+        Assertions.assertEquals(0, countMin, "Severely stunted minimum floor animal (0.10x) must yield 0 drops");
+
+        // Midpoint below normal (0.525x): 50% drops
+        float midLowScale = 0.525f;
+        float midLowRatio = Math.clamp((midLowScale - minScale) / (normalScale - minScale), 0.0f, 1.0f);
+        int countMidLow = Math.round(initialCount * midLowRatio);
+        Assertions.assertEquals(5, countMidLow, "Mid-low animal (0.525x) must yield exactly 50% drops (5 from 10 items)");
     }
 
     @Test

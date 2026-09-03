@@ -45,6 +45,10 @@ public abstract class AnimalDropScaleMixin {
 
                 if (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.SCALE_DROPS)) {
                     AnimalDropHelper.applyScaleDropMultiplier(self, stack);
+                    if (stack.isEmpty()) {
+                        cir.setReturnValue(null);
+                        return;
+                    }
                 }
             }
         }

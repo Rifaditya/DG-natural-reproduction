@@ -1,5 +1,14 @@
 # Natural Reproduction - Version History
 
+## [1.4.19+26.2] - 2026-09-03
+
+### Changed
+- **Dynamic Gradual Drop Scaling**: Overhauled animal harvest drops to dynamically scale relative to active GameRules (`normal_scale`, `min_scale`, and `max_scale`).
+  - Baseline animals (`0.95x` scale) yield standard 100% drops.
+  - Large animals scale smoothly up to a **+50% bonus drop** at the highest scale (`1.20x`).
+  - Small / stunted animals scale smoothly down to **0% drops** at the lowest scale (`0.10x`).
+- **Zero-Drop Entity Cancellation**: Added empty item stack cancellation in `AnimalDropScaleMixin`, cleanly preventing empty drop entities when severely stunted runts die.
+
 ## [1.4.18+26.2] - 2026-09-03
 
 ### Changed
