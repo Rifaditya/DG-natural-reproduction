@@ -18,7 +18,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 
+import java.util.UUID;
+
 public final class AnimalGestationHelper {
+
+    public static final String FATHER_TAG_PREFIX = "nr_father:";
+    public static final String TRAIT_FATHER_SCALE = "father_scale";
+    public static final String TRAIT_FATHER_INBREEDING_TIER = "father_inbreeding_tier";
 
     private AnimalGestationHelper() {
     }
@@ -33,8 +39,13 @@ public final class AnimalGestationHelper {
         DasikAnimalGeneticsAPI.setTrait(mother, "prenatal_nourishment", 0.0f);
         DasikAnimalGeneticsAPI.setTrait(mother, "prenatal_checks", 0.0f);
 
+        // Clear any previous father tags
+        mother.entityTags().removeIf(t -> t.startsWith(FATHER_TAG_PREFIX));
+
         if (father != null) {
-            DasikAnimalGeneticsAPI.setTrait(mother, "father_inbreeding_tier", (float)AnimalLineageHelper.getInbreedingTier(father));
+            mother.addTag(FATHER_TAG_PREFIX + father.getStringUUID());
+            DasikAnimalGeneticsAPI.setTrait(mother, TRAIT_FATHER_SCALE, DasikAnimalGeneticsAPI.getScale(father));
+            DasikAnimalGeneticsAPI.setTrait(mother, TRAIT_FATHER_INBREEDING_TIER, (float)AnimalLineageHelper.getInbreedingTier(father));
         }
 
         level.sendParticles(
@@ -85,12 +96,50 @@ public final class AnimalGestationHelper {
         }
     }
 
+    public static Animal resolveFather(ServerLevel level, Animal mother) {
+        if (level == null || mother == null) {
+            return null;
+        }
+
+        for (String tag : mother.entityTags()) {
+            if (tag.startsWith(FATHER_TAG_PREFIX)) {
+                try {
+                    UUID fatherUuid = UUID.fromString(tag.substring(FATHER_TAG_PREFIX.length()));
+                    var entity = level.getEntity(fatherUuid);
+                    if (entity instanceof Animal animal) {
+                        return animal;
+                    }
+
+                    // Reconstruct synthetic parent surrogate with preserved UUID & snapshotted traits
+                    Animal surrogate = (Animal)mother.getType().create(level, EntitySpawnReason.BREEDING);
+                    if (surrogate != null) {
+                        surrogate.setUUID(fatherUuid);
+                        float snapScale = DasikAnimalGeneticsAPI.getTrait(mother, TRAIT_FATHER_SCALE, 1.0f);
+                        float snapTier = DasikAnimalGeneticsAPI.getTrait(mother, TRAIT_FATHER_INBREEDING_TIER, 0.0f);
+                        DasikAnimalGeneticsAPI.setScale(surrogate, snapScale);
+                        DasikAnimalGeneticsAPI.setTrait(surrogate, AnimalLineageHelper.TRAIT_INBREEDING_TIER, snapTier);
+                        return surrogate;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return null;
+    }
+
     public static void deliverOffspringOrEgg(ServerLevel level, Animal mother) {
         if (level == null || mother == null) {
             return;
         }
 
         BlockPos pos = mother.blockPosition();
+        Animal father = resolveFather(level, mother);
+
+        float checks = DasikAnimalGeneticsAPI.getTrait(mother, "prenatal_checks", 1.0f);
+        float nourish = DasikAnimalGeneticsAPI.getTrait(mother, "prenatal_nourishment", 0.0f);
+        boolean highVitality = (nourish / Math.max(1.0f, checks)) >= 0.50f;
+        boolean isEnriched = highVitality || (DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.PASTURE_ENRICHMENT)
+            && AnimalPastureHelper.isPastureEnriched(level, pos));
 
         // Check for Oviparous native egg laying
         if (mother.getType() == EntityTypes.FROG) {
@@ -120,18 +169,15 @@ public final class AnimalGestationHelper {
             boolean useFertilizedEggs = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS);
             if (useFertilizedEggs && mother.getRandom().nextBoolean()) {
                 // 50% chance: Lay a Fertilized Egg item
-                mother.spawnAtLocation(level, ChickenEggHelper.createFertilizedEgg(level, mother, null));
+                mother.spawnAtLocation(level, ChickenEggHelper.createFertilizedEgg(level, mother, father));
             } else {
                 // 50% chance: Spawn baby chick directly
                 AgeableMob chick = (AgeableMob)EntityTypes.CHICKEN.create(level, EntitySpawnReason.BREEDING);
                 if (chick != null) {
                     chick.setBaby(true);
                     chick.setPos(mother.getX(), mother.getY(), mother.getZ());
-                    if (!DasikAnimalGeneticsAPI.hasGenetics(chick)) {
-                        DasikAnimalGeneticsAPI.inherit(chick, mother, mother, "default");
-                        GeneticsEngine.applyGeneticsModifiers(chick);
-                    }
                     level.addFreshEntity(chick);
+                    BreedingPipelineHelper.finalizeNewborn(level, mother, father, chick, isEnriched);
                 }
             }
         } else {
@@ -140,53 +186,18 @@ public final class AnimalGestationHelper {
             if (baby != null) {
                 baby.setBaby(true);
                 baby.setPos(mother.getX(), mother.getY(), mother.getZ());
-
-                if (!DasikAnimalGeneticsAPI.hasGenetics(baby)) {
-                    DasikAnimalGeneticsAPI.inherit(baby, mother, mother, "default");
-                    GeneticsEngine.applyGeneticsModifiers(baby);
-                }
-
-                // Check prenatal nourishment ratio
-                float checks = DasikAnimalGeneticsAPI.getTrait(mother, "prenatal_checks", 1.0f);
-                float nourish = DasikAnimalGeneticsAPI.getTrait(mother, "prenatal_nourishment", 0.0f);
-                boolean highVitality = (nourish / Math.max(1.0f, checks)) >= 0.50f;
-
-                if (highVitality) {
-                    float currentScale = DasikAnimalGeneticsAPI.getScale(baby);
-                    float minAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MIN_SCALE) / 100.0f;
-                    float maxAllowed = DynamicGameRuleManager.getInt(level, NaturalReproductionFabric.MAX_SCALE) / 100.0f;
-                    if (minAllowed <= 0) minAllowed = 0.10f;
-                    if (maxAllowed <= 0) maxAllowed = 1.20f;
-                    DasikAnimalGeneticsAPI.setScale(baby, Math.clamp(currentScale * 1.10f, minAllowed, maxAllowed));
-
-                    if (baby.getAttribute(Attributes.MAX_HEALTH) != null) {
-                        baby.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
-                            baby.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 1.15
-                        );
-                        baby.setHealth(baby.getMaxHealth());
-                    }
-
-                    if (baby.getAttribute(Attributes.MOVEMENT_SPEED) != null) {
-                        baby.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
-                            baby.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() * 1.10
-                        );
-                    }
-
-                    level.sendParticles(
-                        ParticleTypes.WAX_ON,
-                        baby.getX(), baby.getY() + 0.5, baby.getZ(),
-                        6, 0.3, 0.3, 0.3, 0.02
-                    );
-                }
-
                 level.addFreshEntity(baby);
+                BreedingPipelineHelper.finalizeNewborn(level, mother, father, baby, isEnriched);
             }
         }
 
-        // Reset mother gestation state
+        // Reset mother gestation state and clean up father tracking tag
         DasikAnimalGeneticsAPI.setTrait(mother, "gestation_ticks", 0.0f);
         DasikAnimalGeneticsAPI.setTrait(mother, "prenatal_nourishment", 0.0f);
         DasikAnimalGeneticsAPI.setTrait(mother, "prenatal_checks", 0.0f);
+        DasikAnimalGeneticsAPI.setTrait(mother, TRAIT_FATHER_SCALE, 0.0f);
+        DasikAnimalGeneticsAPI.setTrait(mother, TRAIT_FATHER_INBREEDING_TIER, 0.0f);
+        mother.entityTags().removeIf(t -> t.startsWith(FATHER_TAG_PREFIX));
 
         level.sendParticles(
             ParticleTypes.HAPPY_VILLAGER,

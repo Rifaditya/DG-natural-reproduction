@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.23+26.2] - 2026-09-03
+
+### Fixed & Refactored
+- **Gestation Father Lineage Preservation & False Inbreeding Fix**:
+  - Fixed critical bug where gestated offspring cloned only the mother (`inherit(baby, mother, mother)`), falsely flagging 100% of gestated newborns as inbred.
+  - Persisted father UUID via entity tag (`nr_father:<uuid>`) and genetic trait snapshots (`father_scale`, `father_inbreeding_tier`) across the entire pregnancy duration.
+  - Resolved living father entity on delivery (with fallback to genetic surrogate if unloaded or deceased) to ensure distinct parent pairing in inheritance.
+  - Reconnected gestated births directly into `BreedingPipelineHelper.finalizeNewborn(...)`, restoring cramped stunting, spacious pasture recovery, inbreeding tiers, biome adaptations, and tracker logs to pregnant livestock deliveries.
+
 ## [1.4.22+26.2] - 2026-09-03
 
 ### Added & Refactored

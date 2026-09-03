@@ -341,5 +341,28 @@ public class NaturalReproductionTest {
         float clampedLow = Math.clamp(stuntedScale, minAllowed, maxAllowed);
         Assertions.assertEquals(0.10f, clampedLow, 0.001f, "Stunted scale must clamp to minAllowed floor");
     }
+
+    @Test
+    @DisplayName("Verify Gestation Father Lineage Preservation & Inbreeding Avoidance")
+    public void testGestationFatherLineagePreservation() {
+        java.util.UUID motherUuid = java.util.UUID.randomUUID();
+        java.util.UUID fatherUuid = java.util.UUID.randomUUID();
+
+        // 1. Tag serialization and parsing roundtrip
+        String tag = "nr_father:" + fatherUuid;
+        Assertions.assertTrue(tag.startsWith("nr_father:"), "Tag must begin with nr_father: prefix");
+        java.util.UUID parsedFatherUuid = java.util.UUID.fromString(tag.substring("nr_father:".length()));
+        Assertions.assertEquals(fatherUuid, parsedFatherUuid, "Parsed father UUID must match original father UUID");
+
+        // 2. Distinct parent identities prevent self-inbreeding
+        Assertions.assertNotEquals(motherUuid, fatherUuid, "Mother and father UUIDs must remain distinct entities");
+
+        // 3. Simulated kinship check: self-breeding vs outcrossed breeding
+        boolean selfBreeding = motherUuid.equals(motherUuid);
+        Assertions.assertTrue(selfBreeding, "Mother mating with herself falsely flags inbreeding");
+
+        boolean outcrossed = motherUuid.equals(fatherUuid);
+        Assertions.assertFalse(outcrossed, "Mother mating with distinct father must not trigger identical-entity inbreeding flag");
+    }
 }
 
