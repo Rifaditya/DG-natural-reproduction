@@ -72,6 +72,17 @@ public class YaclScreenHelper {
 
             Method groupNameMethod = findMethod(groupBuilder.getClass(), "name");
             groupNameMethod.invoke(groupBuilder, Component.translatable("gamerule.category.natural-reproduction"));
+            Method optionMethod = findMethod(groupBuilder.getClass(), "option");
+
+            // Top-pinned Creator Support Ko-fi Banner (above all settings)
+            try {
+                Object kofiOption = buildKofiButtonOption();
+                if (kofiOption != null) {
+                    optionMethod.invoke(groupBuilder, kofiOption);
+                }
+            } catch (Throwable t) {
+                NaturalReproductionFabric.LOGGER.warn("Failed to attach creator support button to YACL config", t);
+            }
 
             // Add Enabled Option
             Object enabledOption = buildBooleanOption(
@@ -88,7 +99,6 @@ public class YaclScreenHelper {
                     }
                 }
             );
-            Method optionMethod = findMethod(groupBuilder.getClass(), "option");
             optionMethod.invoke(groupBuilder, enabledOption);
 
             // Add Density Cap Option
@@ -572,6 +582,44 @@ public class YaclScreenHelper {
         findMethod(optBuilderClass, "customController").invoke(optionBuilder, controllerFactory);
 
         return findMethod(optBuilderClass, "build").invoke(optionBuilder);
+    }
+
+    private static Object buildKofiButtonOption() throws Exception {
+        Class<?> buttonOptClass = Class.forName("dev.isxander.yacl3.api.ButtonOption");
+        Method createBuilderMethod = buttonOptClass.getMethod("createBuilder");
+        Object builder = createBuilderMethod.invoke(null);
+        Class<?> builderClass = builder.getClass();
+
+        findMethod(builderClass, "name").invoke(builder, net.dasik.social.api.config.DasikSupportHelper.getButtonText());
+
+        Class<?> descClass = Class.forName("dev.isxander.yacl3.api.OptionDescription");
+        Method descCreateBuilderMethod = descClass.getMethod("createBuilder");
+        Object descBuilder = descCreateBuilderMethod.invoke(null);
+        findMethod(descBuilder.getClass(), "text").invoke(descBuilder, new Object[]{new Object[]{net.dasik.social.api.config.DasikSupportHelper.getTooltipText()}});
+        Object desc = findMethod(descBuilder.getClass(), "build").invoke(descBuilder);
+        findMethod(builderClass, "description").invoke(builder, desc);
+
+        java.util.function.Consumer<Screen> action = screen -> net.dasik.social.api.config.DasikSupportHelper.openKofi(screen);
+        Method actionMethod = null;
+        for (Method m : builderClass.getMethods()) {
+            if (m.getName().equals("action") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == java.util.function.Consumer.class) {
+                actionMethod = m;
+                break;
+            }
+        }
+        if (actionMethod != null) {
+            actionMethod.invoke(builder, action);
+        } else {
+            java.util.function.BiConsumer<Screen, Object> biAction = (screen, opt) -> net.dasik.social.api.config.DasikSupportHelper.openKofi(screen);
+            for (Method m : builderClass.getMethods()) {
+                if (m.getName().equals("action") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == java.util.function.BiConsumer.class) {
+                    m.invoke(builder, biAction);
+                    break;
+                }
+            }
+        }
+
+        return findMethod(builderClass, "build").invoke(builder);
     }
 
     private static Method findMethod(Class<?> clazz, String name) {

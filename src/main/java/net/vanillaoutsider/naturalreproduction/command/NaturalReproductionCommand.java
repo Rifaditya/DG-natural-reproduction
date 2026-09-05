@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.dasik.social.api.config.DasikSupportHelper;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.genetics.DasikAnimalGeneticsAPI;
 import net.dasik.social.api.genetics.GeneticsEngine;
@@ -172,6 +173,7 @@ public class NaturalReproductionCommand {
         src.sendSuccess(() -> Component.literal("/naturalreproduction trackerlogs clear - Clear reproduction event log history"), false);
         src.sendSuccess(() -> Component.literal("/naturalreproduction reset - Reset all rules to defaults"), false);
         src.sendSuccess(() -> Component.literal("/naturalreproduction reload - Reload configuration"), false);
+        src.sendSuccess(DasikSupportHelper::getCommandFooter, false);
         return 1;
     }
 
@@ -211,6 +213,7 @@ public class NaturalReproductionCommand {
         ctx.getSource().sendSuccess(() -> Component.literal(
             String.format("Natural Reproduction Status: Enabled=%b, Density Cap=%d, Rate=%d, Min Scale=%d%%, Normal Scale=%d%%, Max Scale=%d%%, Scale Drops=%b, Cramped Penalty=%b, Inbreeding Degradation=%b, Pasture Enrichment=%b, Overgrazing=%b, Gestation=%b (Manual=%b, Duration=%d), Fertilized Eggs=%b, Infertile Reg Eggs=%b, Dispenser Hatch Rate=%d%%, Herd Dynamics=%b, Herd Stampede=%b, Biome Fertility=%b, Biome Variants=%b, Tracker Logs=%b, Species Toggles Enabled=%d/27", enabled, cap, rate, minScale, normalScale, maxScale, scaleDrops, crampedPenalty, inbreeding, pastureEnrichment, overgrazing, gestation, manualGestation, gestationDuration, fertEggs, infertileReg, dispenserRate, herdDynamics, herdStampede, biomeFertility, biomeVariants, trackerLogs, enabledSpeciesCount)
         ), false);
+        ctx.getSource().sendSuccess(DasikSupportHelper::getCommandFooter, false);
         return 1;
     }
 
