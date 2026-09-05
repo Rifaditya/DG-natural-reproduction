@@ -1,39 +1,47 @@
 {
-  "schemaVersion": 1,
-  "id": "natural-reproduction",
-  "version": "${version}",
-  "name": "Natural Reproduction",
-  "description": "Animals in the wild reproduce autonomously with dynamic genetics, size scaling, and breeding inheritance.",
-  "authors": [
-    "Dasik (Rifaditya)"
-  ],
-  "contact": {
-    "homepage": "https://github.com/Dasik/Natural-Reproduction",
-    "sources": "https://github.com/Dasik/Natural-Reproduction"
-  },
-  "license": "GPL-3.0-or-later",
-  "icon": "assets/natural-reproduction/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric"
+    "schemaVersion": 1,
+    "id": "natural-reproduction",
+    "version": "${version}",
+    "name": "Natural Reproduction",
+    "description": "Animals in the wild reproduce autonomously with dynamic genetics, size scaling, and breeding inheritance.",
+    "authors": [
+        "Dasik (Rifaditya)"
     ],
-    "modmenu": [
-      "net.vanillaoutsider.naturalreproduction.client.ModMenuIntegration"
-    ]
-  },
-  "mixins": [
-    "natural-reproduction.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.19.1",
-    "minecraft": ">=26.2-",
-    "java": ">=25",
-    "fabric-api": "*",
-    "dasik-library": ">=1.8.15"
-  },
-  "suggests": {
-    "yet-another-config-lib": "*",
-    "modmenu": "*"
-  }
+    "contact": {
+        "homepage": "https://github.com/Dasik/Natural-Reproduction",
+        "sources": "https://github.com/Dasik/Natural-Reproduction"
+    },
+    "license": "GPL-3.0-or-later",
+    "icon": "assets/natural-reproduction/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric"
+        ],
+        "modmenu": [
+            "net.vanillaoutsider.naturalreproduction.client.ModMenuIntegration"
+        ]
+    },
+    "mixins": [
+        "natural-reproduction.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.19.1",
+        "minecraft": ">=26.2-",
+        "java": ">=25",
+        "fabric-api": "*",
+        "dasik-library": ">=1.8.15"
+    },
+    "suggests": {
+        "yet-another-config-lib": "*",
+        "modmenu": "*"
+    },
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.donate": "https://ko-fi.com/dasikigaijin",
+                "modmenu.kofi": "https://ko-fi.com/dasikigaijin"
+            }
+        }
+    }
 }
