@@ -1,37 +1,54 @@
 # 🐑 Natural Reproduction Wiki
 
-> **"Alam tidak menunggu intervensi pemain untuk berkembang biak."**
+> **"Alam tidak menunggu campur tangan pemain untuk berkembang biak."**
 
-Selamat datang di dokumentasi ensiklopedia resmi **Natural Reproduction**! Mod ini merombak sistem reproduksi hewan di Minecraft menjadi ekosistem alami yang mandiri, menghadirkan perkawinan liar otomatis, hierarki kawanan dengan pemimpin Alfa, masa kehamilan realistis, telur ayam fertil, degradasi perkawinan sedarah (inbreeding), pengayaan padang rumput, serta perintah administrasi lengkap.
-
----
-
-🌐 **Bahasa (Languages)**: [[🇺🇸 English|Home]] | [[🇨🇳 简体中文|zh_cn-Home]] | [[🇭🇰 繁體中文|zh_tw-Home]] | [[🇷🇺 Русский|ru_ru-Home]] | [[🇪🇸 Español|es_es-Home]] | [[🇩🇪 Deutsch|de_de-Home]] | [[🇫🇷 Français|fr_fr-Home]] | [[🇧🇷 Português|pt_br-Home]] | [[🇯🇵 日本語|ja_jp-Home]] | [[🇮🇩 Bahasa Indonesia|id_id-Home]] | [[🇰🇷 한국어|ko_kr-Home]]
+Selamat datang di dokumentasi teknis ensiklopedis resmi **Natural Reproduction**. Wiki ini mencakup algoritma pembiakan satwa liar mandiri, AI kawanan berpemimpin alfa, waktu gestasi kehamilan, telur ayam fertil, degradasi perkawinan sedarah, pengayaan padang rumput, dan sistem administrasi perintah lengkap.
 
 ---
 
-## 🧭 Navigasi Dokumentasi
-
-### 🌿 Reproduksi Utama & Ekologi
-* [[Reproduksi Liar Mandiri & Habitat Hewan|Autonomous-Breeding-and-Habitats]]: Mekanisme kawin alami 27 spesies hewan, blok pakan habitat, dan batas kepadatan.
-* [[Dinamika Kawanan, Pemimpin Alfa & Kepanikan|Herd-Dynamics-and-Alpha-Leadership]]: Pemilihan Alfa berdasarkan ukuran fisik, AI kawanan, dan lari panik 5 detik.
-* [[Masa Kehamilan & Perawatan Prenatal|Gestation-and-Prenatal-Care]]: Hitung mundur kehamilan (24.000 tick) dan Vitalitas Prenatal (+15% HP, +10% kecepatan, +10% ukuran).
-
-### 🧬 Peternakan Lanjutan & Genetika
-* [[Reproduksi Unggas & Telur Ayam Fertil|Chicken-Reproduction-and-Fertilized-Eggs]]: Peluang 50/50, 100% menetas saat dilempar pemain, 75% lewat dispenser.
-* [[Penalti Kandang Sempit & Pemulihan Padang Rumput|Cramped-Pen-Penalties-and-Pasture-Recovery]]: Pengerdilan di kandang sempit (hingga 0.25x) dan pemulihan di padang rumput terbuka.
-* [[Degradasi Inbreeding & Vigor Hibrida|Lineage-Tracking-and-Inbreeding-Degradation]]: Matriks 5 tingkat, daging berubah jadi busuk/tulang di T3/T4, kematian genetik, dan keunggulan persilangan (+15% ukuran).
-
-### 🏡 Padang Rumput & Hasil Panen
-* [[Pengayaan Padang Rumput & Overgrazing|Pasture-Enrichment-and-Overgrazing]]: Kuali air, komposter, jerami, atap peneduh, status Bergizi Baik, dan keausan rumput jadi tanah.
-* [[Adaptasi Varian Bioma & Fertilitas Iklim|Biome-Variants-and-Climate-Fertility]]: Kecepatan kawin 2x lipat di bioma asli dan adaptasi varian warna kulit.
-* [[Skala Fisik & Pengali Hasil Panen|Physical-Scale-and-Harvest-Drops]]: Hasil panen daging dan kulit berlipat ganda sesuai ukuran tubuh hewan (0.50x hingga 1.30x).
-
-### ⚙️ Administrasi & Pengembangan
-* [[GameRules Namespaced & Konfigurasi|GameRules-and-Configuration]]: Tabel lengkap 35+ GameRules dan menu konfigurasi visual YACL v3.
-* [[Perintah Game & Log Pelacak Reproduksi|Commands-and-Diagnostics]]: Struktur perintah `/naturalreproduction` dan pemantauan riwayat kelahiran.
-* [[Arsitektur Teknis & Integrasi Mixin|Architecture-and-Mixins]]: Panduan pengembang, deskriptor injeksi Mixin, dan API DasikLibrary.
+🌐 **Languages**: [[🇺🇸 English|Home]] | [[🇨🇳 简体中文|zh_cn-Home]] | [[🇭🇰 繁體中文|zh_tw-Home]] | [[🇷🇺 Русский|ru_ru-Home]] | [[🇪🇸 Español|es_es-Home]] | [[🇩🇪 Deutsch|de_de-Home]] | [[🇫🇷 Français|fr_fr-Home]] | [[🇧🇷 Português|pt_br-Home]] | [[🇯🇵 日本語|ja_jp-Home]] | [[🇮🇩 Bahasa Indonesia|id_id-Home]] | [[🇰🇷 한국어|ko_kr-Home]]
 
 ---
 
-> 📌 **Pernyataan Kode Sumber Repositori**: Dokumentasi pada Wiki ini mencerminkan **status kode sumber terkini di repositori**.
+## 🧭 System Navigation
+
+### 🌿 Primary Breeding & Ecology
+* [[Autonomous Wild Breeding & Species Habitats|id_id-Autonomous-Breeding-and-Habitats]]
+* [[Herd Dynamics, Alpha Leadership & Panic Stampedes|id_id-Herd-Dynamics-and-Alpha-Leadership]]
+* [[Pregnancy Gestation & Prenatal Pasture Care|id_id-Gestation-and-Prenatal-Care]]
+
+### 🧬 Advanced Husbandry & Genetics
+* [[Dedicated Chicken Reproduction & Fertilized Eggs|id_id-Chicken-Reproduction-and-Fertilized-Eggs]]
+* [[Cramped Pen Stunting & Spacious Pasture Recovery|id_id-Cramped-Pen-Penalties-and-Pasture-Recovery]]
+* [[Lineage Inbreeding Degradation & Hybrid Vigor|id_id-Lineage-Tracking-and-Inbreeding-Degradation]]
+
+### 🏡 Pasture & Harvest Dynamics
+* [[Pasture Enrichment & Overgrazing Terrain Wear|id_id-Pasture-Enrichment-and-Overgrazing]]
+* [[Biome Variant Adaptation & Climate Fertility|id_id-Biome-Variants-and-Climate-Fertility]]
+* [[Physical Scale & Dynamic Harvest Drops|id_id-Physical-Scale-and-Harvest-Drops]]
+
+### ⚙️ Administration & Development
+* [[Namespaced GameRules & Configuration|id_id-GameRules-and-Configuration]]
+* [[In-Game Commands & Breeding Tracker Logs|id_id-Commands-and-Diagnostics]]
+* [[Technical Architecture & Mixin Integration|id_id-Architecture-and-Mixins]]
+* [[Version Compatibility Matrix|id_id-Version-Compatibility]]
+* [[Developer Setup & Building|id_id-Developer-Setup-and-Building]]
+
+---
+
+## 📋 Installation & Requirements
+
+* **Minecraft**: `26.2+`
+* **Fabric Loader**: `>=0.19.1`
+* **Fabric API**: `*`
+* **DasikLibrary**: `>=1.8.35`
+* **Java**: `Java 25+`
+
+---
+
+> [!NOTE]
+> 📌 **Pernyataan Sumber Kode Repositori**: Dokumentasi dalam Wiki ini mencerminkan **status kode sumber saat ini di repositori** (`v1.3.4+26.2`), yang mungkin mencakup komit terbaru yang belum dirilis atau fitur pengembangan mendahului rilis publik di CurseForge dan Modrinth.
+
+---
+
+> ☕ **Dukungan Pengembangan**: Jika Anda menikmati mod ini, dukung kreator di [Ko-fi](https://ko-fi.com/rifaditya) untuk akses build pengembangan awal!

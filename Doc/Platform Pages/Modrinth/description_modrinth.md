@@ -193,6 +193,18 @@ Mastering animal husbandry in Natural Reproduction requires thoughtful ecosystem
 
 ---
 
+## 🧩 Recommended Sister Mods
+
+If you enjoy **Natural Reproduction**, these companion mods from the **Vanilla Outsider & Delayed Gratification Collections** plug in seamlessly:
+
+* 🐕 [**Better Dogs**](https://modrinth.com/mod/vanilla-outsider-better-dogs): Adds comprehensive dog personalities, guard posts, genetic inheritance, and realistic breeding mechanics to wolf companions.
+* 🌾 [**Agrarian Reform**](https://modrinth.com/mod/vanilla-outsider-agrarian-reform): Pairs deep animal husbandry with grounded farming, companion planting, and moisture-dependent soil ecosystems.
+* 💤 [**True Sleep**](https://modrinth.com/mod/vanilla-outsider-true-sleep): Accelerates world time, crop growth, and animal pregnancy cycles smoothly while resting in bed overnight.
+
+> 🌟 *Explore the full [**Delayed Gratification Collection**](https://modrinth.com/collection/delayed-gratification) for more immersive, long-term survival enhancements.*
+
+---
+
 ## ☕ Support My Work
 
 If you enjoy the **Delayed Gratification Collection** and want to support ongoing updates:
@@ -205,29 +217,35 @@ If you enjoy the **Delayed Gratification Collection** and want to support ongoin
 
 > **Indonesian Users:** SocioBuzz and Saweria support local payment methods (GoPay, OVO, DANA, QRIS) if you wish to support me locally!
 
----
 
-## 📦 Modpack Permissions & Licensing
-
-> **Modpack Distribution Policy:**  
-> You are free to include this mod in any modpack, provided that the modpack is hosted on the same platform where you obtained this mod (e.g. CurseForge modpacks on CurseForge, Modrinth modpacks on Modrinth). Cross-platform redistribution is strictly prohibited to support the creator and ensure legitimate downloads.
+> [!TIP]
+> **Dedicated Server Hosting Partner:**
+> Looking for a reliable server to play with friends? Check out **BisectHosting** for 1-click modpack installations, automated backups, and 24/7 dedicated customer support.
 
 ---
 
-## 📜 Credits
+## 📜 Credits & Modpack Permissions
 
-| Role | Author |
+| Property | Information |
 | :--- | :--- |
-| **Creator & Developer** | **Dasik** (Rifaditya) |
+| **Creator / Author** | **Dasik** (Rifaditya) |
 | **Collection** | Delayed Gratification Collection |
-| **License** | GPLv3 |
+| **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
+| **Source Code** | [GitHub - Rifaditya/DG-natural-reproduction](https://github.com/Rifaditya/DG-natural-reproduction) |
+| **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/DG-natural-reproduction/issues) |
+| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/DG-natural-reproduction/wiki) |
+
+> [!IMPORTANT]
+> **📦 Modpack Permissions & Distribution:**<br>
+> You are fully welcome to include this mod in any modpack on any platform! However, the mod file must be downloaded directly through official distribution channels (**Modrinth** or **CurseForge**). Re-uploading, mirroring, or redistributing the original mod JAR to third-party mirror sites, scraper portals, or unauthorized launchers is strictly prohibited.
+> <br><br>
+> **⚖️ License & Fork Guidelines (No Zero-Change Re-uploads):**<br>
+> This project is open-source under the **GNU GPLv3**. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports—provided your project remains open-source under GPLv3 with proper attribution.<br>
+> **However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.**
 
 ---
 
-<div align="center">
-
-**Made with ❤️ for the Minecraft community**
-
-*Part of the Delayed Gratification Collection*
-
-</div>
+<p align="center">
+  <strong>Made with ❤️ for the Minecraft community</strong><br>
+  <em>Part of the Delayed Gratification Collection</em>
+</p>

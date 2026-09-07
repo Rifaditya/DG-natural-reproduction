@@ -1,0 +1,107 @@
+# 💻 Technical Architecture & Mixin Integration
+
+🌐 **Languages**: [[🇺🇸 English|Home]] | [[🇨🇳 简体中文|zh_cn-Home]] | [[🇭🇰 繁體中文|zh_tw-Home]] | [[🇷🇺 Русский|ru_ru-Home]] | [[🇪🇸 Español|es_es-Home]] | [[🇩🇪 Deutsch|de_de-Home]] | [[🇫🇷 Français|fr_fr-Home]] | [[🇧🇷 Português|pt_br-Home]] | [[🇯🇵 日本語|ja_jp-Home]] | [[🇮🇩 Bahasa Indonesia|id_id-Home]] | [[🇰🇷 한국어|ko_kr-Home]]
+
+> [!NOTE]
+> 📌 **Avis de non-responsabilité relatif au code source du dépôt** : La documentation de ce Wiki reflète **l'état actuel du code source dans le dépôt** (`v1.3.4+26.2`), qui peut inclure des commits récents non publiés ou des fonctionnalités de développement en avance sur les versions publiques de CurseForge et Modrinth.
+
+---
+
+## 📋 Technical Infobox
+
+| Technical Property | Specification |
+| :--- | :--- |
+| **Platform Target** | Fabric Mod Loader (`>=0.19.1`) |
+| **Java Release Target** | **Java 25+** (`release = 25`) |
+| **Primary Dependency** | `dasik-library` (`>=1.8.35`) |
+| **Mixin Configuration** | `natural-reproduction.mixins.json` |
+| **Compatibility Mode** | **Server-Side Compatible** (Vanilla Client Connect) |
+| **Build Tooling** | Gradle 9.3+ / Fabric Loom 1.15+ |
+
+---
+
+## 🏗️ Architecture & Package Layout
+
+```text
+net.vanillaoutsider.naturalreproduction/
+├── NaturalReproductionFabric.java           - Main entrypoint, GameRules initialization, event listeners
+├── command/
+│   └── NaturalReproductionCommand.java      - Brigadier command suite (/naturalreproduction)
+├── config/
+│   ├── NaturalReproductionConfig.java       - Data record schema for config persistence
+│   └── ModMenuIntegration.java              - Client YACL v3 & ModMenu GUI bridge
+├── helper/
+│   ├── AnimalBiomeHelper.java               - Biome fertility multipliers and variant skin adaptation
+│   ├── AnimalCrampedSpaceHelper.java        - Confinement detection and spacious recovery curves
+│   ├── AnimalDropHelper.java                - Item drop scaling math based on physical scale
+│   ├── AnimalGestationHelper.java           - Pregnancy countdown ticker and prenatal vitality
+│   ├── AnimalHabitatHelper.java             - 27-species environmental block trigger evaluation
+│   ├── AnimalLineageHelper.java             - Multi-generational pedigree and inbreeding degradation
+│   ├── AnimalPastureHelper.java             - Pasture enrichment structure scores and overgrazing wear
+│   ├── ChickenEggHelper.java                - Fertilized Egg delivery and hatch chance handling
+│   ├── HerdSocialHelper.java                - Alpha leader election and panic stampede triggers
+│   └── SpatialBreedingCacheHelper.java      - Fast-fail spatial density cache
+├── ai/
+│   └── FollowHerdLeaderGoal.java            - Pastoral flocking AI goal (Priority 3)
+├── logging/
+│   └── BreedingTrackerLogger.java           - In-memory circular buffer for reproduction diagnostics
+└── mixin/
+    ├── AnimalBreedingMixin.java             - Injects gestation countdown & wild breeding hooks
+    ├── AnimalDropScaleMixin.java            - Intercepts loot table drops to apply scale multipliers
+    └── ThrownEggMixin.java                  - Intercepts thrown egg impact for Fertilized Egg mechanics
+```
+
+---
+
+## 💉 Complete Mixin Target Matrix
+
+| Mixin Class | Target Minecraft Class | Injection Target | Purpose |
+| :--- | :--- | :--- | :--- |
+| `AnimalBreedingMixin` | `net.minecraft.world.entity.animal.Animal` | `@Inject` at `tick()` HEAD | Drives staggered autonomous breeding evaluations and gestation timers. |
+| `AnimalBreedingMixin` | `net.minecraft.world.entity.animal.Animal` | `@Inject` at `spawnChildFromBreeding()` HEAD | Intercepts offspring birth to apply inbreeding, scale, and prenatal vitality. |
+| `AnimalDropScaleMixin` | `net.minecraft.world.entity.LivingEntity` | `@Inject` at `dropFromLootTable()` | Multiplies item drop counts by the entity's physical `minecraft:scale`. |
+| `ThrownEggMixin` | `net.minecraft.world.entity.projectile.ThrownEgg` | `@Inject` at `onHit()` HEAD | Handles guaranteed 100% hatch mechanics for Fertilized Egg items. |
+
+---
+
+## 🧬 DasikLibrary API Integration
+
+Natural Reproduction leverages **DasikLibrary** for standardized genetics, data-driven registries, and dynamic GameRule management:
+
+```java
+// Query or mutate entity physical genetics via DasikAnimalGeneticsAPI
+float currentScale = DasikAnimalGeneticsAPI.getScale(animal);
+DasikAnimalGeneticsAPI.setScale(animal, 1.25f);
+
+// Access universal genetics registry
+EntityGeneticsRecord record = EntityGeneticsRegistry.getRecord(animal.getType());
+```
+
+---
+
+## 🔨 Building & Testing from Source
+
+### 1. Requirements
+* JDK 25+ installed and configured on `JAVA_HOME`.
+* Git repository cloned.
+
+### 2. Gradle Build Commands
+```bash
+# Compile and run automated GameTests / JUnit assertions
+./gradlew test --no-daemon
+
+# Build production release JAR
+./gradlew build --no-daemon
+```
+
+---
+
+> ☕ **Soutenir le développement** : Si vous appréciez ce mod, soutenez l'auteur sur [Ko-fi](https://ko-fi.com/rifaditya) pour des versions de test préliminaires !
+
+---
+
+## 🔗 Related Documentation
+* [[Namespaced GameRules & Configuration|fr_fr-GameRules-and-Configuration]]
+* [[In-Game Commands & Breeding Tracker Logs|fr_fr-Commands-and-Diagnostics]]
+* [[Developer Setup & Building|fr_fr-Developer-Setup-and-Building]]
+* Return to [[Home Portal|fr_fr-Home]]

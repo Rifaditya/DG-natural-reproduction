@@ -1,37 +1,54 @@
-# 🐑 自然繁衍 (Natural Reproduction) Wiki
+# 🐑 Natural Reproduction Wiki
 
-> **“大自然无需玩家干预即可生生不息。”**
+> **"大自然从来不会等待玩家的介入才去繁衍生息。"**
 
-欢迎来到 **自然繁衍 (Natural Reproduction)** 官方百科文档！本模组重构了 Minecraft 的动物繁衍生态系统，引入自主野外繁殖、头领集群巡游、真实妊娠周期、受精鸡蛋、近亲衰退崩溃、牧场丰容及完整的管理指令系统。
-
----
-
-🌐 **语言 (Languages)**: [[🇺🇸 English|Home]] | [[🇨🇳 简体中文|zh_cn-Home]] | [[🇭🇰 繁體中文|zh_tw-Home]] | [[🇷🇺 Русский|ru_ru-Home]] | [[🇪🇸 Español|es_es-Home]] | [[🇩🇪 Deutsch|de_de-Home]] | [[🇫🇷 Français|fr_fr-Home]] | [[🇧🇷 Português|pt_br-Home]] | [[🇯🇵 日本語|ja_jp-Home]] | [[🇮🇩 Bahasa Indonesia|id_id-Home]] | [[🇰🇷 한국어|ko_kr-Home]]
+欢迎查阅 **Natural Reproduction** 官方百科技术文档。本维基全面涵盖了从自主野生动物繁育算法、阿尔法头领聚集 AI、怀孕妊娠倒计时与受精鸡蛋，到多代近亲繁殖退化、牧场丰容加成以及全功能命令管理体系。
 
 ---
 
-## 🧭 文档导航
-
-### 🌿 基础繁衍与生态
-* [[自主野外繁殖与物种栖息地|Autonomous-Breeding-and-Habitats]]: 27 种动物的自然受孕机制、食物方块条件与密度限制。
-* [[群体动态、头领机制与恐慌踩踏|Herd-Dynamics-and-Alpha-Leadership]]: 基于体型遗传的头领选举、跟随群聚 AI 及受击同步恐慌逃跑。
-* [[妊娠期与产前牧场培育|Gestation-and-Prenatal-Care]]: 24,000刻妊娠倒计时与产前活力（+15%生命、+10%速度、+10%体型）。
-
-### 🧬 高级畜牧与遗传学
-* [[独立鸡类繁殖与受精鸡蛋|Chicken-Reproduction-and-Fertilized-Eggs]]: 50/50 繁殖概率、玩家投掷 100% 孵化、发射器 75% 孵化率。
-* [[狭窄圈养惩罚与开阔牧场恢复|Cramped-Pen-Penalties-and-Pasture-Recovery]]: 拥挤环境体型矮化（最低 0.25x）与开阔草场多代体型恢复机制。
-* [[近亲繁殖衰退与杂交优势|Lineage-Tracking-and-Inbreeding-Degradation]]: 5阶血统退化矩阵、T3/T4腐肉骨头惩罚、致命崩溃与杂交优势（+15%体型）。
-
-### 🏡 牧场环境与收获系统
-* [[牧场丰容与过度放牧磨损|Pasture-Enrichment-and-Overgrazing]]: 水炼药锅、堆肥桶、干草块与遮阳棚带来的“营养充足”状态及草方块磨损。
-* [[群系变种适应与气候繁殖力|Biome-Variants-and-Climate-Fertility]]: 原生群系 2倍 繁殖速度与自适应毛色变种。
-* [[体型缩放与动态掉落物产出|Physical-Scale-and-Harvest-Drops]]: 掉落物产量随动物体型比例动态缩放（0.50x 至 1.30x）。
-
-### ⚙️ 管理与技术开发
-* [[命名空间游戏规则与配置指南|GameRules-and-Configuration]]: 35+ 个原生 GameRule 完整参数表与 YACL v3 图形界面。
-* [[游戏内指令与繁衍日志追踪|Commands-and-Diagnostics]]: `/naturalreproduction` 完整指令树与实时繁衍日志分析。
-* [[技术架构与 Mixin 注入点|Architecture-and-Mixins]]: 开发者指南、Mixin 注入描述符与 DasikLibrary API 集成。
+🌐 **Languages**: [[🇺🇸 English|Home]] | [[🇨🇳 简体中文|zh_cn-Home]] | [[🇭🇰 繁體中文|zh_tw-Home]] | [[🇷🇺 Русский|ru_ru-Home]] | [[🇪🇸 Español|es_es-Home]] | [[🇩🇪 Deutsch|de_de-Home]] | [[🇫🇷 Français|fr_fr-Home]] | [[🇧🇷 Português|pt_br-Home]] | [[🇯🇵 日本語|ja_jp-Home]] | [[🇮🇩 Bahasa Indonesia|id_id-Home]] | [[🇰🇷 한국어|ko_kr-Home]]
 
 ---
 
-> 📌 **仓库源码声明**: 本 Wiki 文档反映**仓库当前源码状态**，可能包含领先于 CurseForge 和 Modrinth 公开发布版本的最新开发提交。
+## 🧭 System Navigation
+
+### 🌿 Primary Breeding & Ecology
+* [[Autonomous Wild Breeding & Species Habitats|zh_cn-Autonomous-Breeding-and-Habitats]]
+* [[Herd Dynamics, Alpha Leadership & Panic Stampedes|zh_cn-Herd-Dynamics-and-Alpha-Leadership]]
+* [[Pregnancy Gestation & Prenatal Pasture Care|zh_cn-Gestation-and-Prenatal-Care]]
+
+### 🧬 Advanced Husbandry & Genetics
+* [[Dedicated Chicken Reproduction & Fertilized Eggs|zh_cn-Chicken-Reproduction-and-Fertilized-Eggs]]
+* [[Cramped Pen Stunting & Spacious Pasture Recovery|zh_cn-Cramped-Pen-Penalties-and-Pasture-Recovery]]
+* [[Lineage Inbreeding Degradation & Hybrid Vigor|zh_cn-Lineage-Tracking-and-Inbreeding-Degradation]]
+
+### 🏡 Pasture & Harvest Dynamics
+* [[Pasture Enrichment & Overgrazing Terrain Wear|zh_cn-Pasture-Enrichment-and-Overgrazing]]
+* [[Biome Variant Adaptation & Climate Fertility|zh_cn-Biome-Variants-and-Climate-Fertility]]
+* [[Physical Scale & Dynamic Harvest Drops|zh_cn-Physical-Scale-and-Harvest-Drops]]
+
+### ⚙️ Administration & Development
+* [[Namespaced GameRules & Configuration|zh_cn-GameRules-and-Configuration]]
+* [[In-Game Commands & Breeding Tracker Logs|zh_cn-Commands-and-Diagnostics]]
+* [[Technical Architecture & Mixin Integration|zh_cn-Architecture-and-Mixins]]
+* [[Version Compatibility Matrix|zh_cn-Version-Compatibility]]
+* [[Developer Setup & Building|zh_cn-Developer-Setup-and-Building]]
+
+---
+
+## 📋 Installation & Requirements
+
+* **Minecraft**: `26.2+`
+* **Fabric Loader**: `>=0.19.1`
+* **Fabric API**: `*`
+* **DasikLibrary**: `>=1.8.35`
+* **Java**: `Java 25+`
+
+---
+
+> [!NOTE]
+> 📌 **代码仓库源码状态免责声明**：本 Wiki 文档反映了代码仓库中的**当前源码状态**（`v1.3.4+26.2`）。可能包含领先于 CurseForge 与 Modrinth 公开发布版本的最新未发布提交或开发特性。
+
+---
+
+> ☕ **支持模组开发**：如果您喜欢本模组，欢迎前往 [Ko-fi](https://ko-fi.com/rifaditya) 支持作者获取最新开发测试构建！
