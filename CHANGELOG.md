@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.31+26.3] - 2026-09-26
+
+### Added & Modernized
+- **Minecraft 26.3 Release Compatibility**:
+  - Full compatibility and stability upgrades for the official Minecraft 26.3 release.
+  - Seamlessly integrates with the modernized Fabric loader and tooling ecosystems.
+- **DasikLibrary 1.9.2 Integration**:
+  - Powered by the latest DasikLibrary 1.9.2 runtime for animal genetics tracking, dynamic GameRule synchronizations, and lifecycle management.
+- **Enhanced Runtime Guard**:
+  - Upgraded built-in version protection to verify clean classloading and prevent world save incompatibilities on newer Minecraft drops.
+
 ## [1.4.29+26.2] - 2026-09-03
 
 ### Performance & Memory Hygiene

@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.15.5'
+    id 'net.fabricmc.fabric-loom' version '1.15.2'
     id 'maven-publish'
 }
 
@@ -82,15 +82,14 @@ afterEvaluate {
                 if (jarFile.exists()) {
                     // 1. Mod Local Archive
                     def mcVer = project.findProperty('minecraft_version') ?: ''
-                    def localArchiveDir = file(mcVer ? "../../Archive Jar of all versions/MC ${mcVer}" : "../../Archive Jar of all versions")
-                    if (localArchiveDir.exists() || localArchiveDir.parentFile?.exists()) {
-                        localArchiveDir.mkdirs()
-                        copy {
-                            from jarFile
-                            into localArchiveDir
-                        }
-                        println "[AUTO-ARCHIVE] Successfully copied ${jarFile.name} to local Archive: ${localArchiveDir.canonicalPath}"
+                    def parentArchive = file(mcVer ? "../../Archive Jar of all versions/MC ${mcVer}" : "../../Archive Jar of all versions")
+                    def localArchiveDir = (parentArchive.exists() || parentArchive.parentFile?.exists()) ? parentArchive : file("Archive")
+                    localArchiveDir.mkdirs()
+                    copy {
+                        from jarFile
+                        into localArchiveDir
                     }
+                    println "[AUTO-ARCHIVE] Successfully copied ${jarFile.name} to local Archive: ${localArchiveDir.canonicalPath}"
 
                     // 2. Central Release Hub Archives Sync
                     File hubCandidate = projectDir

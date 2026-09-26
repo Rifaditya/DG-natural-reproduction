@@ -21,8 +21,12 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-003]` | `[FEATURE]` | Autonomous Gestation Timers & Prenatal Pasture Vitality | `[MEDIUM]` | `✅ RESOLVED` |
 | `[BL-NR-004]` | `[FEATURE]` | Herd Social Cohesion, Alpha Leadership & Flock Movement AI | `[MEDIUM]` | `✅ RESOLVED` |
 | `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `✅ RESOLVED` |
-| `[BL-NR-006]` | `[TECH_DEBT]` | Automated Headless JUnit & Fabric GameTest Verification Suite | `[MEDIUM]` | `📌 DEFERRED` |
-| `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting & 1 Jar 1 Version Matrix (`1.20.1`, `1.21.1`, `1.21.11`, `26.3+`) | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite (`1.4.31+26.2`) | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing (`1.4.32+26.2`) | `[LOW]` | `📌 DEFERRED` |
+| `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator (`1.4.33+26.2`) | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite (`1.4.34+26.2`) | `[MEDIUM]` | `📌 DEFERRED` |
+| `[BL-NR-006e]` | `[TECH_DEBT]` | Fabric Loom GameTest In-World Lifecycle (`1.4.35+26.2`) | `[HIGH]` | `📌 DEFERRED` |
+| `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting: Natural Reproduction | `[HIGH]` | `📌 DEFERRED` |
 | `[BL-NR-008]` | `[BUGFIX]` | Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes | `[HIGH]` | `✅ RESOLVED` |
 
 ---
@@ -264,67 +268,160 @@ In `AnimalBreedingMixin.java`, `customServerAiStep` executes broad-phase boundin
 
 ---
 
-### [BL-NR-006] Automated Headless JUnit & Fabric GameTest Verification Suite
+### [BL-NR-006a] Lineage & Genetics JUnit Suite
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[MEDIUM]`
 - **Status**: `📌 DEFERRED`
-- **Asset Mode**: `Strictly Code-Only (JUnit + GameTest Framework)`
-- **Target Component(s)**: `[NaturalReproductionTest.java](src/test/java/net/vanillaoutsider/naturalreproduction/NaturalReproductionTest.java)`, `[NaturalReproductionGameTests.java](src/test/java/net/vanillaoutsider/naturalreproduction/gametest/NaturalReproductionGameTests.java)`
-- **Date Added**: 2026-08-15
-
-#### ❓ Problem / Context
-The current unit test suite only asserts basic GameRule constants. As complex Delayed Gratification mechanics (inbreeding degradation, continuous density stunting, pasture enrichment, gestation periods) expand, comprehensive automated testing is required to prevent regressions across version updates.
+- **Target Version**: `1.4.31+26.2`
+- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/LineageGeneticsTest.java`
 
 #### 💡 Proposed Solution & Technical Specifications
-1. **Headless JUnit Assertions**:
-   - **Stunting Math Test**: Assert continuous stunting curve (`penaltyMultiplier = Math.max(0.95 - count * 0.05, 0.40)`) across count inputs 1 through 20.
-   - **Inbreeding Tier Test**: Assert pedigree ancestry matching across 3 generations.
-   - **Drop Yield Test**: Assert item count scaling across entity scales `0.25x` to `1.50x`.
-   - **Scale Bound Clamping**: Assert dynamic `min_scale` and `max_scale` limits.
-
-2. **Fabric GameTest Headless Structures**:
-   - `testCrowdedPenStunting`: Spawn 8 cows in a 3x3 fence pen, verify baby calf is stunted to `<= 0.60x` scale.
-   - `testSpaciousPastureRecovery`: Spawn 2 stunted cows in a 32x32 open meadow, verify offspring recovers scale towards `1.30x`.
-   - `testDensityCapSuppression`: Spawn 15 sheep in a 16-block radius, verify love mode is suppressed.
+- Assert 3-generation pedigree ancestry matching across Tier 0 (Diverse), Tier 1 (Moderate), Tier 2 (Severe), and Tier 3 (Extreme).
+- Assert hybrid vigor $+10\%$ scale & fertility bonus for outcrossed lineages.
+- Assert Tier 3 inbreeding rotten flesh drop degradation criteria.
+- Test pedigree NBT serialization and deserialization determinism.
 
 #### 🎯 Acceptance Criteria
-- [ ] `./gradlew test` executes and passes 100% of headless unit tests.
-- [ ] GameTests verify real in-world reproduction behaviors in headless environment.
+- [ ] `./gradlew test --tests net.vanillaoutsider.naturalreproduction.LineageGeneticsTest` passes 100%.
+- [ ] Ancestry matching cleanly isolates generational depth without recursive stack overflow.
 
 ---
 
-### [BL-NR-007] Multi-Era Anchor Porting & 1 Jar 1 Version Matrix (`1.20.1`, `1.21.1`, `1.21.11`, `26.3+`)
-- **Category**: `[FEATURE]`
+### [BL-NR-006b] Continuous Stunting & Scale Clamping Chaos Fuzzing
+- **Category**: `[TECH_DEBT]`
+- **Priority**: `[LOW]`
+- **Status**: `📌 DEFERRED`
+- **Target Version**: `1.4.32+26.2`
+- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/StuntingFuzzTest.java`
+
+#### 💡 Proposed Solution & Technical Specifications
+- Assert continuous overcrowding stunting curve ($\max(0.95 - \text{count} \times 0.05, 0.40)$) across density counts 0 through 100.
+- Assert spacious pasture recovery $+15\%$ ceiling clamping at `1.20f`.
+- 10,000-iteration chaos property fuzzing injecting `NaN`, `Infinity`, negative densities, and astronomical floats.
+
+#### 🎯 Acceptance Criteria
+- [ ] Continuous curve produces strictly monotonic values within $[0.40, 0.95]$.
+- [ ] 10k chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
+
+---
+
+### [BL-NR-006c] Spatial Cache Concurrency Load Simulator
+- **Category**: `[TECH_DEBT]`
 - **Priority**: `[MEDIUM]`
 - **Status**: `📌 DEFERRED`
-- **Asset Mode**: `Strictly Code-Only (Multi-Version Gradle Subprojects)`
-- **Target Component(s)**: Subprojects: `Natural Reproduction v1.20.1`, `Natural Reproduction v1.21.1`, `Natural Reproduction v1.21.11`, `Natural Reproduction v26.3`
+- **Target Version**: `1.4.33+26.2`
+- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/SpatialCacheConcurrencyTest.java`
+
+#### 💡 Proposed Solution & Technical Specifications
+- Multi-threaded load test dispatching 50 concurrent threads with `CountDownLatch`.
+- Simulate simultaneous cache queries, entry insertions, and TTL eviction sweeps.
+- Assert zero `ConcurrentModificationException` and zero deadlocks.
+
+#### 🎯 Acceptance Criteria
+- [ ] 50-thread concurrent blast completes with zero lockups or exceptions.
+- [ ] Thread safety verified for `SpatialBreedingCacheHelper` and `HerdSocialHelper`.
+
+---
+
+### [BL-NR-006d] Zero-Mock Headless Brigadier Command Suite
+- **Category**: `[TECH_DEBT]`
+- **Priority**: `[MEDIUM]`
+- **Status**: `📌 DEFERRED`
+- **Target Version**: `1.4.34+26.2`
+- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/NaturalReproductionCommandTest.java`
+
+#### 💡 Proposed Solution & Technical Specifications
+- Inspect full Brigadier syntax tree for `/naturalreproduction` and `/nr`.
+- Verify root and alias tree parity across all child nodes (`status`, `stats`, `purge`, `reload`).
+- Assert tab-completion suggestions match registered nodes.
+- Assert non-OP permission rejection (`PermissionSet.NO_PERMISSIONS`).
+
+#### 🎯 Acceptance Criteria
+- [ ] Dispatcher parse leaves 0 unread characters on valid commands.
+- [ ] Non-OP callers cannot execute mutating admin commands.
+
+---
+
+### [BL-NR-006e] Fabric Loom GameTest In-World Lifecycle
+- **Category**: `[TECH_DEBT]`
+- **Priority**: `[HIGH]`
+- **Status**: `📌 DEFERRED`
+- **Target Version**: `1.4.35+26.2`
+- **Target Component(s)**: `build.gradle`, `fabric.mod.json`, `src/test/java/net/vanillaoutsider/naturalreproduction/gametest/NaturalReproductionGameTests.java`
+
+#### 💡 Proposed Solution & Technical Specifications
+- Configure `loom.runs.gametest` with `-Dfabric-api.gametest`.
+- Register `"gametest"` entrypoint in `fabric.mod.json`.
+- Implement in-world GameTests: `testCrowdedPenStunting`, `testSpaciousPastureRecovery`, `testDensityCapSuppression`.
+
+#### 🎯 Acceptance Criteria
+- [ ] `./gradlew test gametest` executes headless server world GameTests cleanly.
+- [ ] Real in-world breeding behaviors pass assertion checks.
+
+---
+
+### [BL-NR-007] Multi-Era Anchor Porting: Natural Reproduction
+- **Category**: `[FEATURE]`
+- **Priority**: `[HIGH]`
+- **Status**: `📌 DEFERRED`
+- **Target Component(s)**: Multi-subproject directories, `AnimalBreedingMixin.java`, `SpatialBreedingCacheHelper.java`, `AnimalGestationHelper.java`, `HerdLeaderGoal.java`, `NaturalReproductionFabric.java`, `build.gradle`, `fabric.mod.json`, `RELEASE_QUEUE.md`
 - **Date Added**: 2026-08-15
 
 #### ❓ Problem / Context
-Natural Reproduction is currently built only for Minecraft 26.2. Under the workspace **Universal Multi-Era Version Architecture Law** and **1 Jar 1 Version Law**, flagship Delayed Gratification mods must provide native, zero-compromise builds for all targeted version anchors.
+Existing versions: `26.2` (established baseline at root). Missing anchors: Modern `26.1 / 26.1.2`, `26.3`; Older `1.21.11`, `1.21.1`, `1.20.1`.
+Per Multi-Era Version Matrix and 1 Jar 1 Version Policy, port mod across all missing anchors (Modern first, Older second).
 
-#### 💡 Proposed Solution & Technical Specifications
-1. **Legacy Anchor (`MC 1.20.1`)**:
-   - Directory: `Delayed Gratification Collection/Natural Reproduction/Natural Reproduction v1.20.1/natural-reproduction-v1201/`
-   - Java 17, Loom 1.10, Mojang mappings, `new Identifier(modid, path)`, NBT `CompoundTag`, `MatrixStack` render scaling.
+#### 💡 Architectural Specifications & Toolchain Anchors
+- **Phase 1: Modern Sovereign Anchors (Java 25+, Loom 1.15+, No Mappings Block)**:
+  - `MC 26.1 / 26.1.2`: Java 25, Fabric Loom 1.15+, `Identifier.fromNamespaceAndPath`, `EntityTypes`, `dasik-library` 26.1.
+  - `MC 26.2`: Java 25, Fabric Loom 1.15+, `Identifier.fromNamespaceAndPath`, `DynamicGameRuleManager` (already active baseline).
+  - `MC 26.3`: Java 25, Fabric Loom 1.15+, `minecraft_version=26.3-snapshot-6`, `fabric_version=0.156.1+26.3`.
+- **Phase 2: Older Anchors (Mojang Mappings, Java 21 / 17)**:
+  - `MC 1.21.11`: Java 21, Loom 1.15-SNAPSHOT (`fabric-loom-remap`), Mojang mappings, `Identifier.of`, `Optional<T>` CompoundTag, relocated entity packages.
+  - `MC 1.21.1`: Java 21, Loom 1.10+, Mojang mappings, `Identifier.of`, `DataComponents`, native `Attributes.SCALE`.
+  - `MC 1.20.1`: Java 17, Loom 1.4–1.10, Mojang mappings, `new Identifier`, primitive NBT CompoundTag, `FabricItemSettings`, `GameRules.Category` enum.
 
-2. **Transitional Anchor Early (`MC 1.21.1`)**:
-   - Directory: `Delayed Gratification Collection/Natural Reproduction/Natural Reproduction v1.21.1/natural-reproduction-v1211/`
-   - Java 21, `Identifier.of(modid, path)`, `DataComponents`, native `Attributes.SCALE`.
+#### 🧪 Verification & Acceptance Criteria
 
-3. **Transitional Anchor Late / Winter Drop (`MC 1.21.11`)**:
-   - Directory: `Delayed Gratification Collection/Natural Reproduction/Natural Reproduction v1.21.11/natural-reproduction-v12111/`
-   - Java 21, Loom 1.15 remapping plugin, `ValueOutput`/`ValueInput` serialization, relocated `net.minecraft.world.entity.animal.wolf.Wolf` package, `GameRuleCategory.register()`.
+##### Phase 1: Modern Sovereign Anchors (Priority 1)
+- [ ] **Anchor: MC 26.1 / 26.1.2**
+  - [ ] Subproject directory & build script scaffolding (`build.gradle`, `gradle.properties`, `settings.gradle`)
+  - [ ] Source adaptation, API/mixin relocation, and dasik-library wiring for target version
+  - [ ] Headless unit & integration test suite pass (`./gradlew test --no-daemon`)
+  - [ ] Clean binary compilation (`./gradlew build --no-daemon`)
+  - [ ] Mandatory Universal 4-Point Distribution (Local Archive, Hub Archive, External Vault `D:\`, Launcher Test Profile)
+  - [ ] Release queue registration in `RELEASE_QUEUE.md` (`- [ ]`) and `CHANGELOG.md` entry
+- [x] **Anchor: MC 26.2 - Already established baseline** (Subproject: root `src`)
+- [x] **Anchor: MC 26.3**
+  - [x] Subproject directory & build script scaffolding (`build.gradle`, `gradle.properties`, `settings.gradle`)
+  - [x] Source adaptation, API/mixin relocation, and dasik-library wiring for target version
+  - [x] Headless unit & integration test suite pass (`./gradlew test --no-daemon`)
+  - [x] Clean binary compilation (`./gradlew build --no-daemon`)
+  - [x] Mandatory Universal 4-Point Distribution (Local Archive, Hub Archive, External Vault `D:\`, Launcher Test Profile)
+  - [x] Release queue registration in `RELEASE_QUEUE.md` (`- [ ]`) and `CHANGELOG.md` entry
 
-4. **Modern Sovereign Drops (`MC 26.3`, `MC 27.x`+)**:
-   - Directory: `Delayed Gratification Collection/Natural Reproduction/Natural Reproduction v26.3/natural-reproduction-26.3/`
-   - Java 25+, non-obfuscated runtime, `Identifier.fromNamespaceAndPath()`, `EntityTypes`, `SavedDataType` Codecs.
-
-#### 🎯 Acceptance Criteria
-- [ ] Standalone Gradle subproject for each version anchor compiles cleanly.
-- [ ] Each subproject passes headless test suite.
-- [ ] Release JARs archived into `Archive Jar of all versions/MC <Version>/`.
+##### Phase 2: Older Anchors (Priority 2)
+- [ ] **Anchor: MC 1.21.11 (Java 21, Loom 1.15-SNAPSHOT `fabric-loom-remap`, Mojang mappings, `Identifier.of`, `Optional<T>` CompoundTag, relocated entity packages)**
+  - [ ] Subproject directory & build script scaffolding (`build.gradle`, `gradle.properties`, `settings.gradle`)
+  - [ ] Source adaptation, API/mixin relocation, and dasik-library wiring for target version
+  - [ ] Headless unit & integration test suite pass (`./gradlew test --no-daemon`)
+  - [ ] Clean binary compilation (`./gradlew build --no-daemon`)
+  - [ ] Mandatory Universal 4-Point Distribution (Local Archive, Hub Archive, External Vault `D:\`, Launcher Test Profile)
+  - [ ] Release queue registration in `RELEASE_QUEUE.md` (`- [ ]`) and `CHANGELOG.md` entry
+- [ ] **Anchor: MC 1.21.1 (Java 21, Loom 1.10+, Mojang mappings, `Identifier.of`, `DataComponents`, native `Attributes.SCALE`)**
+  - [ ] Subproject directory & build script scaffolding (`build.gradle`, `gradle.properties`, `settings.gradle`)
+  - [ ] Source adaptation, API/mixin relocation, and dasik-library wiring for target version
+  - [ ] Headless unit & integration test suite pass (`./gradlew test --no-daemon`)
+  - [ ] Clean binary compilation (`./gradlew build --no-daemon`)
+  - [ ] Mandatory Universal 4-Point Distribution (Local Archive, Hub Archive, External Vault `D:\`, Launcher Test Profile)
+  - [ ] Release queue registration in `RELEASE_QUEUE.md` (`- [ ]`) and `CHANGELOG.md` entry
+- [ ] **Anchor: MC 1.20.1 (Java 17, Loom 1.4-1.10, Mojang mappings, `new Identifier`, primitive NBT CompoundTag, `FabricItemSettings`, `GameRules.Category` enum)**
+  - [ ] Subproject directory & build script scaffolding (`build.gradle`, `gradle.properties`, `settings.gradle`)
+  - [ ] Source adaptation, API/mixin relocation, and dasik-library wiring for target version
+  - [ ] Headless unit & integration test suite pass (`./gradlew test --no-daemon`)
+  - [ ] Clean binary compilation (`./gradlew build --no-daemon`)
+  - [ ] Mandatory Universal 4-Point Distribution (Local Archive, Hub Archive, External Vault `D:\`, Launcher Test Profile)
+  - [ ] Release queue registration in `RELEASE_QUEUE.md` (`- [ ]`) and `CHANGELOG.md` entry
 
 ---
 

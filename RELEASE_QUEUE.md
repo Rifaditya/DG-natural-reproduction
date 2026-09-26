@@ -4,6 +4,7 @@ This file tracks built versions uploaded to Modrinth/CurseForge.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.31+26.3`** (2026-09-26) - Official Minecraft 26.3 stable release port, toolchain modernization, and DasikLibrary 1.9.2 integration.
 - [x] **`1.4.21+26.2`** (2026-09-03) - **Documentation, Wiki & Player Guide Synchronization**: Complete synchronization of wiki pages, player guides, storefront descriptions, and GameRules tables reflecting rebalanced scale bounds and dynamic gradual drops.
 - [x] **`1.4.20+26.2`** (2026-09-03) - **Harmonized Scale Bounds Synchronization**: Replaced legacy static scale bounds with dynamic queries to `min_scale` (`0.10x`) and `max_scale` (`1.20x`) across cramped stunting, spacious pasture recovery, pasture enrichment, prenatal gestation, and inbreeding degradation.
 - [x] **`1.4.19+26.2`** (2026-09-03) - **Dynamic Gradual Drop Scaling**: Dynamic drop rate formula giving 100% drops at `normal_scale`, scaling smoothly up to +50% bonus drops at `max_scale` and down to 0% at `min_scale`, with empty drop entity spawn cancellation.

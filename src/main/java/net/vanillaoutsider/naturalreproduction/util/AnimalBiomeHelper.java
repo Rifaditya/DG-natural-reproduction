@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.naturalreproduction.util;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -136,7 +136,7 @@ public final class AnimalBiomeHelper {
             );
         }
 
-        // 2. Biome Variant Skin Adaptation via 26.2 DataComponents API
+        // 2. Biome Variant Skin Adaptation via 26.3 DataComponents API
         if (enableVariants && biomeKey.isPresent()) {
             ResourceKey<Biome> key = biomeKey.get();
 
