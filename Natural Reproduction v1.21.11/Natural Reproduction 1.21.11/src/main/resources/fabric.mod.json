@@ -1,0 +1,52 @@
+{
+    "schemaVersion": 1,
+    "id": "natural-reproduction",
+    "version": "${version}",
+    "name": "Natural Reproduction",
+    "description": "Animals in the wild reproduce autonomously with dynamic genetics, size scaling, and breeding inheritance.",
+    "authors": [
+        "Dasik (Rifaditya)"
+    ],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/dg-natural-reproduction",
+        "sources": "https://github.com/Rifaditya/DG-natural-reproduction",
+        "issues": "https://github.com/Rifaditya/DG-natural-reproduction/issues"
+    },
+    "license": "GPL-3.0-or-later",
+    "icon": "assets/natural-reproduction/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric"
+        ],
+        "modmenu": [
+            "net.vanillaoutsider.naturalreproduction.client.ModMenuIntegration"
+        ]
+    },
+    "mixins": [
+        "natural-reproduction.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.19.3",
+        "minecraft": ">=1.21.11- <1.22-",
+        "java": ">=21",
+        "fabric-api": "*",
+        "dasik-library": ">=1.1.0+1.21.11"
+    },
+    "suggests": {
+        "yet-another-config-lib": "*",
+        "modmenu": "*"
+    },
+    "custom": {
+        "modrinth": {
+            "projectId": "WT4xq2BM",
+            "slug": "dg-natural-reproduction"
+        },
+        "modmenu": {
+            "links": {
+                "modmenu.donate": "https://ko-fi.com/dasikigaijin",
+                "modmenu.kofi": "https://ko-fi.com/dasikigaijin"
+            }
+        }
+    }
+}

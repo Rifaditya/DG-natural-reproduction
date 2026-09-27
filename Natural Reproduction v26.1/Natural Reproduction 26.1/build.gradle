@@ -1,0 +1,140 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.15.5'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenLocal()
+    maven { url = "https://maven.fabricmc.net/" }
+    maven { url = "https://maven.terraformersmc.com/releases/" }
+    maven { url = "https://maven.isxander.dev/releases" }
+    maven { url = "https://api.modrinth.com/maven" }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    
+    // Standalone Library
+    implementation("net.dasik.social:dasik-library:${project.dasik_library_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+
+    // Optional GUI Dependencies (YACL + ModMenu)
+    compileOnly "maven.modrinth:yacl:${project.yacl_version}"
+    compileOnly "com.terraformersmc:modmenu:18.0.0-beta.1"
+
+    // Testing
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.2"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "loader_version", project.fabric_loader_version
+    inputs.property "minecraft_version", project.minecraft_version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+               "loader_version": project.fabric_loader_version,
+               "minecraft_version": project.minecraft_version
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+}
+
+jar {
+    from("LICENSE") {
+        rename { String name -> name + "_" + project.archives_base_name }
+    }
+}
+
+afterEvaluate {
+    def targetJarTask = tasks.findByName('remapJar') ?: tasks.findByName('jar')
+    if (targetJarTask != null) {
+        def archiveTask = tasks.register('archiveReleaseJar') {
+            group = 'build'
+            description = 'Copies release JAR to local Archive and Central Release Hub'
+            dependsOn targetJarTask
+            doLast {
+                def jarFile = targetJarTask.archiveFile.get().asFile
+                if (jarFile.exists()) {
+                    // 1. Mod Local Archive
+                    def mcVer = project.findProperty('minecraft_version') ?: ''
+                    def parentArchive = file(mcVer ? "../../Archive Jar of all versions/MC ${mcVer}" : "../../Archive Jar of all versions")
+                    def localArchiveDir = (parentArchive.exists() || parentArchive.parentFile?.exists()) ? parentArchive : file("Archive")
+                    localArchiveDir.mkdirs()
+                    copy {
+                        from jarFile
+                        into localArchiveDir
+                    }
+                    println "[AUTO-ARCHIVE] Successfully copied ${jarFile.name} to local Archive: ${localArchiveDir.canonicalPath}"
+
+                    // 2. Central Release Hub Archives Sync
+                    File hubCandidate = projectDir
+                    File hubDir = null
+                    while (hubCandidate != null) {
+                        File checkDir = new File(hubCandidate, "minecraft-mod-release-hub")
+                        if (checkDir.exists()) {
+                            hubDir = checkDir
+                            break
+                        }
+                        hubCandidate = hubCandidate.parentFile
+                    }
+                    if (hubDir == null) {
+                        File fallback = new File("E:/Minecraft Project/minecraft-mod-release-hub")
+                        if (fallback.exists()) hubDir = fallback
+                    }
+                    if (hubDir != null && hubDir.exists()) {
+                        File hubConfigFile = new File(hubDir, "config/platform_projects.json")
+                        if (hubConfigFile.exists()) {
+                            try {
+                                def hubJson = new groovy.json.JsonSlurper().parse(hubConfigFile)
+                                def curPath = projectDir.canonicalPath.replace('\\', '/').toLowerCase()
+                                def matchedMod = hubJson.find { name, data ->
+                                    data.root_dir && curPath.contains(data.root_dir.replace('\\', '/').toLowerCase())
+                                }?.key
+                                if (matchedMod) {
+                                    File targetArchiveDir = new File(hubDir, "archives/${matchedMod}")
+                                    if (!targetArchiveDir.exists()) {
+                                        targetArchiveDir.mkdirs()
+                                    }
+                                    copy {
+                                        from jarFile
+                                        into targetArchiveDir
+                                    }
+                                    println "[HUB-ARCHIVE] Successfully copied ${jarFile.name} to release hub archives: ${targetArchiveDir.canonicalPath}"
+                                }
+                            } catch (Exception e) {
+                                println "[HUB-ARCHIVE] Note: Could not copy to release hub: ${e.message}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        build.finalizedBy(archiveTask)
+    }
+}

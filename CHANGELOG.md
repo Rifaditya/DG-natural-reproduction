@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.31+1.20.1] - 2026-09-28
+
+### Added & Multi-Era Compatibility
+- **Minecraft 1.20.1 Legacy Era Port**:
+  - Full compatibility and dedicated standalone JAR for Minecraft 1.20.1.
+  - Native support for 1.20.1 animal genetics, size scaling, and environmental breeding triggers.
+  - Legacy item lore and NBT data support for Fertilized Chicken Eggs.
+- **DasikLibrary 1.1.0+1.20.1 Integration**:
+  - Powered by the dedicated DasikLibrary 1.1.0+1.20.1 runtime for autonomous breeding, genetics, and dynamic GameRules.
+
+## [1.4.31+1.21.11] - 2026-09-27
+
+### Added & Multi-Era Compatibility
+- **Minecraft 1.21.11 Winter Drop Port**:
+  - Full compatibility and dedicated standalone JAR for Minecraft 1.21.11.
+  - Native support for 1.21.11 animal entity traits, wolf variants, and environment triggers.
+- **DasikLibrary 1.1.0+1.21.11 Integration**:
+  - Powered by the dedicated DasikLibrary 1.1.0+1.21.11 runtime for autonomous breeding, genetics, and dynamic GameRules.
+
 ## [1.4.31+26.3] - 2026-09-26
 
 ### Added & Modernized
