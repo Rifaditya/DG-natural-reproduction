@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.35+26.3`** (2026-09-28) - **Continuous Overcrowding Stunting & Pasture Recovery Suite**: Automated assertions verifying continuous stunting monotonicity [0.20f, 0.95f], saturation floor, and pasture recovery ceiling clamping.
 - [ ] **`1.4.34+26.3`** (2026-09-28) - **Multi-Era Lineage, Genetics & Drop Degradation Parity**: Full automated test verification of pedigree kinship matching, inbreeding progression (T0-T4), dilution, drop degradation, and codec serialization determinism.
 - [ ] **`1.4.33+26.3`** (2026-09-28) - **Drop Degradation & Pedigree Codec Serialization Determinism**: Automated headless test suite asserting Tier 3/4 drop conversion, secondary yield cuts, and deterministic pedigree codec serialization.
 - [ ] **`1.4.32+26.3`** (2026-09-28) - **Lineage & Pedigree Kinship Architecture Verification**: Full automated headless test suite verifying 3-generation pedigree kinship matching, inbreeding progression (Tiers 0-4), gradual dilution, and hybrid vigor scaling.

@@ -2,6 +2,15 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.3 are documented in this file.
 
+## [1.4.35+26.3] - 2026-09-28
+
+### Added & Verified
+- **Continuous Overcrowding Stunting Curve & Pasture Recovery Suite**:
+  - Implemented automated headless fuzz and unit assertions for continuous overcrowding stunting penalties, non-increasing monotonicity across population densities 0 to 100, and floor saturation at 0.20f.
+  - Verified spacious pasture recovery scale boost (+15%) with strict ceiling clamping at 1.20f without overshoot.
+  - Added negative density exploit protection assertions ensuring negative counts clamp safely to count 0.
+  - Asserted scale clamping across confinement boundaries down to the 0.10f minimum allowed limit.
+
 ## [1.4.34+26.3] - 2026-09-28
 
 ### Added & Verified

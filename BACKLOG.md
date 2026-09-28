@@ -24,7 +24,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-008]` | `[BUGFIX]` | Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes | `[HIGH]` | `26.2, 26.3` | `✅ RESOLVED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting: Natural Reproduction (Modern & Older Anchors) | `[HIGH]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
-| `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `📌 DEFERRED` |
+| `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `🚧 IN_PROGRESS` |
 | `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006e]` | `[TECH_DEBT]` | Fabric Loom GameTest In-World Lifecycle | `[HIGH]` | `All Anchors` | `📌 DEFERRED` |
@@ -371,18 +371,26 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 ### [BL-NR-006b] Continuous Stunting & Scale Clamping Chaos Fuzzing
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[LOW]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `🚧 IN_PROGRESS`
 - **Target Version**: `All Anchors`
 - **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/StuntingFuzzTest.java`
 
 #### 💡 Proposed Solution & Technical Specifications
-- Assert continuous overcrowding stunting curve ($\max(0.95 - \text{count} \times 0.05, 0.40)$) across density counts 0 through 100.
-- Assert spacious pasture recovery $+15\%$ ceiling clamping at `1.20f`.
-- 10,000-iteration chaos property fuzzing injecting `NaN`, `Infinity`, negative densities, and astronomical floats.
+- **Step 1 (`1.4.35+mc`)**: Continuous Overcrowding Stunting & Pasture Recovery Assertions (`StuntingFuzzTest.java`).
+  - Assert continuous overcrowding stunting curve ($\max(0.95 - \text{count} \times 0.05, 0.20)$) across density counts 0 through 100.
+  - Assert spacious pasture recovery $+15\%$ ceiling clamping at `maxAllowed` (`1.20f`).
+  - Assert severe overcrowding saturation floor ($0.20f$ for counts $\ge 15$).
+- **Step 2 (`1.4.36+mc`)**: 10,000-Iteration Chaos Property Fuzzing Engine.
+  - 10,000 randomized iterations with pseudo-random seed determinism (`Random(0xDA51C)`).
+  - Injections: `Float.NaN`, `Float.POSITIVE_INFINITY`, `Float.NEGATIVE_INFINITY`, negative densities ($-1000 \dots -1$), astronomical floats ($\pm 10^{38}$), and subnormal floats.
+  - Assert zero unhandled exceptions, zero `NaN` scale leaks, and strict confinement within $[0.10f, 1.20f]$.
+- **Step 3 (`1.4.37+mc`)**: Multi-Era Anchor Porting, Parity Sync & Verification across all 6 anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, `26.3`).
 
 #### 🎯 Acceptance Criteria
-- [ ] Continuous curve produces strictly monotonic values within $[0.40, 0.95]$.
-- [ ] 10k chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
+- [x] Step 1: Continuous curve produces strictly monotonic values within $[0.20, 0.95]$.
+- [x] Step 1: Spacious pasture recovery clamps cleanly at `1.20f` without overshoot.
+- [ ] Step 2: 10,000 chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
+- [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 
 ---
 
