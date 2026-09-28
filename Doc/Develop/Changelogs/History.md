@@ -1,6 +1,27 @@
 # Natural Reproduction - Version History
 
-## [1.4.21+26.2] - 2026-09-03
+## [1.4.33+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006a] Step 2: Drop Degradation & Pedigree Codec Serialization Determinism Tests**:
+  - Implemented headless assertions for Tier 3/4 prime meat drop conversion (50% rotten flesh, 50% bone, preserving drop quantity with floor 1).
+  - Implemented 75% secondary yield suppression tests (`Math.max(1, count / 4)`) for leather, wool, feathers, and rabbit hides on degraded stock.
+  - Implemented deterministic roundtrip serialization assertions for `nr_father:<UUID>` entity pedigree tags including null-safety and malformed string resilience.
+  - Implemented deterministic encode/decode assertions for `MockGeneticsRecord` with parent UUIDs, boolean inbred/active flags, and trait maps.
+  - Compiled release JAR `natural-reproduction-1.4.33+26.3.jar` and distributed across Local Archive, Central Hub Archive, and Vault `D:\`.
+
+## [1.4.32+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006a] Step 1: 3-Generation Pedigree Kinship & Inbreeding Tier Progression Engine Tests**:
+  - Implemented headless JUnit 5 suite in `src/test/java/net/vanillaoutsider/naturalreproduction/LineageGeneticsTest.java` (and synced to `Natural Reproduction v26.3`).
+  - Added deterministic assertions for 3-generation pedigree ancestry matching across Tier 0 (Diverse), Tier 1 (Moderate), Tier 2 (Severe), and Tier 3 (Extreme).
+  - Validated inbreeding tier step-up progression: $\text{tier} = \text{clamp}(\max(p_1, p_2) + 1, 1, 4)$.
+  - Validated gradual generational dilution: $\text{tier} = \max(0, \max(p_1, p_2) - 1)$.
+  - Validated hybrid vigor heterosis recovery bonus (+15% scale boost for clean outcrosses from degraded lineage stock).
+  - Validated multi-generational scale stunting and movement speed penalties across all tiers.
+  - Validated cyclic pedigree graph loop recursion safety and self-breeding prevention.
+  - Successfully verified all tests and built release JAR with triple-archive distribution.
 
 ### Changed
 - **Documentation, Wiki & Player Guide Synchronization**: Completely updated and verified encyclopedic wiki pages, player guides, storefront descriptions, and configuration references across all channels:

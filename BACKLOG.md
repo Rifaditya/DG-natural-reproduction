@@ -23,7 +23,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-005]` | `[PERF]` | Zero-Allocation Spatial Partitioning & High-Mob Density Throttling | `[HIGH]` | `26.2, 26.3` | `✅ RESOLVED` |
 | `[BL-NR-008]` | `[BUGFIX]` | Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes | `[HIGH]` | `26.2, 26.3` | `✅ RESOLVED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting: Natural Reproduction (Modern & Older Anchors) | `[HIGH]` | `All Anchors` | `✅ RESOLVED` |
-| `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
+| `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `🚧 IN_PROGRESS` |
 | `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
@@ -342,18 +342,28 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 ### [BL-NR-006a] Lineage & Genetics JUnit Suite
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[MEDIUM]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `🚧 IN_PROGRESS`
 - **Target Version**: `All Anchors`
 - **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/LineageGeneticsTest.java`
+- **Roadmap Tracker**: [`lineage_genetics_test_roadmap.md`](file:///C:/Users/fmrif/.gemini/antigravity/brain/52edd868-f3b2-4dd5-a02d-9fec2886a698/lineage_genetics_test_roadmap.md)
 
 #### 💡 Proposed Solution & Technical Specifications
-- Assert 3-generation pedigree ancestry matching across Tier 0 (Diverse), Tier 1 (Moderate), Tier 2 (Severe), and Tier 3 (Extreme).
-- Assert hybrid vigor $+10\%$ scale & fertility bonus for outcrossed lineages.
-- Assert Tier 3 inbreeding rotten flesh drop degradation criteria.
-- Test pedigree NBT serialization and deserialization determinism.
+- **Step 1 (`1.4.32+mc`)**: 3-Generation Pedigree Kinship & Inbreeding Tier Progression Engine Tests (`LineageGeneticsTest.java`).
+  - Assert 3-generation pedigree ancestry matching across Tier 0 (Diverse), Tier 1 (Moderate), Tier 2 (Severe), and Tier 3 (Extreme).
+  - Assert inbreeding tier progression: $\text{tier} = \text{clamp}(\max(p_1, p_2) + 1, 1, 4)$.
+  - Assert gradual generational dilution: $\text{tier} = \max(0, \max(p_1, p_2) - 1)$.
+  - Assert hybrid vigor $+15\%$ scale bonus for outcrossed lineages.
+  - Assert stunting penalties (-10% T1, -25% T2, 0.20x T3, 0.10x floor T4; speed -20% T2, -30% T3, -50% T4).
+- **Step 2 (`1.4.33+mc`)**: Drop Degradation & Pedigree Codec Serialization Determinism Tests.
+  - Assert Tier 3 inbreeding rotten flesh & bone drop degradation criteria.
+  - Assert secondary drop reduction (75% reduction on leather/wool/feathers).
+  - Test pedigree NBT / Codec serialization and deserialization determinism.
+- **Step 3 (`1.4.34+mc`)**: Multi-Era Anchor Porting, Parity Sync & Verification across all 6 anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, `26.3`).
 
 #### 🎯 Acceptance Criteria
-- [ ] `./gradlew test --tests net.vanillaoutsider.naturalreproduction.LineageGeneticsTest` passes 100%.
+- [ ] Step 1: Pedigree kinship, tier progression, dilution, and hybrid vigor assertions pass 100%.
+- [ ] Step 2: Drop degradation and serialization determinism assertions pass 100%.
+- [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 - [ ] Ancestry matching cleanly isolates generational depth without recursive stack overflow.
 
 ---

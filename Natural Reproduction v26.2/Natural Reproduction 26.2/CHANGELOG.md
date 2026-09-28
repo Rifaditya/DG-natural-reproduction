@@ -1,36 +1,14 @@
-# Changelog
+﻿# Changelog - Natural Reproduction (MC 26.2)
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.31+1.20.1] - 2026-09-28
-
-### Added & Multi-Era Compatibility
-- **Minecraft 1.20.1 Legacy Era Port**:
-  - Full compatibility and dedicated standalone JAR for Minecraft 1.20.1.
-  - Native support for 1.20.1 animal genetics, size scaling, and environmental breeding triggers.
-  - Legacy item lore and NBT data support for Fertilized Chicken Eggs.
-- **DasikLibrary 1.1.0+1.20.1 Integration**:
-  - Powered by the dedicated DasikLibrary 1.1.0+1.20.1 runtime for autonomous breeding, genetics, and dynamic GameRules.
-
-## [1.4.31+1.21.11] - 2026-09-27
-
-### Added & Multi-Era Compatibility
-- **Minecraft 1.21.11 Winter Drop Port**:
-  - Full compatibility and dedicated standalone JAR for Minecraft 1.21.11.
-  - Native support for 1.21.11 animal entity traits, wolf variants, and environment triggers.
-- **DasikLibrary 1.1.0+1.21.11 Integration**:
-  - Powered by the dedicated DasikLibrary 1.1.0+1.21.11 runtime for autonomous breeding, genetics, and dynamic GameRules.
-
-## [1.4.31+26.3] - 2026-09-26
+## [1.4.31+26.2] - 2026-09-27
 
 ### Added & Modernized
-- **Minecraft 26.3 Release Compatibility**:
-  - Full compatibility and stability upgrades for the official Minecraft 26.3 release.
-  - Seamlessly integrates with the modernized Fabric loader and tooling ecosystems.
-- **DasikLibrary 1.9.2 Integration**:
-  - Powered by the latest DasikLibrary 1.9.2 runtime for animal genetics tracking, dynamic GameRule synchronizations, and lifecycle management.
-- **Enhanced Runtime Guard**:
-  - Upgraded built-in version protection to verify clean classloading and prevent world save incompatibilities on newer Minecraft drops.
+- **Modern Parity Catch-Up**:
+  - Dedicated subproject segregation for MC 26.2.
+  - DasikLibrary 1.8.37 alignment and genetics scale modifier offset synchronization.
+  - Full compatibility with Minecraft 26.2 Java 25 toolchain and dynamic GameRules.
 
 ## [1.4.29+26.2] - 2026-09-03
 
@@ -45,8 +23,8 @@ All notable changes to this project will be documented in this file.
 ### Added & Refactored
 - **Species Fecundity & Dynamic Litter Sizes (`BreedingPipelineHelper` & `AnimalGestationHelper`)**:
   - Implemented `BreedingPipelineHelper.determineLitterSize(...)` modeling biological litter scaling based on maternal species and pasture enrichment.
-  - Multiparous swine & lagomorphs (Pigs, Rabbits) deliver litters of 1–2 piglets/kits, increasing up to 3 when pasture-enriched and well-nourished.
-  - Small predators (Wolves, Foxes, Cats, Ocelots) deliver litters of 1–2 pups/kittens.
+  - Multiparous swine & lagomorphs (Pigs, Rabbits) deliver litters of 1â€“2 piglets/kits, increasing up to 3 when pasture-enriched and well-nourished.
+  - Small predators (Wolves, Foxes, Cats, Ocelots) deliver litters of 1â€“2 pups/kittens.
   - Large ungulates (Cattle, Sheep, Goats, Equines, Camels) maintain realistic singleton births with a rare 5% twin chance when grazing in enriched pastures.
   - Updated `AnimalGestationHelper.deliverOffspringOrEgg` to spawn and finalize all litter offspring through `BreedingPipelineHelper.finalizeNewborn(...)`.
 
@@ -64,7 +42,7 @@ All notable changes to this project will be documented in this file.
 - **Intelligent Inbreeding-Avoidance Mate Selection (`AnimalBreedingMixin`)**:
   - Replaced naive index-0 candidate picking with `naturalreproduction$selectBestMate(self, potentialMates)` candidate fitness scoring.
   - Penalizes related mates (`isRelated` or `predictInbreedingRiskPercent > 0`) by -500.0+ points, ensuring unrelated mates standing further away are prioritized over close inbred siblings.
-  - Factors in existing candidate inbreeding tier (-50.0/tier), spatial proximity (-2.0 × distance-squared), and genetic scale bonus (+10.0 × scale).
+  - Factors in existing candidate inbreeding tier (-50.0/tier), spatial proximity (-2.0 Ã— distance-squared), and genetic scale bonus (+10.0 Ã— scale).
   - Preserves zero heap allocations during the evaluation loop and seamlessly falls back to the closest least-inbred candidate if all nearby animals are related.
 
 ## [1.4.25+26.2] - 2026-09-03
@@ -106,7 +84,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - **Documentation, Wiki & Player Guide Synchronization**: Completely updated and verified encyclopedic wiki pages, player guides, storefront descriptions, and configuration references across all channels:
-  - **Scale Bounds & Genetics**: Documented the organic `0.80x`–`0.95x` wild spawn roll, `0.95x` normal baseline, `0.10x` minimum floor, and `1.20x` maximum ceiling.
+  - **Scale Bounds & Genetics**: Documented the organic `0.80x`â€“`0.95x` wild spawn roll, `0.95x` normal baseline, `0.10x` minimum floor, and `1.20x` maximum ceiling.
   - **Dynamic Drop Rate Formulas**: Documented the continuous mathematical drop curve centered at `normal_scale` (+50% bonus at `1.20x`, 0% at `0.10x`, and empty item entity cancellation).
   - **Confinement & Pasture Recovery**: Updated mathematical degradation tables, continuous crowding penalty step, and spacious pasture recovery boost (+15% per generation).
   - **Platform Storefronts**: Synchronized Modrinth Markdown and CurseForge HTML description documents and GameRules master tables.
@@ -133,12 +111,12 @@ All notable changes to this project will be documented in this file.
 ## [1.4.18+26.2] - 2026-09-03
 
 ### Changed
-- **Wild Spawn Scale Rebalance**: Tightened initial wild animal scale rolls to `0.80x` – `0.95x`, preventing newly spawned wild animals from rolling excessively large sizes.
+- **Wild Spawn Scale Rebalance**: Tightened initial wild animal scale rolls to `0.80x` â€“ `0.95x`, preventing newly spawned wild animals from rolling excessively large sizes.
 - **Scale GameRule Boundary Tuning**: Updated `natural-reproduction:min_scale` default from `50` to `10` (`0.10x`) and `natural-reproduction:max_scale` default from `130` to `120` (`1.20x`).
 
 ### Added
 - **Normal Scale GameRule (`natural-reproduction:normal_scale`)**: Registered new integer GameRule defaulting to `95` (`0.95x`) defining the standard baseline animal scale.
-- **YACL Configuration Sliders**: Added GUI slider for Normal Scale (50%–150%) and updated sliders for Min Scale (5%–100%) and Max Scale (100%–200%).
+- **YACL Configuration Sliders**: Added GUI slider for Normal Scale (50%â€“150%) and updated sliders for Min Scale (5%â€“100%) and Max Scale (100%â€“200%).
 - **Brigadier Command Expansion**: Integrated `normal_scale` into `/naturalreproduction get`, `set`, `status`, and `reset`.
 - **11-Language Localization**: Full translation coverage for `normal_scale` across all 11 supported languages.
 
@@ -208,7 +186,7 @@ All notable changes to this project will be documented in this file.
   - *Compact Pasture Scan Bounds*: Optimized pasture scanning bounding box from 25x9x25 down to a compact 17x7x17 enclosure radius ($2,023$ blocks).
 - **Better Dogs Synergy & Tamed Pet Protection (`AnimalBreedingMixin`)**:
   - *Tamed Animals Autonomous Breeding Exemption*: Tamed dogs and pets never breed autonomously in the wild without explicit player interaction.
-  - *Instant Vanilla Birth Delivery*: Manual breeding of tamed dogs immediately delivers vanilla/Better Dogs litters (1–4 pups, personality DNA, scale alleles) with zero forced gestation delays.
+  - *Instant Vanilla Birth Delivery*: Manual breeding of tamed dogs immediately delivers vanilla/Better Dogs litters (1â€“4 pups, personality DNA, scale alleles) with zero forced gestation delays.
   - *Herd Flocking Scoping*: Restricted `FollowHerdLeaderGoal` strictly to pastoral livestock, allowing Better Dogs pack alpha leadership (`WildWolfFollowLeaderGoal`) to operate exclusively on wolves.
 - **Cooperative Herd Leader Caching (`HerdSocialHelper`)**: Implemented spatial chunk caching (`LEADER_CACHE`) caching elected Alpha leaders for 10 seconds (200 ticks), eliminating hundreds of redundant 24-block bounding box queries per second across loaded chunks.
 
@@ -224,7 +202,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - **Herd Social Cohesion, Alpha Leadership & Flock Movement AI**: Introduced emergent group dynamics and synchronized pastoral routines:
   - *Dynamic Alpha Leader Election*: In pastures with 3+ same-species animals, the largest/oldest mature animal is dynamically elected as the Alpha Leader based on scale genetics.
-  - *Follow Herd Leader AI Goal*: Herd followers maintain an organic 5–16 block soft grazing perimeter behind their Alpha, creating natural pastoral formations without unnatural clumping.
+  - *Follow Herd Leader AI Goal*: Herd followers maintain an organic 5â€“16 block soft grazing perimeter behind their Alpha, creating natural pastoral formations without unnatural clumping.
   - *Diurnal Schedule Cohesion*: Leaders steer grazing towards water troughs and shade at midday, and cluster the herd near barn shelter/fences at dusk to rest and protect calves.
   - *Predator Alarm & Synchronized Stampede*: When any herd member is damaged by predators or players, an alert distress sound triggers a 5-second coordinated stampede flight for all nearby herd members within 16 blocks.
 - **HerdSocialHelper**: Created single-purpose helper class managing leader elections, flocking bounds, diurnal schedule checks, and stampede alarm broadcasts.
@@ -295,7 +273,7 @@ All notable changes to this project will be documented in this file.
 ## [1.3.1+26.2] - 2026-08-08
 
 ### Added
-- **27 Per-Species GameRule Toggles & Dedicated Category**: Added 27 individual per-species GameRules under a dedicated `natural_reproduction_species` category (`§lNatural Reproduction - Species Toggles`). All 27 toggles default to `true` (ON), allowing admins to granularly enable or disable natural reproduction for any specific animal species (e.g. Wolf, Hoglin, Cow, Pig) via `/gamerule`, `/naturalreproduction set`, or the YACL config screen.
+- **27 Per-Species GameRule Toggles & Dedicated Category**: Added 27 individual per-species GameRules under a dedicated `natural_reproduction_species` category (`Â§lNatural Reproduction - Species Toggles`). All 27 toggles default to `true` (ON), allowing admins to granularly enable or disable natural reproduction for any specific animal species (e.g. Wolf, Hoglin, Cow, Pig) via `/gamerule`, `/naturalreproduction set`, or the YACL config screen.
 
 ## [1.3.0+26.2] - 2026-08-08
 
@@ -327,12 +305,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added & Changed
 - **Default Max Scale Update (1.3x)**: Updated default maximum animal scale bound from `1.50x` (150%) to `1.30x` (130%) across GameRules, genetics configs, YACL sliders, Brigadier commands, and localization.
-- **Bold Category Header Formatting**: Added `§l` formatting prefix to GameRule category translation keys so category headers (e.g. `Natural Reproduction (9 rules)`) render bolded in GameRule menus.
+- **Bold Category Header Formatting**: Added `Â§l` formatting prefix to GameRule category translation keys so category headers (e.g. `Natural Reproduction (9 rules)`) render bolded in GameRule menus.
 
 ## [1.2.4+26.2] - 2026-08-07
 
 ### Added
-- **Bold GameRule Title Formatting**: Added `§l` formatting prefix across all GameRule display names in `en_us.json` and builder registrations so GameRule titles appear bolded in vanilla and modded GameRule menus.
+- **Bold GameRule Title Formatting**: Added `Â§l` formatting prefix across all GameRule display names in `en_us.json` and builder registrations so GameRule titles appear bolded in vanilla and modded GameRule menus.
 
 ## [1.2.3+26.2] - 2026-08-07
 
@@ -373,7 +351,7 @@ All notable changes to this project will be documented in this file.
 
 ### Polished & Enhanced
 - **Full 5-GameRule Command Suite**: Updated `/naturalreproduction` Brigadier command suite to support `get`, `set`, `status`, and `reset` for `scale_drops` and `cramped_space_penalty` GameRules.
-- **Visual Breeding Particle Feedback**: Added particle indicators upon animal birth—spawning `ANGRY_VILLAGER` & `SMOKE` when cramped space stunting occurs, and green `HAPPY_VILLAGER` particles when spacious pasture size recovery occurs.
+- **Visual Breeding Particle Feedback**: Added particle indicators upon animal birthâ€”spawning `ANGRY_VILLAGER` & `SMOKE` when cramped space stunting occurs, and green `HAPPY_VILLAGER` particles when spacious pasture size recovery occurs.
 - **Platform Pages Update**: Refreshed CurseForge HTML and Modrinth markdown platform documentation.
 
 ## [1.0.8+26.2] - 2026-08-02
@@ -437,3 +415,4 @@ All notable changes to this project will be documented in this file.
 - **Autonomous Wild Breeding**: Animals (Cows, Pigs, Sheep, Chickens) autonomously enter love mode when healthy and in proximity to mates, bounded by population density cap GameRules.
 - **Livestock Animal Genetics Integration**: Full `DasikAnimalGeneticsAPI` integration providing individual scale/size (`0.75x` - `1.30x`), health, and movement speed traits.
 - **Breeding Inheritance & Pedigree**: Offspring inherit size, speed, and health traits from parent animals, with full parent UUID tracking and inbreeding penalty detection.
+
