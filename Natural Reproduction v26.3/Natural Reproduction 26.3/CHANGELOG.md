@@ -2,6 +2,17 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.3 are documented in this file.
 
+## [1.4.39+26.3] - 2026-09-28
+
+### Added & Verified
+- **Concurrent TTL Eviction & Purge Race Condition Stress Test**:
+  - Implemented 3-way asymmetric concurrency blast in headless unit test suite (`SpatialCacheConcurrencyTest`) pitting 20 reader threads, 20 writer threads, and 10 eviction threads against spatial density and pasture caches.
+  - Executed 50,000 total high-churn operations with simultaneous `entrySet().removeIf(...)`, `purgeExpired(now)`, and `clearCaches()`.
+  - Verified 100% thread safety with zero `ConcurrentModificationException`, zero deadlocks, and clean termination.
+- **Concurrent TTL Expiration Boundary Verification**:
+  - Asserted exact boundary condition behavior where `currentTime == expiryTime` across 500 pre-populated entries.
+  - Validated that concurrent purge threads cleanly sweep expired and exact-boundary entries while future entries remain completely intact.
+
 ## [1.4.38+26.3] - 2026-09-28
 
 ### Added & Verified

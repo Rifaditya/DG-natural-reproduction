@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.39+26.3`** (2026-09-28) - **Concurrent TTL Eviction & Purge Race Condition Test**: 3-way asymmetric stress testing pitting 20 readers, 20 writers, and 10 eviction threads against entrySet().removeIf() with zero exceptions.
 - [ ] **`1.4.38+26.3`** (2026-09-28) - **Spatial Cache Concurrency Load Simulator**: 50-thread concurrent blast asserting zero lockups, zero deadlocks, and thread-safe spatial cache access under high contention.
 - [ ] **`1.4.37+26.3`** (2026-09-28) - **Multi-Era Stunting, Pasture Recovery & Chaos Property Fuzzing Parity**: Full automated test verification of continuous stunting curve monotonicity, pasture recovery clamping, and 10,000-iteration chaos property fuzzing resilience.
 - [ ] **`1.4.36+26.3`** (2026-09-28) - **10,000-Iteration Chaos Property Fuzzing Engine**: Automated property-based fuzzing injecting NaN, +/-Infinity, astronomical floats, and negative densities with zero exception leaks and saturated clamping.

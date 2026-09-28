@@ -413,7 +413,7 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 
 #### 🎯 Acceptance Criteria
 - [x] Step 1: 50-thread concurrent blast completes with zero lockups or exceptions within 5-second timeout.
-- [ ] Step 2: Concurrent purge and eviction operations during active reads/writes complete with zero race condition exceptions.
+- [x] Step 2: Concurrent purge and eviction operations during active reads/writes complete with zero race condition exceptions.
 - [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 
 ---
