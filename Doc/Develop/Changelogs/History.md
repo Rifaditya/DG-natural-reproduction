@@ -1,5 +1,42 @@
 # Natural Reproduction - Version History
 
+## [1.4.40+all] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006c] Step 3: Multi-Era Anchor Porting, Parity Sync & Verification**:
+  - Ported and synchronized `SpatialCacheConcurrencyTest.java` across all 6 active Minecraft version anchors: `1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, and `26.3`.
+  - Enforced Java 17 compatibility and universal portability across all anchors with dedicated license headers and anchor verification comments.
+  - Executed automated headless JUnit 5 test suites (`./gradlew test`) passing 100% across all 6 anchor directories and repository root:
+    - 50-thread concurrent spatial cache blast (50,000 total operations under `CountDownLatch` barrier).
+    - Deterministic herd leader concurrent election (20 worker threads, alpha selection with ID tie-breaking).
+    - Concurrent pasture enrichment cache lookups and 64-bit composite coordinate packing/unpacking.
+    - 3-way asymmetric stress testing pitting 20 readers, 20 writers, and 10 eviction threads against concurrent `removeIf` sweeps with zero `ConcurrentModificationException`.
+    - Concurrent TTL expiration boundary assertions (`currentTime == expiryTime`) across 500 pre-populated entries.
+  - Executed clean distribution builds (`./gradlew build`) generating dedicated tagged JARs (`natural-reproduction-1.4.40+<mc>.jar`).
+  - Successfully verified Multi-Tier 4-Point Distribution across Subproject Archives, Mod Root Archive, Central Hub Archive (`minecraft-mod-release-hub/archives/Natural Reproduction/`), and External Vault `D:\`.
+  - Synchronized subproject `CHANGELOG.md` and `RELEASE_QUEUE.md` adhering to the Multi-Version Subproject Changelog & Queue Segregation Law.
+  - Upgraded Master Release Queue Lead SemVer to `1.4.40`.
+
+## [1.4.39+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006c] Step 2: Concurrent TTL Eviction & Purge Race Condition Stress Test**:
+  - Implemented 3-way asymmetric concurrency blast in headless unit test suite (`SpatialCacheConcurrencyTest`) pitting 20 reader threads, 20 writer threads, and 10 eviction threads against spatial density and pasture caches.
+  - Executed 50,000 total high-churn operations with simultaneous `entrySet().removeIf(...)`, `purgeExpired(now)`, and `clearCaches()`.
+  - Verified 100% thread safety with zero `ConcurrentModificationException`, zero deadlocks, and clean termination.
+  - Asserted exact boundary condition behavior where `currentTime == expiryTime` across 500 pre-populated entries.
+  - Compiled release JAR `natural-reproduction-1.4.39+26.3.jar` and distributed across Local Archive, Central Hub Archive, and Vault `D:\`.
+
+## [1.4.38+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006c] Step 1: 50-Thread Concurrent Insertion & Query Load Simulator**:
+  - Implemented headless multi-threaded unit test suite (`SpatialCacheConcurrencyTest`) dispatching 50 concurrent worker threads via dual-latch synchronization (`CountDownLatch`).
+  - Executed 50,000 spatial cache operations simulating high-contention chunk density queries, cache insertions, and TTL eviction passes.
+  - Asserted deterministic herd leader election across 20 threads with entity ID tie-breaking consistency.
+  - Multi-threaded pasture enrichment lookups and caching asserting bit-level integrity across 64-bit packed chunk coordinates.
+  - Compiled release JAR `natural-reproduction-1.4.38+26.3.jar` and distributed across Local Archive, Central Hub Archive, and Vault `D:\`.
+
 ## [1.4.37+all] - 2026-09-28
 
 ### Added & Verified

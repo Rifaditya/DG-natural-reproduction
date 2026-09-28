@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.40+26.2] - 2026-09-28
+
+### Added & Verified
+- **50-Thread Spatial Cache Concurrency Load Simulator**:
+  - Implemented headless multi-threaded unit test suite (`SpatialCacheConcurrencyTest`) dispatching 50 concurrent worker threads via dual-latch synchronization (`CountDownLatch`).
+  - Executed 50,000 concurrent operations under `CountDownLatch` barrier with zero deadlocks and zero exceptions.
+- **Concurrent TTL Eviction & Purge Race Condition Stress Test**:
+  - Implemented 3-way asymmetric stress testing pitting 20 readers, 20 writers, and 10 eviction threads against concurrent `removeIf` sweeps with zero `ConcurrentModificationException`.
+  - Asserted exact boundary condition behavior where `currentTime == expiryTime` across 500 pre-populated entries with clean eviction of expired keys while preserving future keys.
+- **Multi-Era Parity Lockstep**:
+  - Synchronized across all studio anchors.
+
 ## [1.4.37+26.2] - 2026-09-28
 
 ### Added & Verified
