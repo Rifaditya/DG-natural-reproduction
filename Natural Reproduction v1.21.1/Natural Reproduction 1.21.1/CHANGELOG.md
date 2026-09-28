@@ -2,6 +2,20 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 1.21.1 are documented in this file.
 
+## [1.4.41+1.21.1] - 2026-09-28
+
+### Added & Verified
+- **Zero-Mock Headless Brigadier Command Suite**:
+  - Implemented comprehensive headless unit test suite (`NaturalReproductionCommandTest`) asserting full Brigadier syntax hierarchy, alias parity, tab-completion suggestions, out-of-range bounds rejection, and OP permission gating.
+- **Short Command Alias `/nr` with 100% Tree Parity**:
+  - Registered `/nr` as a 1:1 alias for `/naturalreproduction` using modular subtree builders, ensuring identical command capabilities and auto-completion behavior.
+- **Role-Based Command Permission Scoping**:
+  - Ungated root command to Level 0, enabling unprivileged players to access read-only queries (`/nr help`, `/nr status`, `/nr stats`, `/nr get <rule>`, `/nr logs list`).
+  - Enforced strict Level 2 OP gating on modifying and administrative commands (`set`, `reset`, `reload`, `purge`, `trackerlogs enable/disable/clear`).
+- **Memory & Cache Diagnostic Commands**:
+  - Added `/nr stats` subcommand providing instant visibility into active GameRules, spatial density cache entries, pasture cache entries, and recorded reproduction event counts.
+  - Added `/nr purge [caches|logs|all]` subcommand for clearing spatial caches and event logs.
+
 ## [1.4.40+1.21.1] - 2026-09-28
 
 ### Added & Verified

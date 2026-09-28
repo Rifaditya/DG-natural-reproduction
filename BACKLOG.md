@@ -26,7 +26,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
-| `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
+| `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006e]` | `[TECH_DEBT]` | Fabric Loom GameTest In-World Lifecycle | `[HIGH]` | `All Anchors` | `📌 DEFERRED` |
 
 ---
@@ -421,19 +421,19 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 ### [BL-NR-006d] Zero-Mock Headless Brigadier Command Suite
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[MEDIUM]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Target Version**: `All Anchors`
-- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/NaturalReproductionCommandTest.java`
+- **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/command/NaturalReproductionCommandTest.java`, `src/main/java/net/vanillaoutsider/naturalreproduction/command/NaturalReproductionCommand.java`
 
 #### 💡 Proposed Solution & Technical Specifications
-- Inspect full Brigadier syntax tree for `/naturalreproduction` and `/nr`.
-- Verify root and alias tree parity across all child nodes (`status`, `stats`, `purge`, `reload`).
-- Assert tab-completion suggestions match registered nodes.
-- Assert non-OP permission rejection (`PermissionSet.NO_PERMISSIONS`).
+- Modularized `buildNode(dispatcher)` registering `/naturalreproduction` and short alias `/nr` with 100% tree parity.
+- Permission scoping: Level 0 for read-only queries (`help`, `status`, `stats`, `get`, `logs list`); Level 2 (`LEVEL_GAMEMASTERS` / `source.hasPermission(2)`) for mutating admin commands (`set`, `reset`, `reload`, `purge`, `trackerlogs`).
+- Diagnostic `stats` and hierarchical cache/log `purge [caches|logs|all]` subcommands.
+- Zero-mock headless JUnit assertions (`NaturalReproductionCommandTest.java`) across all 6 anchors.
 
 #### 🎯 Acceptance Criteria
-- [ ] Dispatcher parse leaves 0 unread characters on valid commands.
-- [ ] Non-OP callers cannot execute mutating admin commands.
+- [x] Dispatcher parse leaves 0 unread characters on valid commands.
+- [x] Non-OP callers cannot execute mutating admin commands.
 
 ---
 

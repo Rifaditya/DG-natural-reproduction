@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 1.21.11
 package net.vanillaoutsider.naturalreproduction.command;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.gamerules.GameRule;
 import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.vanillaoutsider.naturalreproduction.util.BreedingLogEntry;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
+import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
 
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class NaturalReproductionCommand {
     );
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(buildNode("naturalreproduction"));
+        dispatcher.register(buildNode("nr"));
+    }
+
+    private static LiteralArgumentBuilder<CommandSourceStack> buildNode(String rootLiteral) {
         LiteralArgumentBuilder<CommandSourceStack> getSubtree = Commands.literal("get")
             .then(Commands.literal("enabled").executes(ctx -> executeGetBool(ctx, "enabled")))
             .then(Commands.literal("density_cap").executes(ctx -> executeGetInt(ctx, "density_cap")))
@@ -66,6 +72,7 @@ public class NaturalReproductionCommand {
         }
 
         LiteralArgumentBuilder<CommandSourceStack> setSubtree = Commands.literal("set")
+            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
             .then(Commands.literal("enabled")
                 .then(Commands.argument("val", BoolArgumentType.bool())
                     .executes(ctx -> executeSetBool(ctx, "enabled", BoolArgumentType.getBool(ctx, "val")))))
@@ -139,41 +146,95 @@ public class NaturalReproductionCommand {
                     .executes(ctx -> executeSetBool(ctx, key, BoolArgumentType.getBool(ctx, "val")))));
         }
 
-        dispatcher.register(Commands.literal("naturalreproduction")
-            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+        return Commands.literal(rootLiteral)
             .then(Commands.literal("help").executes(NaturalReproductionCommand::executeHelp))
             .then(Commands.literal("status").executes(NaturalReproductionCommand::executeStatus))
+            .then(Commands.literal("stats").executes(NaturalReproductionCommand::executeStats))
             .then(getSubtree)
             .then(setSubtree)
-            .then(Commands.literal("reset").executes(NaturalReproductionCommand::executeReset))
-            .then(Commands.literal("reload").executes(NaturalReproductionCommand::executeReload))
+            .then(Commands.literal("reset")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(NaturalReproductionCommand::executeReset))
+            .then(Commands.literal("reload")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(NaturalReproductionCommand::executeReload))
+            .then(Commands.literal("purge")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(NaturalReproductionCommand::executePurgeAll)
+                .then(Commands.literal("caches").executes(NaturalReproductionCommand::executePurgeCaches))
+                .then(Commands.literal("logs").executes(NaturalReproductionCommand::executePurgeLogs))
+                .then(Commands.literal("all").executes(NaturalReproductionCommand::executePurgeAll)))
             .then(Commands.literal("trackerlogs")
                 .executes(NaturalReproductionCommand::executeListLogs)
                 .then(Commands.literal("list").executes(NaturalReproductionCommand::executeListLogs))
-                .then(Commands.literal("enable").executes(ctx -> executeSetBool(ctx, "tracker_logs", true)))
-                .then(Commands.literal("disable").executes(ctx -> executeSetBool(ctx, "tracker_logs", false)))
-                .then(Commands.literal("clear").executes(NaturalReproductionCommand::executeClearLogs)))
+                .then(Commands.literal("enable")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(ctx -> executeSetBool(ctx, "tracker_logs", true)))
+                .then(Commands.literal("disable")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(ctx -> executeSetBool(ctx, "tracker_logs", false)))
+                .then(Commands.literal("clear")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(NaturalReproductionCommand::executeClearLogs)))
             .then(Commands.literal("logs")
                 .executes(NaturalReproductionCommand::executeListLogs)
                 .then(Commands.literal("list").executes(NaturalReproductionCommand::executeListLogs))
-                .then(Commands.literal("enable").executes(ctx -> executeSetBool(ctx, "tracker_logs", true)))
-                .then(Commands.literal("disable").executes(ctx -> executeSetBool(ctx, "tracker_logs", false)))
-                .then(Commands.literal("clear").executes(NaturalReproductionCommand::executeClearLogs)))
-        );
+                .then(Commands.literal("enable")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(ctx -> executeSetBool(ctx, "tracker_logs", true)))
+                .then(Commands.literal("disable")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(ctx -> executeSetBool(ctx, "tracker_logs", false)))
+                .then(Commands.literal("clear")
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                    .executes(NaturalReproductionCommand::executeClearLogs)));
     }
 
     private static int executeHelp(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack src = ctx.getSource();
-        src.sendSuccess(() -> Component.literal("=== Natural Reproduction Commands ==="), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction status - Display current rule states"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction get <rule> - Get value of a specific rule"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction set <rule> <val> - Modify a rule setting"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction trackerlogs - View autonomous reproduction event logs"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction trackerlogs enable/disable - Enable or disable reproduction logging"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction trackerlogs clear - Clear reproduction event log history"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction reset - Reset all rules to defaults"), false);
-        src.sendSuccess(() -> Component.literal("/naturalreproduction reload - Reload configuration"), false);
+        src.sendSuccess(() -> Component.literal("=== Natural Reproduction Commands (/naturalreproduction or /nr) ==="), false);
+        src.sendSuccess(() -> Component.literal("/nr status - Display current rule states"), false);
+        src.sendSuccess(() -> Component.literal("/nr stats - Display rule states and memory/cache metrics"), false);
+        src.sendSuccess(() -> Component.literal("/nr get <rule> - Get value of a specific rule"), false);
+        src.sendSuccess(() -> Component.literal("/nr set <rule> <val> - Modify a rule setting (Admin)"), false);
+        src.sendSuccess(() -> Component.literal("/nr purge [caches|logs|all] - Purge caches or event logs (Admin)"), false);
+        src.sendSuccess(() -> Component.literal("/nr trackerlogs (or /nr logs) - View autonomous reproduction event logs"), false);
+        src.sendSuccess(() -> Component.literal("/nr trackerlogs enable/disable - Enable or disable reproduction logging (Admin)"), false);
+        src.sendSuccess(() -> Component.literal("/nr trackerlogs clear - Clear reproduction event log history (Admin)"), false);
+        src.sendSuccess(() -> Component.literal("/nr reset - Reset all rules to defaults (Admin)"), false);
+        src.sendSuccess(() -> Component.literal("/nr reload - Reload configuration and refresh animal genetics (Admin)"), false);
         src.sendSuccess(DasikSupportHelper::getCommandFooter, false);
+        return 1;
+    }
+
+    private static int executeStats(CommandContext<CommandSourceStack> ctx) {
+        executeStatus(ctx);
+        int densityCacheSize = SpatialBreedingCacheHelper.getDensityCacheSize();
+        int pastureCacheSize = SpatialBreedingCacheHelper.getPastureCacheSize();
+        int logCount = BreedingTrackerLogger.getLogCount();
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            String.format("Spatial Caches: Density Entries=%d, Pasture Entries=%d | Autonomous Reproduction History: %d recorded events",
+                densityCacheSize, pastureCacheSize, logCount)
+        ), false);
+        return 1;
+    }
+
+    private static int executePurgeCaches(CommandContext<CommandSourceStack> ctx) {
+        SpatialBreedingCacheHelper.clearCaches();
+        ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction]§r Cleared all spatial density and pasture enrichment caches."), true);
+        return 1;
+    }
+
+    private static int executePurgeLogs(CommandContext<CommandSourceStack> ctx) {
+        BreedingTrackerLogger.clear();
+        ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction Logs]§r All logged autonomous reproduction events cleared."), true);
+        return 1;
+    }
+
+    private static int executePurgeAll(CommandContext<CommandSourceStack> ctx) {
+        SpatialBreedingCacheHelper.clearCaches();
+        BreedingTrackerLogger.clear();
+        ctx.getSource().sendSuccess(() -> Component.literal("§a[Natural Reproduction]§r Cleared all spatial caches and reproduction tracker logs."), true);
         return 1;
     }
 
