@@ -2,6 +2,16 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 1.20.1 are documented in this file.
 
+## [1.4.34+1.20.1] - 2026-09-28
+
+### Added & Verified
+- **Lineage & Genetics Headless Verification Suite**:
+  - Implemented automated test assertions for 3-generation pedigree kinship matching, inbreeding progression (Tiers 0-4), gradual generational dilution, and hybrid vigor scaling (+15%).
+- **Drop Degradation & Codec Serialization**:
+  - Verified Tier 3/4 drop degradation, secondary yield suppression (75% cut), rotten flesh/bone conversion, and deterministic pedigree codec roundtrip.
+- **Multi-Era Parity Lockstep**:
+  - Synchronized across all studio anchors with full Java 17 bytecode compatibility.
+
 ## [1.4.31+1.20.1] - 2026-09-28
 
 ### Added & Multi-Era Compatibility

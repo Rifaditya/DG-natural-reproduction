@@ -1,5 +1,16 @@
 # Natural Reproduction - Version History
 
+## [1.4.34+all] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006a] Step 3: Multi-Era Anchor Porting, Parity Sync & Verification**:
+  - Ported and synchronized `LineageGeneticsTest.java` across all 6 active Minecraft version anchors: `1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, and `26.3`.
+  - Enforced Java 17 compatibility and universal portability across all anchors by implementing unified static `clamp(...)` helper methods.
+  - Executed automated headless JUnit 5 test suites (`./gradlew test`) passing 100% across all 6 anchor directories and repository root.
+  - Executed clean distribution builds (`./gradlew build`) generating dedicated tagged JARs (`natural-reproduction-1.4.34+<mc>.jar`).
+  - Successfully verified Multi-Tier 4-Point Distribution across Subproject Archives, Mod Root Archive, Central Hub Archive (`minecraft-mod-release-hub/archives/Natural Reproduction/`), and External Vault `D:\`.
+  - Synchronized subproject `CHANGELOG.md` and `RELEASE_QUEUE.md` adhering to the Multi-Version Subproject Changelog & Queue Segregation Law.
+
 ## [1.4.33+26.3] - 2026-09-28
 
 ### Added & Verified

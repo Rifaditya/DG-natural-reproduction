@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 1.20.1
 package net.vanillaoutsider.naturalreproduction;
 
 import java.util.Collections;

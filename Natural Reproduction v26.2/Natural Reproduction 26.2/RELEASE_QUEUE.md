@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.34+26.2`** (2026-09-28) - **Multi-Era Lineage, Genetics & Drop Degradation Parity**: Full automated test verification of pedigree kinship matching, inbreeding progression (T0-T4), dilution, drop degradation, and codec serialization determinism.
 - [ ] **`1.4.31+26.2`** (2026-09-27) - **Modern Parity Catch-Up**: Dedicated subproject segregation, DasikLibrary 1.8.37 alignment, and genetics scale modifier offset synchronization.
 - [ ] **`1.4.21+26.2`** (2026-09-03) - **Documentation, Wiki & Player Guide Synchronization**: Complete synchronization of wiki pages, player guides, storefront descriptions, and GameRules tables reflecting rebalanced scale bounds and dynamic gradual drops.
 - [ ] **`1.4.20+26.2`** (2026-09-03) - **Harmonized Scale Bounds Synchronization**: Replaced legacy static scale bounds with dynamic queries to `min_scale` (`0.10x`) and `max_scale` (`1.20x`) across cramped stunting, spacious pasture recovery, pasture enrichment, prenatal gestation, and inbreeding degradation.

@@ -134,7 +134,7 @@ public class LineageGeneticsTest {
         boolean triggersHybridVigor = babyTier == 0 && (p1Tier > 0 || p2Tier > 0);
         Assertions.assertTrue(triggersHybridVigor, "Reaching Tier 0 from degraded ancestry must trigger Hybrid Vigor");
 
-        float boostedScale = Math.clamp(baselineScale * 1.15f, minAllowed, maxAllowed);
+        float boostedScale = clamp(baselineScale * 1.15f, minAllowed, maxAllowed);
         Assertions.assertEquals(1.15f, boostedScale, 0.001f, "Hybrid vigor awards +15% scale boost (1.15x)");
 
         // Scenario B: Wild baseline animals (T0 + T0 -> T0) do NOT get hybrid vigor boost
@@ -143,7 +143,7 @@ public class LineageGeneticsTest {
 
         // Scenario C: Ceiling clamping at 1.20x max
         float highCurrentScale = 1.10f;
-        float clampedScale = Math.clamp(highCurrentScale * 1.15f, minAllowed, maxAllowed);
+        float clampedScale = clamp(highCurrentScale * 1.15f, minAllowed, maxAllowed);
         Assertions.assertEquals(1.20f, clampedScale, 0.001f, "Hybrid vigor must clamp cleanly to maxAllowed 1.20x");
     }
 
@@ -155,11 +155,11 @@ public class LineageGeneticsTest {
         float normalScale = 1.00f;
 
         // Tier 1: Mild stunting (-10% scale)
-        float t1Scale = Math.clamp(normalScale * 0.90f, minAllowed, maxAllowed);
+        float t1Scale = clamp(normalScale * 0.90f, minAllowed, maxAllowed);
         Assertions.assertEquals(0.90f, t1Scale, 0.001f, "Tier 1 inbreeding must apply -10% scale stunting");
 
         // Tier 2: Moderate stunting (-25% scale), -20% speed
-        float t2Scale = Math.clamp(normalScale * 0.75f, minAllowed, maxAllowed);
+        float t2Scale = clamp(normalScale * 0.75f, minAllowed, maxAllowed);
         float t2SpeedPenalty = -0.20f;
         Assertions.assertEquals(0.75f, t2Scale, 0.001f, "Tier 2 inbreeding must apply -25% scale stunting");
         Assertions.assertEquals(-0.20f, t2SpeedPenalty, 0.001f, "Tier 2 inbreeding must apply -20% movement speed penalty");
@@ -401,10 +401,18 @@ public class LineageGeneticsTest {
         return 0; // Fresh blood / diverse
     }
 
+    private static float clamp(float value, float min, float max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    private static int clamp(int value, int min, int max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
     private int computeInbreedingTier(int p1Tier, int p2Tier, boolean inbred) {
         int maxTier = Math.max(p1Tier, p2Tier);
         if (inbred) {
-            return Math.clamp(maxTier + 1, 1, 4);
+            return clamp(maxTier + 1, 1, 4);
         } else {
             return Math.max(0, maxTier - 1);
         }
