@@ -2,6 +2,22 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.3 are documented in this file.
 
+## [1.4.37+26.3] - 2026-09-28
+
+### Added & Verified
+- **Continuous Stunting Curve & Pasture Recovery Headless Test Suite**:
+  - Implemented automated headless fuzz and unit assertions for continuous overcrowding stunting penalties, monotonic non-increasing curve within [0.20f, 0.95f], and severe overcrowding saturation floor (0.20f).
+  - Verified spacious pasture recovery scale boost (+15%) with strict ceiling clamping at 1.20f without overshoot.
+  - Added negative density exploit protection assertions ensuring negative counts clamp safely to count 0.
+  - Asserted scale clamping across confinement boundaries down to the 0.10f minimum allowed limit.
+- **10,000-Iteration Chaos Property Fuzzing Engine**:
+  - Automated property-based fuzzing injecting NaN, +/-Infinity, astronomical floats, and negative densities with zero exception leaks and saturated clamping.
+  - Verified non-crashing fallback resilience and zero NaN/Infinity leaks across raw scale inputs, entity density counts (-1000 to 200), and dynamic bounds.
+  - Validated saturated scale clamping within technical bounds [0.05f, 2.0f] for astronomical floats (`±1e38f`, `Float.MAX_VALUE`), subnormal floats (`Float.MIN_VALUE`, `±0.0f`), and arithmetic overflows.
+  - Added targeted assertions for direct NaN injection, infinite scale injection (+/-Infinity), and astronomical overflow protection.
+- **Multi-Era Parity Lockstep**:
+  - Synchronized across all studio anchors.
+
 ## [1.4.36+26.3] - 2026-09-28
 
 ### Added & Verified

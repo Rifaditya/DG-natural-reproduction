@@ -24,7 +24,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-008]` | `[BUGFIX]` | Fix Entity Scale Modifier Offset & Attribute Stacking Causing Ubiquitous Giant Mob Sizes | `[HIGH]` | `26.2, 26.3` | `✅ RESOLVED` |
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting: Natural Reproduction (Modern & Older Anchors) | `[HIGH]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
-| `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `🚧 IN_PROGRESS` |
+| `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006e]` | `[TECH_DEBT]` | Fabric Loom GameTest In-World Lifecycle | `[HIGH]` | `All Anchors` | `📌 DEFERRED` |
@@ -371,7 +371,7 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 ### [BL-NR-006b] Continuous Stunting & Scale Clamping Chaos Fuzzing
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[LOW]`
-- **Status**: `🚧 IN_PROGRESS`
+- **Status**: `✅ RESOLVED`
 - **Target Version**: `All Anchors`
 - **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/StuntingFuzzTest.java`
 
@@ -390,7 +390,7 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 - [x] Step 1: Continuous curve produces strictly monotonic values within $[0.20, 0.95]$.
 - [x] Step 1: Spacious pasture recovery clamps cleanly at `1.20f` without overshoot.
 - [x] Step 2: 10,000 chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
-- [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
+- [x] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 
 ---
 

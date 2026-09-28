@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.37+26.3`** (2026-09-28) - **Multi-Era Stunting, Pasture Recovery & Chaos Property Fuzzing Parity**: Full automated test verification of continuous stunting curve monotonicity, pasture recovery clamping, and 10,000-iteration chaos property fuzzing resilience.
 - [ ] **`1.4.36+26.3`** (2026-09-28) - **10,000-Iteration Chaos Property Fuzzing Engine**: Automated property-based fuzzing injecting NaN, +/-Infinity, astronomical floats, and negative densities with zero exception leaks and saturated clamping.
 - [ ] **`1.4.35+26.3`** (2026-09-28) - **Continuous Overcrowding Stunting & Pasture Recovery Suite**: Automated assertions verifying continuous stunting monotonicity [0.20f, 0.95f], saturation floor, and pasture recovery ceiling clamping.
 - [ ] **`1.4.34+26.3`** (2026-09-28) - **Multi-Era Lineage, Genetics & Drop Degradation Parity**: Full automated test verification of pedigree kinship matching, inbreeding progression (T0-T4), dilution, drop degradation, and codec serialization determinism.

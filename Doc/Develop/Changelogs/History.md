@@ -1,5 +1,21 @@
 # Natural Reproduction - Version History
 
+## [1.4.37+all] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006b] Step 3: Multi-Era Anchor Porting, Parity Sync & Verification**:
+  - Ported and synchronized `StuntingFuzzTest.java` across all 6 active Minecraft version anchors: `1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, and `26.3`.
+  - Enforced Java 17 compatibility and universal portability across all anchors with dedicated license headers and anchor verification comments.
+  - Executed automated headless JUnit 5 test suites (`./gradlew test`) passing 100% across all 6 anchor directories and repository root:
+    - Continuous overcrowding stunting penalties, monotonic non-increasing curve [0.20f, 0.95f], and saturation floor (0.20f).
+    - Spacious pasture recovery scale boost (+15%) with strict ceiling clamping at 1.20f.
+    - Negative density exploit protection and confinement scale bounds [0.10f, 1.20f].
+    - 10,000-iteration chaos property fuzzing (`0xDA51CL` seed determinism) injecting NaN, +/-Infinity, astronomical floats, and negative densities with zero exception leaks and saturated clamping.
+  - Executed clean distribution builds (`./gradlew build`) generating dedicated tagged JARs (`natural-reproduction-1.4.37+<mc>.jar`).
+  - Successfully verified Multi-Tier 4-Point Distribution across Subproject Archives, Mod Root Archive, Central Hub Archive (`minecraft-mod-release-hub/archives/Natural Reproduction/`), and External Vault `D:\`.
+  - Synchronized subproject `CHANGELOG.md` and `RELEASE_QUEUE.md` adhering to the Multi-Version Subproject Changelog & Queue Segregation Law.
+  - Upgraded Master Release Queue Lead SemVer to `1.4.37`.
+
 ## [1.4.36+26.3] - 2026-09-28
 
 ### Added & Verified
