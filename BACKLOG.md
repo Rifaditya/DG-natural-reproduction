@@ -389,7 +389,7 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 #### 🎯 Acceptance Criteria
 - [x] Step 1: Continuous curve produces strictly monotonic values within $[0.20, 0.95]$.
 - [x] Step 1: Spacious pasture recovery clamps cleanly at `1.20f` without overshoot.
-- [ ] Step 2: 10,000 chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
+- [x] Step 2: 10,000 chaos iterations produce zero unhandled exceptions and clamp safely within $[0.10f, 1.20f]$.
 - [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 
 ---

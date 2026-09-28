@@ -2,7 +2,7 @@
 
 > **Mod Project Master Ground-Truth Document**  
 > *Last Synchronized: 2026-09-28*  
-> **Modrinth ID**: `WT4xq2BM` (`dg-natural-reproduction`) | **CurseForge ID**: `1642683` (`dg-natural-reproduction`) | **Lead SemVer**: `1.4.35`
+> **Modrinth ID**: `WT4xq2BM` (`dg-natural-reproduction`) | **CurseForge ID**: `1642683` (`dg-natural-reproduction`) | **Lead SemVer**: `1.4.36`
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Target MC | Generational Era | Live on Platforms | Next Queued Version | Status & Cadence Action | Feature Highlights / Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MC 26.3** | Modern Lead | — | `1.4.31+26.3` | ⏳ **Queued (Lead)** | Minecraft 26.3 stable release port, toolchain modernization, DasikLibrary 1.9.2 integration. Followed by `1.4.32`-`1.4.35` Lineage & Stunting Fuzz JUnit suites. |
+| **MC 26.3** | Modern Lead | — | `1.4.31+26.3` | ⏳ **Queued (Lead)** | Minecraft 26.3 stable release port, toolchain modernization, DasikLibrary 1.9.2 integration. Followed by `1.4.32`-`1.4.36` Lineage & Stunting Fuzz JUnit suites. |
 | **MC 26.2** | Modern Predecessor | MR: `1.4.21+26.2` / CF: `1.4.21+26.2` | `1.4.31+26.2` | 🔄 **Catch-Up Phase** | Modern parity catch-up, dedicated subproject segregation, DasikLibrary 1.8.37 alignment. Followed by `1.4.34+26.2`. |
 | **MC 26.1** | Modern Predecessor | — | `1.4.31+26.1` | ⏳ **Queued** | Dedicated subproject segregation for MC 26.1 / 26.1.2, Java 25 bytecode, EntityType API adaptation. Followed by `1.4.34+26.1`. |
 | **MC 1.21.11** | Winter Drop | — | `1.4.31+1.21.11` | ⏳ **Queued** | Winter Drop port: Java 21 bytecode, Loom 1.15-SNAPSHOT remap, DasikLibrary 1.1.0+1.21.11 wiring. Followed by `1.4.34+1.21.11`. |

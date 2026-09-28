@@ -1,5 +1,25 @@
 # Natural Reproduction - Version History
 
+## [1.4.36+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006b] Step 2: 10,000-Iteration Chaos Property Fuzzing Engine**:
+  - Implemented high-volume pseudo-random property fuzzing (`0xDA51CL` seed determinism) injecting 10,000 numerical edge cases into the scale calculation pipeline.
+  - Verified non-crashing fallback resilience and zero NaN/Infinity leaks across raw scale inputs, entity density counts (-1000 to 200), and dynamic bounds.
+  - Validated saturated scale clamping within technical bounds [0.05f, 2.0f] for astronomical floats (`±1e38f`, `Float.MAX_VALUE`), subnormal floats (`Float.MIN_VALUE`, `±0.0f`), and arithmetic overflows.
+  - Added targeted assertions for direct NaN injection, infinite scale injection (+/-Infinity), and astronomical overflow protection.
+  - Compiled release JAR `natural-reproduction-1.4.36+26.3.jar` and distributed across Local Archive, Central Hub Archive, and Vault `D:\`.
+
+## [1.4.35+26.3] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006b] Step 1: Continuous Overcrowding Stunting & Pasture Recovery Suite**:
+  - Implemented deterministic unit assertions verifying smooth continuous overcrowding stunting curve and non-increasing monotonicity across densities 0 to 100.
+  - Verified severe overcrowding saturation floor (0.20f) for counts >= 15.
+  - Verified spacious pasture recovery ceiling clamping (+15% boost clamped cleanly at 1.20f maxAllowed).
+  - Verified negative density exploit protection ensuring negative counts clamp safely to count 0 (0.95f multiplier).
+  - Compiled release JAR `natural-reproduction-1.4.35+26.3.jar` and distributed across Local Archive, Central Hub Archive, and Vault `D:\`.
+
 ## [1.4.34+all] - 2026-09-28
 
 ### Added & Verified

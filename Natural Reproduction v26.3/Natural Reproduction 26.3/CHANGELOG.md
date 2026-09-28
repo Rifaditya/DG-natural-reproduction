@@ -2,6 +2,15 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.3 are documented in this file.
 
+## [1.4.36+26.3] - 2026-09-28
+
+### Added & Verified
+- **10,000-Iteration Chaos Property Fuzzing Engine**:
+  - Implemented high-volume pseudo-random property fuzzing (`0xDA51CL` seed determinism) injecting 10,000 numerical edge-case combinations into the scale calculation pipeline.
+  - Verified non-crashing fallback resilience and zero NaN/Infinity leaks across raw scale inputs, entity density counts (-1000 to 200), and dynamic bounds.
+  - Validated saturated scale clamping within technical bounds [0.05f, 2.0f] for astronomical floats (`±1e38f`, `Float.MAX_VALUE`), subnormal floats (`Float.MIN_VALUE`, `±0.0f`), and arithmetic overflows.
+  - Added targeted assertions for direct NaN injection, infinite scale injection (+/-Infinity), and astronomical overflow protection.
+
 ## [1.4.35+26.3] - 2026-09-28
 
 ### Added & Verified
