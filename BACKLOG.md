@@ -25,7 +25,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 | `[BL-NR-007]` | `[FEATURE]` | Multi-Era Anchor Porting: Natural Reproduction (Modern & Older Anchors) | `[HIGH]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006a]` | `[TECH_DEBT]` | Lineage & Genetics JUnit Suite | `[MEDIUM]` | `All Anchors` | `✅ RESOLVED` |
 | `[BL-NR-006b]` | `[TECH_DEBT]` | Continuous Stunting & Scale Clamping Chaos Fuzzing | `[LOW]` | `All Anchors` | `✅ RESOLVED` |
-| `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
+| `[BL-NR-006c]` | `[TECH_DEBT]` | Spatial Cache Concurrency Load Simulator | `[MEDIUM]` | `All Anchors` | `🚧 IN_PROGRESS` |
 | `[BL-NR-006d]` | `[TECH_DEBT]` | Zero-Mock Headless Brigadier Command Suite | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` |
 | `[BL-NR-006e]` | `[TECH_DEBT]` | Fabric Loom GameTest In-World Lifecycle | `[HIGH]` | `All Anchors` | `📌 DEFERRED` |
 
@@ -397,18 +397,24 @@ Per the **Multi-Era Anchor Parity Law** and **1 Jar 1 Version Policy**, all acti
 ### [BL-NR-006c] Spatial Cache Concurrency Load Simulator
 - **Category**: `[TECH_DEBT]`
 - **Priority**: `[MEDIUM]`
-- **Status**: `📌 DEFERRED`
+- **Status**: `🚧 IN_PROGRESS`
 - **Target Version**: `All Anchors`
 - **Target Component(s)**: `src/test/java/net/vanillaoutsider/naturalreproduction/SpatialCacheConcurrencyTest.java`
 
 #### 💡 Proposed Solution & Technical Specifications
-- Multi-threaded load test dispatching 50 concurrent threads with `CountDownLatch`.
-- Simulate simultaneous cache queries, entry insertions, and TTL eviction sweeps.
-- Assert zero `ConcurrentModificationException` and zero deadlocks.
+- **Step 1 (`1.4.38+mc`)**: 50-Thread Concurrent Insertion & Query Load Simulator.
+  - Dispatch 50 concurrent worker threads via `ExecutorService` and synchronized `CountDownLatch`.
+  - Simulate 50,000 total spatial density and pasture cache operations.
+  - Assert zero `ConcurrentModificationException` and zero deadlocks.
+- **Step 2 (`1.4.39+mc`)**: Concurrent TTL Eviction & Purge Race Condition Stress Test.
+  - Concurrent mix of reader threads, writer threads, and eviction threads calling `purgeExpired(now)` and `clearCaches()`.
+  - Assert zero exceptions during `removeIf` and atomic consistency of cache metrics.
+- **Step 3 (`1.4.40+mc`)**: Multi-Era Anchor Porting, Parity Sync & Verification across all 6 anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, `26.3`).
 
 #### 🎯 Acceptance Criteria
-- [ ] 50-thread concurrent blast completes with zero lockups or exceptions.
-- [ ] Thread safety verified for `SpatialBreedingCacheHelper` and `HerdSocialHelper`.
+- [x] Step 1: 50-thread concurrent blast completes with zero lockups or exceptions within 5-second timeout.
+- [ ] Step 2: Concurrent purge and eviction operations during active reads/writes complete with zero race condition exceptions.
+- [ ] Step 3: `./gradlew test` passes 100% across all 6 version anchors.
 
 ---
 
