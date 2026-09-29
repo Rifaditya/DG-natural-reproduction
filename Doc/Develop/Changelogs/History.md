@@ -1,5 +1,38 @@
 # Natural Reproduction - Version History
 
+## [1.4.43+all] - 2026-09-29
+
+### Added & Verified
+- **[BL-NR-006e] Steps 2 & 3: Fabric Loom GameTest In-World Lifecycle & Multi-Era Anchor Porting**:
+  - Implemented Pillar 4 In-Engine GameTest Suite (`NaturalReproductionGameTests.java`) across all 6 Minecraft version anchors: `26.3`, `26.2`, `26.1`, `1.21.11`, `1.21.1`, and `1.20.1`.
+  - Configured `testDensityCapSuppression`: asserts that when local species population meets or exceeds `reproductionDensityCap`, natural breeding is suppressed.
+  - Configured `testCrowdedPenStunting`: asserts that offspring born in overcrowded conditions experience gradual stunting with strict clamping to `0.10x` physical floor.
+  - Configured `testSpaciousPastureRecovery`: asserts that offspring born in spacious, enriched pastures (with hay bales and water cauldrons) receive scale recovery boosts up to `1.20x` maximum ceiling.
+  - Configured `loom.runs.gametest` and helper task `task gametest(dependsOn: 'runGametest')` across all subproject `build.gradle` files using Gradle 9.3 layout API.
+  - Registered `"fabric-gametest"` entrypoints in all subproject `fabric.mod.json` manifests.
+  - Executed automated headless JUnit test suites (`./gradlew test`) passing 100% (55/55 tests) across all 6 anchor directories and repository root.
+  - Executed distribution builds (`./gradlew build`) producing dedicated tagged JARs (`natural-reproduction-1.4.43+<mc>.jar`).
+  - Completed Multi-Tier 4-Point Distribution across Subproject Archives, Mod Root Archive, Central Hub Archive (`minecraft-mod-release-hub/archives/Natural Reproduction/`), Modrinth profiles, and Vault `D:\`.
+  - Upgraded Master Release Queue Lead SemVer to `1.4.43`.
+
+## [1.4.42+26.3] - 2026-09-29
+
+### Added & Verified
+- **[BL-NR-006e] Step 1: Toolchain Alignment, Loom GameTest Run & Entrypoint Infrastructure**:
+  - Resolved MC 26.3 `CommandSourceStack` constructor mismatch in `NaturalReproductionCommandTest.java` updating to modern 7-argument signature.
+  - Added `loom.runs.gametest` configuration and Gradle `gametest` task in MC 26.3 `build.gradle` using Gradle 9.3 `project.layout.buildDirectory.get()` API.
+  - Declared `"fabric-gametest"` entrypoint in `fabric.mod.json` for modern lead anchor.
+  - Verified `./gradlew test` passes 55/55 tests cleanly in MC 26.3.
+
+## [1.4.41+all] - 2026-09-28
+
+### Added & Verified
+- **[BL-NR-006d] Steps 1-3: Zero-Mock Headless Brigadier Command Suite & Parity Rollout**:
+  - Implemented comprehensive Brigadier command suite (`NaturalReproductionCommand.java`) and zero-mock headless JUnit assertions (`NaturalReproductionCommandTest.java`) across all 6 anchors.
+  - Added short alias `/nr` and standard commands: `help`, `status`, `stats`, `get`, `set`, `reset`, `reload`, `purge [caches|logs|all]`, `trackerlogs`.
+  - Enforced permission scoping: Level 0 read-only queries, Level 2 mutating admin actions.
+  - Distributed release JARs `natural-reproduction-1.4.41+<mc>.jar` across all archives.
+
 ## [1.4.40+all] - 2026-09-28
 
 ### Added & Verified

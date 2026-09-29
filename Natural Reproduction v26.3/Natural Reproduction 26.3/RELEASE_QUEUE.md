@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.43+26.3`** (2026-09-29) - **Fabric Loom GameTest In-World Lifecycle**: Pillar 4 in-world GameTest suite (`NaturalReproductionGameTests`) verifying live server reproductive behaviors, density cap suppression, crowded pen stunting floor (0.10x), and spacious pasture recovery (1.20x) with Loom runtime automation.
 - [ ] **`1.4.41+26.3`** (2026-09-28) - **Zero-Mock Headless Brigadier Command Suite & `/nr` Alias**: Full headless command tree verification, `/nr` short alias parity, role-based permission gating (Level 0 vs Level 2), `/nr stats` cache diagnostics, and `/nr purge` memory management.
 - [ ] **`1.4.40+26.3`** (2026-09-28) - **Multi-Era Spatial Cache Concurrency & TTL Eviction Parity**: Full automated test verification of 50-thread concurrent cache blast, alpha leader election, and concurrent TTL eviction race conditions.
 - [ ] **`1.4.39+26.3`** (2026-09-28) - **Concurrent TTL Eviction & Purge Race Condition Test**: 3-way asymmetric stress testing pitting 20 readers, 20 writers, and 10 eviction threads against entrySet().removeIf() with zero exceptions.

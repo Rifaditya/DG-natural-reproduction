@@ -3,6 +3,10 @@
 build/
 out/
 bin/
+logs/
+**/logs/
+run/
+**/run/
 
 # Archives & JARs
 Archive/

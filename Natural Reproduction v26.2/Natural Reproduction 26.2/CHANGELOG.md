@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.43+26.2] - 2026-09-29
+
+### Added & Verified
+- **Pillar 4 In-Engine Fabric GameTest Suite**:
+  - Implemented headless in-world GameTest suite (`NaturalReproductionGameTests`) verifying live server reproductive behaviors inside headless server structures.
+  - Added `testDensityCapSuppression`: asserts that local populations exceeding `reproductionDensityCap` cleanly suppress natural reproduction.
+  - Added `testCrowdedPenStunting`: asserts that offspring in overcrowded pens experience stunting down to `0.10x` physical scale floor.
+  - Added `testSpaciousPastureRecovery`: asserts that breeding in enriched pastures (hay bales and water cauldrons) grants scale recovery boosts up to `1.20x`.
+- **Loom GameTest Automation Infrastructure**:
+  - Configured `loom.runs.gametest` and helper task `task gametest(dependsOn: 'runGametest')` in `build.gradle` using Gradle 9.3 layout API.
+  - Registered `"fabric-gametest"` entrypoint in `fabric.mod.json`.
+
 ## [1.4.41+26.2] - 2026-09-28
 
 ### Added & Verified

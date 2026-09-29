@@ -1,8 +1,8 @@
 # 🎛️ Master Release Queue: Delayed Gratification — Natural Reproduction
 
 > **Mod Project Master Ground-Truth Document**  
-> *Last Synchronized: 2026-09-28*  
-> **Modrinth ID**: `WT4xq2BM` (`dg-natural-reproduction`) | **CurseForge ID**: `1642683` (`dg-natural-reproduction`) | **Lead SemVer**: `1.4.41`
+> *Last Synchronized: 2026-09-29*  
+> **Modrinth ID**: `WT4xq2BM` (`dg-natural-reproduction`) | **CurseForge ID**: `1642683` (`dg-natural-reproduction`) | **Lead SemVer**: `1.4.43`
 
 ---
 

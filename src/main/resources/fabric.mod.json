@@ -8,8 +8,9 @@
         "Dasik (Rifaditya)"
     ],
     "contact": {
-        "homepage": "https://github.com/Dasik/Natural-Reproduction",
-        "sources": "https://github.com/Dasik/Natural-Reproduction"
+        "homepage": "https://github.com/Rifaditya/DG-natural-reproduction",
+        "sources": "https://github.com/Rifaditya/DG-natural-reproduction",
+        "issues": "https://github.com/Rifaditya/DG-natural-reproduction/issues"
     },
     "license": "GPL-3.0-or-later",
     "icon": "assets/natural-reproduction/icon.png",
@@ -20,6 +21,9 @@
         ],
         "modmenu": [
             "net.vanillaoutsider.naturalreproduction.client.ModMenuIntegration"
+        ],
+        "fabric-gametest": [
+            "net.vanillaoutsider.naturalreproduction.gametest.NaturalReproductionGameTests"
         ]
     },
     "mixins": [
@@ -37,6 +41,10 @@
         "modmenu": "*"
     },
     "custom": {
+        "modrinth": {
+            "projectId": "WT4xq2BM",
+            "slug": "dg-natural-reproduction"
+        },
         "modmenu": {
             "links": {
                 "modmenu.donate": "https://ko-fi.com/dasikigaijin",

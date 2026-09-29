@@ -21,6 +21,9 @@
         ],
         "modmenu": [
             "net.vanillaoutsider.naturalreproduction.client.ModMenuIntegration"
+        ],
+        "fabric-gametest": [
+            "net.vanillaoutsider.naturalreproduction.gametest.NaturalReproductionGameTests"
         ]
     },
     "mixins": [
