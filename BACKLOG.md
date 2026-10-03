@@ -14,7 +14,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 
 ## 📊 Backlog Summary
 
-*No active backlog items.* All features, bugfixes, and technical debt tickets are resolved and preserved in permanent version history ([History.md](Doc/Develop/Changelogs/History.md)).
+*No active backlog items*
 
 ---
 
@@ -22,3 +22,9 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 - **Categories**: `[FEATURE]`, `[REFINEMENT]`, `[BUGFIX]`, `[PERF]`, `[TECH_DEBT]`
 - **Priorities**: `[HIGH]` (Critical logic fix/enhancement), `[MEDIUM]` (Quality of life / optimization), `[LOW]` (Minor polish)
 - **Statuses**: `📌 DEFERRED` (Queued for future work), `🚧 IN_PROGRESS` (Active development), `✅ RESOLVED` (Implemented and verified)
+
+---
+
+## 📝 Detailed Backlog Entries
+
+*(All queued tasks resolved and archived in History.md and RELEASE_QUEUE.md)*
