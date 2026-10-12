@@ -1,5 +1,19 @@
 # Natural Reproduction - Version History
 
+## [1.4.44+all] - 2026-10-12
+
+### Fixed & Verified
+- **[BL-NR-007] Purge ModVersionGuard String Reflection Runtime Crash across all anchors (1.20.1, 1.21.1, 1.21.11, 26.1, 26.2, 26.3, root)**:
+  - **Root Cause**: `NaturalReproductionFabric.onInitialize()` invoked `ModVersionGuard.checkClass("Natural Reproduction", "net.minecraft.world.entity.animal.Animal")`. Because `Class.forName(String)` passed an unremapped string literal, the check threw `ClassNotFoundException` in Knot ClassLoader in production, triggering a fatal `RuntimeException` during initialization.
+  - **Resolution**: Purged `ModVersionGuard.checkClass(...)` from `NaturalReproductionFabric.java` and deleted dead `ModVersionGuard.java` class files across all anchors (1.20.1, 1.21.1, 1.21.11, 26.1, 26.2, 26.3, root). Delegated environment validation to native `fabric.mod.json` metadata per the Anti-Unremapped-Reflection Law.
+  - **Pre-Compile SemVer Bump**: Increment `mod_version` from `1.4.43` to `1.4.44` across all `gradle.properties` files.
+  - **Verification**: Clean headless JUnit test and build passes (`./gradlew test build`) producing dedicated release JARs (`natural-reproduction-1.4.44+<mc>.jar`) across all 6 anchors.
+  - **Commit Hashes**:
+    - `7d6be9a`: `fix(1.20.1): purge unremapped ModVersionGuard reflection crash [BL-NR-007]`
+    - `3f3cd18`: `fix(1.21.1): purge unremapped ModVersionGuard reflection crash [BL-NR-007]`
+    - `93928ca`: `fix(1.21.11): purge unremapped ModVersionGuard reflection crash [BL-NR-007]`
+    - `547062b`: `fix(26.x): purge unremapped ModVersionGuard reflection crash [BL-NR-007]`
+
 ## [1.4.43+all] - 2026-09-29
 
 ### Added & Verified

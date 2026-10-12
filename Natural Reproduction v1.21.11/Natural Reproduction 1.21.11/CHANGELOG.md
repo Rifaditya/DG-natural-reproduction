@@ -2,6 +2,11 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 1.21.11 are documented in this file.
 
+## [1.4.44+1.21.11] - 2026-10-12
+
+### Fixed
+- Fixed runtime crash caused by redundant reflection checks during mod initialization on dedicated servers and clients.
+
 ## [1.4.43+1.21.11] - 2026-09-29
 
 ### Added & Verified

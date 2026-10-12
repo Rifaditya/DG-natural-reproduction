@@ -2,6 +2,11 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.1 are documented in this file.
 
+## [1.4.44+26.1] - 2026-10-12
+
+### Fixed
+- Fixed runtime crash caused by redundant reflection checks during mod initialization on dedicated servers and clients.
+
 ## [1.4.43+26.1] - 2026-09-29
 
 ### Added & Verified
