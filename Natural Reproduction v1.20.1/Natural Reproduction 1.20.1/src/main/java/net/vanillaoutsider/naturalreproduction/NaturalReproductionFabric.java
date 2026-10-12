@@ -94,8 +94,6 @@ public class NaturalReproductionFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModVersionGuard.checkClass("Natural Reproduction", "net.minecraft.world.entity.animal.Animal");
-
         net.fabricmc.loader.api.FabricLoader.getInstance()
             .getModContainer(MOD_ID)
             .ifPresent(container -> LOGGER.info("Natural Reproduction v{} Initializing...", container.getMetadata().getVersion().getFriendlyString()));
