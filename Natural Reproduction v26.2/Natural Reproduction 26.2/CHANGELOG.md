@@ -100,7 +100,7 @@ All notable changes to this project will be documented in this file.
 ## [1.4.27+26.2] - 2026-09-03
 
 ### Added & Expanded
-- **Complete 27-Species Biome Ecology Mapping (`AnimalBiomeHelper`)**:
+- **Complete 27-Species Biome Ecology Mapping** (`AnimalBiomeHelper`):
   - Expanded `AnimalBiomeHelper.isNativeBiome(...)` from 8 species to all 27 vanilla animal species.
   - Added native biome habitats for Arid & Mountain fauna (Camel, Armadillo, Goat, Llama, Trader Llama), Jungle specialists (Panda, Ocelot, Parrot), Forest & Meadow foragers (Bee, Fox, Cat), Equines (Horse, Donkey, Mule), Nether dwellers (Strider, Hoglin), and Aquatic/Amphibian/Ancient species (Mooshroom, Turtle, Axolotl, Sniffer).
   - Animals reproducing within their natural home biomes now universally qualify for the +15% climate genetics quality boost.
@@ -108,7 +108,7 @@ All notable changes to this project will be documented in this file.
 ## [1.4.26+26.2] - 2026-09-03
 
 ### Added & Refactored
-- **Intelligent Inbreeding-Avoidance Mate Selection (`AnimalBreedingMixin`)**:
+- **Intelligent Inbreeding-Avoidance Mate Selection** (`AnimalBreedingMixin`):
   - Replaced naive index-0 candidate picking with `naturalreproduction$selectBestMate(self, potentialMates)` candidate fitness scoring.
   - Penalizes related mates (`isRelated` or `predictInbreedingRiskPercent > 0`) by -500.0+ points, ensuring unrelated mates standing further away are prioritized over close inbred siblings.
   - Factors in existing candidate inbreeding tier (-50.0/tier), spatial proximity (-2.0 Ã— distance-squared), and genetic scale bonus (+10.0 Ã— scale).
@@ -117,7 +117,7 @@ All notable changes to this project will be documented in this file.
 ## [1.4.25+26.2] - 2026-09-03
 
 ### Fixed & Refactored
-- **World-Reload Safe Herd Social Follow AI (`AnimalBreedingMixin`)**:
+- **World-Reload Safe Herd Social Follow AI** (`AnimalBreedingMixin`):
   - Replaced persistent NBT trait `nr_herd_goal` check with active in-memory `GoalSelector` inspection (`naturalreproduction$hasHerdGoal()`).
   - Resolved issue where animals reloading from disk or across chunk unloads permanently lost their `FollowHerdLeaderGoal` because persistent genetics flags prevented re-attaching runtime goals.
   - Animals now seamlessly retain active herd/pack follow behavior across server restarts, chunk unloads, and dimension changes.
@@ -125,7 +125,7 @@ All notable changes to this project will be documented in this file.
 ## [1.4.24+26.2] - 2026-09-03
 
 ### Changed & Refined
-- **Tamed-Only Pet Exemption Filter (`AnimalBreedingMixin`)**:
+- **Tamed-Only Pet Exemption Filter** (`AnimalBreedingMixin`):
   - Refined entity gating filter from blanket `self instanceof TamableAnimal` to `self instanceof TamableAnimal tamable && tamable.isTame()`.
   - Tamed player pets (wolves, cats) remain fully protected and exclusively handled by vanilla / Better Dogs mechanics.
   - Wild wolves and stray cats now actively participate in Natural Reproduction: autonomous breeding, alpha herd/pack leadership, gestation, and genetics.
@@ -143,7 +143,7 @@ All notable changes to this project will be documented in this file.
 ## [1.4.22+26.2] - 2026-09-03
 
 ### Added & Refactored
-- **Unified Post-Birth Lifecycle Pipeline (`BreedingPipelineHelper`)**:
+- **Unified Post-Birth Lifecycle Pipeline** (`BreedingPipelineHelper`):
   - Centralized all newborn post-birth subsystems into a cohesive helper (`BreedingPipelineHelper.finalizeNewborn(...)`).
   - Standardized the sequential execution of genetics inheritance, cramped space stunting vs. spacious pasture recovery, inbreeding lineage effects, pasture enrichment vitality boosts (+10% scale), and biome variant/climate adaptations.
   - Added native ambient birth audio cue on successful newborn delivery.
@@ -184,7 +184,7 @@ All notable changes to this project will be documented in this file.
 - **Scale GameRule Boundary Tuning**: Updated `natural-reproduction:min_scale` default from `50` to `10` (`0.10x`) and `natural-reproduction:max_scale` default from `130` to `120` (`1.20x`).
 
 ### Added
-- **Normal Scale GameRule (`natural-reproduction:normal_scale`)**: Registered new integer GameRule defaulting to `95` (`0.95x`) defining the standard baseline animal scale.
+- **Normal Scale GameRule** (`natural-reproduction:normal_scale`): Registered new integer GameRule defaulting to `95` (`0.95x`) defining the standard baseline animal scale.
 - **YACL Configuration Sliders**: Added GUI slider for Normal Scale (50%â€“150%) and updated sliders for Min Scale (5%â€“100%) and Max Scale (100%â€“200%).
 - **Brigadier Command Expansion**: Integrated `normal_scale` into `/naturalreproduction get`, `set`, `status`, and `reset`.
 - **11-Language Localization**: Full translation coverage for `normal_scale` across all 11 supported languages.
@@ -242,27 +242,27 @@ All notable changes to this project will be documented in this file.
 ## [1.4.7+26.2] - 2026-08-30
 
 ### Fixed & Enhanced
-- **Scale Attribute Modifier Fix Integration (`DasikLibrary 1.8.35`)**: Updated dependency to DasikLibrary 1.8.35, resolving the issue where vanilla animals unintentionally doubled in size (2.0x scale) on entity spawn and initial genetics roll.
+- **Scale Attribute Modifier Fix Integration** (`DasikLibrary 1.8.35`): Updated dependency to DasikLibrary 1.8.35, resolving the issue where vanilla animals unintentionally doubled in size (2.0x scale) on entity spawn and initial genetics roll.
 - **Dynamic Entity Scale Refresh on `/naturalreproduction reload`**: Enhanced `/naturalreproduction reload` command to iterate all loaded entities in world memory and dynamically re-apply and clamp genetics scale modifiers against updated `min_scale` and `max_scale` GameRules.
 
 ## [1.4.6+26.2] - 2026-08-17
 
 ### Added & Optimized
-- **Zero-Allocation Spatial Partitioning & High-Mob Density Throttling (`[BL-NR-005]`)**:
+- **Zero-Allocation Spatial Partitioning & High-Mob Density Throttling** (`[BL-NR-005]`):
   - *Staggered 100-Tick (5-second) Modulo*: Distributed autonomous livestock breeding checks across tick cycles (`(id + gameTime) % 100 == 0`) with proportional probability scaling (`rate / 100`), reducing server AI check overhead by over 95%.
-  - *Fast-Fail Probability Ordering*: Random reproduction chance is rolled before any block or entity scans occur, skipping 99.9% of heavy world interactions in constant $O(1)$ time.
+  - *Fast-Fail Probability Ordering*: Random reproduction chance is rolled before any block or entity scans occur, skipping 99.9% of heavy world interactions in constant O(1) time.
   - *SpatialBreedingCacheHelper*: Created single-purpose spatial cache managing sub-chunk entity density counts (100-tick TTL) and pasture enrichment evaluation (200-tick TTL), eliminating redundant bounding-box entity scans and block state iterations across neighboring livestock.
-  - *Compact Pasture Scan Bounds*: Optimized pasture scanning bounding box from 25x9x25 down to a compact 17x7x17 enclosure radius ($2,023$ blocks).
-- **Better Dogs Synergy & Tamed Pet Protection (`AnimalBreedingMixin`)**:
+  - *Compact Pasture Scan Bounds*: Optimized pasture scanning bounding box from 25x9x25 down to a compact 17x7x17 enclosure radius (2,023 blocks).
+- **Better Dogs Synergy & Tamed Pet Protection** (`AnimalBreedingMixin`):
   - *Tamed Animals Autonomous Breeding Exemption*: Tamed dogs and pets never breed autonomously in the wild without explicit player interaction.
   - *Instant Vanilla Birth Delivery*: Manual breeding of tamed dogs immediately delivers vanilla/Better Dogs litters (1â€“4 pups, personality DNA, scale alleles) with zero forced gestation delays.
   - *Herd Flocking Scoping*: Restricted `FollowHerdLeaderGoal` strictly to pastoral livestock, allowing Better Dogs pack alpha leadership (`WildWolfFollowLeaderGoal`) to operate exclusively on wolves.
-- **Cooperative Herd Leader Caching (`HerdSocialHelper`)**: Implemented spatial chunk caching (`LEADER_CACHE`) caching elected Alpha leaders for 10 seconds (200 ticks), eliminating hundreds of redundant 24-block bounding box queries per second across loaded chunks.
+- **Cooperative Herd Leader Caching** (`HerdSocialHelper`): Implemented spatial chunk caching (`LEADER_CACHE`) caching elected Alpha leaders for 10 seconds (200 ticks), eliminating hundreds of redundant 24-block bounding box queries per second across loaded chunks.
 
 ## [1.4.5+26.2] - 2026-08-17
 
 ### Fixed
-- **Startup Mixin Transformation Crash (`AnimalBreedingMixin`)**: Fixed game startup crash (`InvalidMixinException`) caused by attempting to `@Shadow protected GoalSelector goalSelector` on `Animal.class`. Made `AnimalBreedingMixin` extend `AgeableMob` directly, allowing `goalSelector` to be resolved cleanly via native Java superclass inheritance without `@Shadow`.
+- **Startup Mixin Transformation Crash** (`AnimalBreedingMixin`): Fixed game startup crash (`InvalidMixinException`) caused by attempting to `@Shadow protected GoalSelector goalSelector` on `Animal.class`. Made `AnimalBreedingMixin` extend `AgeableMob` directly, allowing `goalSelector` to be resolved cleanly via native Java superclass inheritance without `@Shadow`.
 
 ## [1.4.4+26.2] - 2026-08-15 [BROKEN / CRASHED ON STARTUP]
 

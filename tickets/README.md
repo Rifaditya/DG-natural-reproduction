@@ -1,0 +1,17 @@
+# 🎫 Natural Reproduction Ticket Catalog
+
+This directory contains dedicated atomic ticket files for **Natural Reproduction** under the **Modular Backlog Standard** (Item 11 of the Studio Constitution).
+
+---
+
+## 📋 Active Tickets Index
+
+| Ticket ID | Category | Title | Status | File Link |
+| :--- | :--- | :--- | :--- | :--- |
+| `[BL-NR-008]` | `[TECH_DEBT]` | Adopt 5-Pillar Testing & Sidedness Verification Harness | `📌 DEFERRED` | [`BL-NR-008.md`](BL-NR-008.md) |
+| `[BL-NR-009]` | `[TECH_DEBT]` | Migrate Command Suite to Universal Brigadier Command Framework | `📌 DEFERRED` | [`BL-NR-009.md`](BL-NR-009.md) |
+
+---
+
+> [!NOTE]
+> Worker subagents should be directed to individual ticket files to minimize prompt token overhead.

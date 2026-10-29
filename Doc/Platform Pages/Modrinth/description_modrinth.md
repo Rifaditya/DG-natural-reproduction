@@ -218,10 +218,6 @@ If you enjoy the **Delayed Gratification Collection** and want to support ongoin
 > **Indonesian Users:** SocioBuzz and Saweria support local payment methods (GoPay, OVO, DANA, QRIS) if you wish to support me locally!
 
 
-> [!TIP]
-> **Dedicated Server Hosting Partner:**
-> Looking for a reliable server to play with friends? Check out **BisectHosting** for 1-click modpack installations, automated backups, and 24/7 dedicated customer support.
-
 ---
 
 ## 📜 Credits & Modpack Permissions

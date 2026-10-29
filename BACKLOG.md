@@ -1,20 +1,18 @@
 # 📌 Natural Reproduction Backlog
 
+<!-- Highest Historical ID: BL-NR-009 (Next Ticket Must Start at BL-NR-010) -->
+> **Next Available Ticket ID**: `[BL-NR-010]`
+
 This file tracks planned features, technical refinements, performance optimizations, and deferred bug fixes for **Natural Reproduction** under the **Delayed Gratification (DG)** design track (*"Invest in the world, and the world pays dividends"*).
-
----
-
-## 🛡 Code-Only & Vanilla-First Architectural Directive
-In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-20260626-001]`), all mechanics planned in this backlog are engineered **strictly using code and native vanilla resources**:
-- **Visual & Physical States**: Handled purely via vanilla entity attributes (`minecraft:scale`, `generic.max_health`, `generic.movement_speed`), vanilla DataComponents, and dynamic vanilla particle emitters (`ParticleTypes.WAX_ON`, `SMOKE`, `ANGRY_VILLAGER`, `HAPPY_VILLAGER`, `SQUID_INK`).
-- **World & Habitat Structures**: Utilizes existing interactive vanilla blocks (`Blocks.CAULDRON`, `Blocks.COMPOSTER`, `Blocks.HAY_BLOCK`, `Blocks.WATER`, `Blocks.GRASS_BLOCK`, `Blocks.DIRT`) without custom blocks or 3D block models.
-- **Entity Identity & Breeding**: Powered entirely by vanilla entity models, vanilla egg entities/blocks (`Blocks.FROGSPAWN`, `Blocks.TURTLE_EGG`), vanilla sound events, and custom Java AI goals (`GoalSelector`). **Zero custom 3D models or external textures required.**
 
 ---
 
 ## 📊 Backlog Summary
 
-*No active backlog items*
+| ID | Category | Title | Priority | Target Version | Status | Specification |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [`BL-NR-008`](tickets/BL-NR-008.md) | `[TECH_DEBT]` | Adopt 5-Pillar Testing & Sidedness Verification Harness | `[MEDIUM]` | All Anchors | 📌 DEFERRED | [View Ticket](tickets/BL-NR-008.md) |
+| [`BL-NR-009`](tickets/BL-NR-009.md) | `[TECH_DEBT]` | Migrate Command Suite to Universal Brigadier Command Framework | `[MEDIUM]` | All Anchors | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-009.md) |
 
 ---
 
@@ -25,7 +23,7 @@ In strict adherence to the project's **Code & Vanilla First Asset Rule** (`[DIR-
 
 ---
 
-## 📝 Detailed Backlog Entries
+## 📝 Detailed Backlog Entries (Modular Storage)
 
-*(All queued tasks resolved and archived in History.md and RELEASE_QUEUE.md)*
-
+> [!NOTE]
+> **Modular Backlog Architecture**: In accordance with Item 11 of the Studio Constitution (*The Modular Backlog Standard*), detailed specifications, implementation blueprints, and verification checklists are maintained in dedicated atomic ticket files located in [`tickets/`](tickets/). Click any **View Ticket** link in the summary table above or prompt worker agents directly with `tickets/BL-NR-XXX.md`.
