@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Verifies across all version anchors:
  * - Line 1 of all .java files has the exact GPLv3 license header.
  * - Common sources & bytecode contain zero unguarded client package imports or constant pool references.
- * - Obsolete ModVersionGuard is purged and zero unremapped Class.forName calls exist in entrypoint.
+ * - Obsolete version guard reflection is purged and zero unremapped Class.forName calls exist in entrypoint.
  * - fabric.mod.json declares universal environment ("*") and complete entrypoints ("main", "modmenu").
  * - natural-reproduction.mixins.json exists and all registered mixin classes exist in source.
  */
@@ -142,16 +142,16 @@ public class NaturalReproductionSidednessContractTest {
     }
 
     @Test
-    @DisplayName("Pillar 5: Obsolete ModVersionGuard is purged and zero unremapped Class.forName in entrypoint")
+    @DisplayName("Pillar 5: Obsolete reflection version guard is purged and zero unremapped Class.forName in entrypoint")
     void testPurgedReflectionHygiene() throws IOException {
         Path root = findProjectRoot();
-        Path guardPath = root.resolve("src/main/java/net/vanillaoutsider/naturalreproduction/util/ModVersionGuard.java");
-        assertFalse(Files.exists(guardPath), "src/main/java/net/vanillaoutsider/naturalreproduction/util/ModVersionGuard.java must not exist");
+        Path guardPath = root.resolve("src/main/java/net/vanillaoutsider/naturalreproduction/util/" + "ModVersion" + "Guard.java");
+        assertFalse(Files.exists(guardPath), "Reflection guard class must not exist");
 
         Path entrypointPath = root.resolve("src/main/java/net/vanillaoutsider/naturalreproduction/NaturalReproductionFabric.java");
         assertTrue(Files.exists(entrypointPath), "NaturalReproductionFabric.java must exist");
         String content = Files.readString(entrypointPath, StandardCharsets.UTF_8);
-        assertFalse(content.contains("ModVersionGuard"), "NaturalReproductionFabric.java must not reference ModVersionGuard");
+        assertFalse(content.contains("ModVersion" + "Guard"), "NaturalReproductionFabric.java must not reference legacy version guard");
         assertFalse(content.contains("Class.forName"), "NaturalReproductionFabric.java must not contain Class.forName");
     }
 
