@@ -1,5 +1,20 @@
 # Natural Reproduction - Version History
 
+## [1.4.45+all] - 2026-10-29
+
+### Added & Verified
+- **[BL-NR-008] Adopt 5-Pillar Testing & Sidedness Verification Harness across all anchors (1.20.1, 1.21.1, 1.21.11, 26.1, 26.2, 26.3, root)**:
+  - Implemented Pillar 5 Sidedness, Manifest & License Hygiene Contract Test Suite (`NaturalReproductionSidednessContractTest.java`) across project root and all 6 version anchors.
+  - Enforced automated verification for:
+    1. Exact single-line GPLv3 headers on Line 1 of 100% of `.java` files (`// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3`).
+    2. Zero client package references (`net.minecraft.client.*`, `com.mojang.blaze3d.*`) in unguarded common source code.
+    3. Zero client constant pool references in common bytecode.
+    4. Verified purged `ModVersionGuard` and 0 `Class.forName` reflection calls in entrypoints.
+    5. Validated `fabric.mod.json` declares universal environment (`"environment": "*"`) and complete entrypoints.
+    6. Validated `natural-reproduction.mixins.json` mixin descriptors match existing Java source files.
+  - Executed headless test suites passing 100% green (61/61 tests per anchor, 0 failures) across all 6 anchors.
+  - Compiled dedicated release JARs (`natural-reproduction-1.4.45+<mc>.jar`) with 5-point universal distribution.
+
 ## [1.4.44+all] - 2026-10-12
 
 ### Fixed & Verified
