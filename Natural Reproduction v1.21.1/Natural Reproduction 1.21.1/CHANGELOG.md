@@ -2,6 +2,18 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 1.21.1 are documented in this file.
 
+## [1.4.46+1.21.1] - 2026-10-29
+
+### Added & Verified
+- **Universal Brigadier Command Framework Migration**:
+  - Refactored NaturalReproductionCommand to adopt DasikLibrary's ModCommandDispatcher, UniversalCommandRegistry, and GameRuleCommandBridge.
+  - Registered all 19 core GameRules and 27 species toggles via unified GameRuleCommandBridge with $O(1)$ key lookup and zero-allocation tab completion.
+  - Enforced Freedom Over Anti-Crash saturated bounds arithmetic across all numeric integer GameRules (e.g. density_cap, rate, scale percentages).
+  - Maintained 100% subcommand parity (help, status, stats, get, set, reset, reload, purge, trackerlogs, logs) across both /naturalreproduction and /nr root literals.
+  - Preempted ERR-20261015-002 using lambda permission predicates (`source -> source.hasPermission(level)`).
+  - Wired single registration authority via NaturalReproductionCommand.init() in NaturalReproductionFabric.onInitialize(), completely eliminating manual callback registration.
+  - Updated zero-mock headless JUnit test suite (NaturalReproductionCommandTest) asserting UniversalCommandRegistry AST nodes, dynamic suggestion providers, saturated warning status codes, and role-based permission gating.
+
 ## [1.4.45+1.21.1] - 2026-10-29
 
 ### Added & Verified

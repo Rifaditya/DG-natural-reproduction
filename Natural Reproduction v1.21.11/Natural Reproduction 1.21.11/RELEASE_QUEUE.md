@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.4.46+1.21.11`** (2026-10-29) - **Universal Brigadier Command Framework Migration**: Refactored command suite to adopt DasikLibrary's ModCommandDispatcher, UniversalCommandRegistry, and GameRuleCommandBridge with saturated bounds arithmetic, full subcommand parity, and automated JUnit test suite.
 - [ ] **`1.4.45+1.21.11`** (2026-10-29) - **Pillar 5 Sidedness, Manifest & License Verification Suite**: Compile-time headless test suite asserting zero client imports in common sources/bytecode, single-line GPLv3 headers, purged reflection hygiene, mixin descriptor integrity, and fabric.mod.json compliance.
 - [ ] **`1.4.44+1.21.11`** (2026-10-12) - **ModVersionGuard Reflection Crash Fix**: Eliminated redundant string reflection checks during mod initialization on dedicated servers and clients.
 - [ ] **`1.4.43+1.21.11`** (2026-09-29) - **Fabric Loom GameTest In-World Lifecycle**: Pillar 4 in-world GameTest suite (`NaturalReproductionGameTests`) verifying live server reproductive behaviors, density cap suppression, crowded pen stunting floor (0.10x), and spacious pasture recovery (1.20x) with Loom runtime automation.

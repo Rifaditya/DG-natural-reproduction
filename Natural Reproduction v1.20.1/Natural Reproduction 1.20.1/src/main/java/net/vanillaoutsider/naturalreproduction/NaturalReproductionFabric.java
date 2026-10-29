@@ -9,7 +9,6 @@ import net.dasik.social.api.genetics.GeneticsLimitRegistry;
 import net.dasik.social.api.genetics.MutationRule;
 import net.dasik.social.api.genetics.TraitConfig;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.CustomGameRuleCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -245,9 +244,7 @@ public class NaturalReproductionFabric implements ModInitializer {
         ALLOW_STRIDER = registerSpeciesRule("allow_strider", EntityType.STRIDER, "Strider");
         ALLOW_HOGLIN = registerSpeciesRule("allow_hoglin", EntityType.HOGLIN, "Hoglin");
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            NaturalReproductionCommand.register(dispatcher);
-        });
+        NaturalReproductionCommand.init();
 
         // Register Data-Driven Animal Genetics with DasikLibrary API across ALL vanilla animal species
         Map<String, TraitConfig> animalTraits = Map.of(
