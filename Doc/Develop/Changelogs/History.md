@@ -1,5 +1,35 @@
 # Natural Reproduction - Version History
 
+## [1.4.46+all] - 2026-10-29
+
+### Added & Verified
+- **[BL-NR-009] Migrate Command Suite to Universal Brigadier Command Framework across all anchors (1.20.1, 1.21.1, 1.21.11, 26.1, 26.2, 26.3, root)**:
+  - Migrated monolithic command dispatching in `NaturalReproductionCommand.java` to DasikLibrary's centralized Universal Brigadier framework (`net.dasik.social.api.command.ModCommandDispatcher` & `UniversalCommandRegistry`).
+  - Pre-bumped `dasik_library_version` dependency bounds across all anchors:
+    - Modern Sovereign Anchors (`26.3`, `26.2`, `26.1`): `1.11.2`
+    - Multi-Era Anchors (`1.21.11`, `1.21.1`, `1.20.1`): `1.4.0+<mc>`
+  - Structured universal command hierarchy:
+    - Root literal: `/naturalreproduction` with short alias `/nr`.
+    - Standard framework subcommands: `help`, `status`, `get`, `set`, `reset`, `reload`.
+    - Reactive GameRule Bridging: Bound all 19 core GameRules and 27 species toggles via `GameRuleCommandBridge` supporting 2-way live sync, saturated bounds arithmetic, and non-blocking warnings under the Freedom Over Anti-Crash policy.
+    - Preserved domain-specific custom subcommands: `stats`, `trackerlogs` (alias `logs`), and `purge [caches|logs|all]`.
+    - Attached `withStatusSupplier` dynamic status reporter and `withReloadAction` in-memory cache/configuration invalidation callback.
+  - Sidedness & Initializer Modernization:
+    - Updated `NaturalReproductionFabric.java` entrypoints across root and all 6 version anchors to invoke `NaturalReproductionCommand.init()`.
+    - Purged redundant manual `CommandRegistrationCallback.EVENT` handlers and custom command reflection/formatting classes.
+  - Multi-Era Permission Syntax Alignment:
+    - Implemented Java lambda syntax (`source -> source.hasPermission(level)`) for `1.20.1` and `1.21.1` anchors to preempt `ERR-20261015-002` (Static Permission Predicate Backport Trap).
+    - Preserved modern `Commands.hasPermission(level)` syntax on `1.21.11`, `26.1`, `26.2`, and `26.3`.
+  - Pillar 3 Headless Brigadier Verification Harness:
+    - Updated `NaturalReproductionCommandTest.java` across all 6 anchors asserting AST command nodes, suggestions/tab completion, bridge boundary clamping, and permission checks.
+  - Verification & Distribution:
+    - Passed 100% green headless unit test suites (`./gradlew test`) across all 6 anchors.
+    - Compiled dedicated release JARs (`natural-reproduction-1.4.46+<mc>.jar`) with 5-point universal distribution (subproject archive, mod root archive, central release hub, external vault `D:\`, and launcher test profiles).
+  - Git Commits:
+    - `9f21376`: `feat(26.3): migrate command suite to Universal Brigadier framework [BL-NR-009]`
+    - `ca96e18`: `feat(26.1/26.2): port command suite to Universal Brigadier framework in lockstep [BL-NR-009]`
+    - `671a543`: `feat(1.20-1.21): port command suite to Universal Brigadier framework in lockstep [BL-NR-009]`
+
 ## [1.4.45+all] - 2026-10-29
 
 ### Added & Verified
