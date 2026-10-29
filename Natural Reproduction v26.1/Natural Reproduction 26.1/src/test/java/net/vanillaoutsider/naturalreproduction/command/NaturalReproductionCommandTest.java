@@ -7,6 +7,7 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.tree.CommandNode;
+import net.dasik.social.api.command.GameRuleCommandBridge;
 import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Zero-Mock Headless Brigadier Command Suite for Natural Reproduction.
  * Validates registration parity, syntax tree parsing, aliases (/nr and /naturalreproduction),
- * tab completion suggestions, bounds enforcement, and OP permission gating.
+ * tab completion suggestions, saturated bounds enforcement, and OP permission gating.
  */
 public class NaturalReproductionCommandTest {
 
@@ -181,26 +182,61 @@ public class NaturalReproductionCommandTest {
     }
 
     @Test
-    @DisplayName("Syntax: Invalid arguments and out-of-range values fail parsing")
-    void testInvalidAndOutOfRangeParsing() {
-        // Out of integer range
-        assertParseFailure("nr set density_cap 0", adminSource);
-        assertParseFailure("nr set density_cap 101", adminSource);
-        assertParseFailure("nr set rate 50", adminSource);
-        assertParseFailure("nr set min_scale 4", adminSource);
-        assertParseFailure("nr set normal_scale 40", adminSource);
-        assertParseFailure("nr set max_scale 250", adminSource);
-        assertParseFailure("nr set dispenser_egg_hatch_chance -1", adminSource);
-        assertParseFailure("nr set dispenser_egg_hatch_chance 101", adminSource);
+    @DisplayName("Bounds & Saturation: GameRuleCommandBridge clamps out-of-bounds integers with saturated warnings")
+    void testSaturatedBoundsAndValidation() {
+        GameRuleCommandBridge bridge = NaturalReproductionCommand.getBridge();
+        assertNotNull(bridge, "Bridge must not be null");
 
-        // Invalid boolean values
-        assertParseFailure("nr set enabled notabool", adminSource);
-        assertParseFailure("nr set inbreeding_degradation 123", adminSource);
+        // Below minimum -> clamped to min with warning
+        GameRuleCommandBridge.SetResult belowDensity = bridge.setValue(null, "density_cap", "0");
+        assertTrue(belowDensity.isWarning(), "Setting density_cap 0 must yield a saturated warning");
+        assertEquals(1, belowDensity.getValue(), "density_cap 0 must clamp to minimum bound of 1");
 
-        // Unknown rules and subcommands
-        assertParseFailure("nr set non_existent_rule true", adminSource);
-        assertParseFailure("nr get non_existent_rule", adminSource);
+        // Above maximum -> clamped to max with warning
+        GameRuleCommandBridge.SetResult aboveDensity = bridge.setValue(null, "density_cap", "150");
+        assertTrue(aboveDensity.isWarning(), "Setting density_cap 150 must yield a saturated warning");
+        assertEquals(100, aboveDensity.getValue(), "density_cap 150 must clamp to maximum bound of 100");
+
+        // Rate bounds (100 to 240000)
+        GameRuleCommandBridge.SetResult belowRate = bridge.setValue(null, "rate", "50");
+        assertTrue(belowRate.isWarning(), "Setting rate 50 must yield a saturated warning");
+        assertEquals(100, belowRate.getValue(), "rate 50 must clamp to 100");
+
+        GameRuleCommandBridge.SetResult aboveRate = bridge.setValue(null, "rate", "999999");
+        assertTrue(aboveRate.isWarning(), "Setting rate 999999 must yield a saturated warning");
+        assertEquals(240000, aboveRate.getValue(), "rate 999999 must clamp to 240000");
+
+        // Scale bounds
+        GameRuleCommandBridge.SetResult belowMinScale = bridge.setValue(null, "min_scale", "2");
+        assertTrue(belowMinScale.isWarning(), "Setting min_scale 2 must yield a saturated warning");
+        assertEquals(5, belowMinScale.getValue(), "min_scale 2 must clamp to 5");
+
+        GameRuleCommandBridge.SetResult aboveMaxScale = bridge.setValue(null, "max_scale", "300");
+        assertTrue(aboveMaxScale.isWarning(), "Setting max_scale 300 must yield a saturated warning");
+        assertEquals(200, aboveMaxScale.getValue(), "max_scale 300 must clamp to 200");
+
+        // Dispenser hatch chance (0 to 100)
+        GameRuleCommandBridge.SetResult belowHatch = bridge.setValue(null, "dispenser_egg_hatch_chance", "-10");
+        assertTrue(belowHatch.isWarning(), "Setting hatch chance -10 must yield a saturated warning");
+        assertEquals(0, belowHatch.getValue(), "hatch chance -10 must clamp to 0");
+
+        GameRuleCommandBridge.SetResult aboveHatch = bridge.setValue(null, "dispenser_egg_hatch_chance", "150");
+        assertTrue(aboveHatch.isWarning(), "Setting hatch chance 150 must yield a saturated warning");
+        assertEquals(100, aboveHatch.getValue(), "hatch chance 150 must clamp to 100");
+
+        // Parse error for invalid booleans
+        GameRuleCommandBridge.SetResult invalidBool = bridge.setValue(null, "enabled", "notabool");
+        assertTrue(invalidBool.isError(), "Setting boolean to non-boolean must yield parse error");
+        assertEquals(GameRuleCommandBridge.Status.ERROR_PARSE, invalidBool.getStatus());
+
+        // Error not found for nonexistent rule
+        GameRuleCommandBridge.SetResult notFound = bridge.setValue(null, "non_existent_rule", "true");
+        assertTrue(notFound.isError(), "Unknown rule key must yield not found error");
+        assertEquals(GameRuleCommandBridge.Status.ERROR_NOT_FOUND, notFound.getStatus());
+
+        // Subtree argument syntax failures
         assertParseFailure("nr purge invalid_target", adminSource);
+        assertParseFailure("nr unknown_subcommand", adminSource);
     }
 
     @Test
@@ -213,7 +249,9 @@ public class NaturalReproductionCommandTest {
         assertParseSuccess("nr stats", unprivilegedSource);
         assertParseSuccess("nr get enabled", unprivilegedSource);
         assertParseSuccess("nr get density_cap", unprivilegedSource);
+        assertParseSuccess("nr trackerlogs", unprivilegedSource);
         assertParseSuccess("nr trackerlogs list", unprivilegedSource);
+        assertParseSuccess("nr logs", unprivilegedSource);
         assertParseSuccess("nr logs list", unprivilegedSource);
 
         // Modifying commands must be denied for Level 0
@@ -229,6 +267,7 @@ public class NaturalReproductionCommandTest {
         assertParsePermissionDenied("nr trackerlogs disable", unprivilegedSource);
         assertParsePermissionDenied("nr trackerlogs clear", unprivilegedSource);
         assertParsePermissionDenied("nr logs enable", unprivilegedSource);
+        assertParsePermissionDenied("nr logs disable", unprivilegedSource);
         assertParsePermissionDenied("nr logs clear", unprivilegedSource);
     }
 
