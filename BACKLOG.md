@@ -1,7 +1,7 @@
 # 📌 Natural Reproduction Backlog
 
-<!-- Highest Historical ID: BL-NR-009 (Next Ticket Must Start at BL-NR-010) -->
-> **Next Available Ticket ID**: `[BL-NR-010]`
+<!-- Highest Historical ID: BL-NR-010 (Next Ticket Must Start at BL-NR-011) -->
+> **Next Available Ticket ID**: `[BL-NR-011]`
 
 This file tracks planned features, technical refinements, performance optimizations, and deferred bug fixes for **Natural Reproduction** under the **Delayed Gratification (DG)** design track (*"Invest in the world, and the world pays dividends"*).
 
@@ -11,7 +11,7 @@ This file tracks planned features, technical refinements, performance optimizati
 
 | ID | Category | Title | Priority | Target Version | Status | Specification |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| - | - | *No active backlog items* | - | - | - | - |
+| [`BL-NR-010`](tickets/BL-NR-010.md) | `[GOVERNANCE]` | Storefront Reconciliation: Align Mod Pages with Current Public Release | `[HIGH]` | `Platform Pages` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-010.md) |
 
 ---
 
