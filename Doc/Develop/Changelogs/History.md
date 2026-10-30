@@ -1,5 +1,32 @@
 # Natural Reproduction - Version History
 
+## [1.4.47+all] - 2026-10-30
+
+### Added & Fixed
+- **[BL-NR-012] Mod-Level Creature Mod Engine Isolation & AI Safeguards across all anchors (1.20.1, 1.21.1, 1.21.11, 26.1, 26.2, 26.3, root)**:
+  - **Community Credit**: Reported by Discord user **Muqington** (resolving severe frame drops and broken breeding when running alongside third-party creature mods like Naturalist).
+  - **Native Mod-Level Isolation**:
+    - Re-engineered `AnimalHabitatHelper.isSpeciesReproductionAllowed` across all 6 version anchors to automatically return `false` for third-party modded entities (non-`minecraft` namespace) unless explicitly enabled via GameRule or included tags.
+    - Updated `NaturalReproductionFabric.isSpeciesAllowed` to return `false` on fallback for unregistered species, eliminating the previous unsafe default-allow behavior.
+  - **Zero Herd Pollution & Data-Driven Tag Whitelist**:
+    - Injected `#natural-reproduction:herd_animals` (`herd_animals.json`) whitelist gating in `AnimalBreedingMixin.java`.
+    - Whitelist strictly limits `FollowHerdLeaderGoal` to pastoral vanilla animals (Cows, Sheep, Pigs, Horses, Donkeys, Mules, Llamas, Trader Llamas, Camels, Goats).
+    - Ambient, solitary, and third-party creature mobs (butterflies, birds, snakes, frogs, axolotls, turtles, etc.) never receive `FollowHerdLeaderGoal`, eliminating expensive 24-block bounding box scans.
+    - Enforced legacy plural directory convention on MC 1.20.1 (`tags/entity_types/`) while using standard singular directory (`tags/entity_type/`) on 1.21.1 through 26.3.
+  - **Native Breeding Preservation**:
+    - Guarded `AnimalBreedingMixin.spawnChildFromBreeding` at `HEAD` and `TAIL`.
+    - Unmanaged modded animals bypass gestation countdown and child cancellation, allowing native third-party mod breeding animations, particles, and custom baby logic to execute completely unhindered.
+  - **Omni-Channel Configuration & Brigadier Command Suite**:
+    - Added `ALLOW_MODDED_ANIMALS` (default `false`) and `MODDED_HERD_DYNAMICS` (default `false`) GameRules.
+    - Exposed in Brigadier command suite via `/nr set allow_modded_animals <bool>` and `/nr set modded_herd_dynamics <bool>` with live synchronization.
+    - Added interactive GUI controls to `YaclScreenHelper.java` under Herd Dynamics and Species categories.
+  - **Automated 5-Pillar Verification Harness**:
+    - Implemented `ModdedEntityIsolationTest.java` across all 6 version anchors asserting namespace fast-failing, herd whitelist filtering, opt-in toggles, gestation bypass, and tag precedence hierarchy.
+    - Executed `./gradlew test` and `./gradlew build` with 100% green passing results across all 6 anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1`, `26.2`, `26.3`).
+  - **5-Point Universal Distribution**:
+    - Compiled dedicated release JARs (`natural-reproduction-1.4.47+<mc>.jar`).
+    - Deployed to subproject archives, root archive, central release hub (`minecraft-mod-release-hub\archives\Natural Reproduction\`), external vault (`D:\Minecraft Mod Archive Jars\Natural Reproduction\`), and Modrinth test profiles.
+
 ## [1.4.46+all] - 2026-10-29
 
 ### Added & Verified

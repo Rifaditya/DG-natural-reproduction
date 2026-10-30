@@ -130,6 +130,8 @@ public final class NaturalReproductionCommand {
         bridge.registerBoolean("biome_fertility", NaturalReproductionFabric.BIOME_FERTILITY, true);
         bridge.registerBoolean("biome_variants", NaturalReproductionFabric.BIOME_VARIANTS, true);
         bridge.registerBoolean("tracker_logs", NaturalReproductionFabric.TRACKER_LOGS, false);
+        bridge.registerBoolean("allow_modded_animals", NaturalReproductionFabric.ALLOW_MODDED_ANIMALS, false);
+        bridge.registerBoolean("modded_herd_dynamics", NaturalReproductionFabric.MODDED_HERD_DYNAMICS, false);
 
         // Register 27 species toggles
         for (String key : SPECIES_KEYS) {

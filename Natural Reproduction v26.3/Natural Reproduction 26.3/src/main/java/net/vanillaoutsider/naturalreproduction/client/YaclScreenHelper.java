@@ -41,6 +41,8 @@ public class YaclScreenHelper {
         boolean currentInfertileReg = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS) : true;
         int currentDispenserRate = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.DISPENSER_EGG_HATCH_CHANCE) : 75;
         boolean currentHerdDynamics = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.HERD_DYNAMICS) : true;
+        boolean currentModdedHerd = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.MODDED_HERD_DYNAMICS) : false;
+        boolean currentAllowModded = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.ALLOW_MODDED_ANIMALS) : false;
         boolean currentHerdStampede = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.HERD_STAMPEDE) : true;
         boolean currentBiomeFertility = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_FERTILITY) : true;
         boolean currentBiomeVariants = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.BIOME_VARIANTS) : true;
@@ -396,6 +398,40 @@ public class YaclScreenHelper {
                 }
             );
             optionMethod.invoke(groupBuilder, herdDynamicsOption);
+
+            // Add Modded Herd Dynamics Option
+            Object moddedHerdOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:modded_herd_dynamics"),
+                Component.translatable("gamerule.natural-reproduction:modded_herd_dynamics.description"),
+                false,
+                () -> currentModdedHerd,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MODDED_HERD_DYNAMICS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.MODDED_HERD_DYNAMICS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, moddedHerdOption);
+
+            // Add Allow Modded Animals Option
+            Object allowModdedOption = buildBooleanOption(
+                Component.translatable("gamerule.natural-reproduction:allow_modded_animals"),
+                Component.translatable("gamerule.natural-reproduction:allow_modded_animals.description"),
+                false,
+                () -> currentAllowModded,
+                val -> {
+                    if (client.getSingleplayerServer() != null && NaturalReproductionFabric.ALLOW_MODDED_ANIMALS != null) {
+                        ServerLevel overworld = client.getSingleplayerServer().overworld();
+                        if (overworld != null) {
+                            overworld.getGameRules().set(NaturalReproductionFabric.ALLOW_MODDED_ANIMALS, val, client.getSingleplayerServer());
+                        }
+                    }
+                }
+            );
+            optionMethod.invoke(groupBuilder, allowModdedOption);
 
             // Add Herd Stampede Option
             Object herdStampedeOption = buildBooleanOption(

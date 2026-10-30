@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.4.47+26.2** (2026-10-30) - **Mod-Level Entity Isolation & Data-Driven Herd Dynamics ([BL-NR-012])**: Reported by Muqington. Native mod-level code isolation, `#natural-reproduction:herd_animals` whitelist gating, modded reproduction gating (`allow_modded_animals` & `modded_herd_dynamics` GameRules), and bypass of breeding gestation hijack for external creature mods.
 - [ ] **1.4.46+26.2** (2026-10-29) - **Universal Brigadier Command Framework Migration**: Refactored command suite to adopt DasikLibrary's ModCommandDispatcher, UniversalCommandRegistry, and GameRuleCommandBridge with saturated bounds arithmetic, full subcommand parity, and automated JUnit test suite.
 - [ ] **`1.4.45+26.2`** (2026-10-29) - **Pillar 5 Sidedness, Manifest & License Verification Suite**: Compile-time headless test suite asserting zero client imports in common sources/bytecode, single-line GPLv3 headers, purged reflection hygiene, mixin descriptor integrity, and fabric.mod.json compliance.
 - [ ] **`1.4.44+26.2`** (2026-10-12) - **ModVersionGuard Reflection Crash Fix**: Eliminated redundant string reflection checks during mod initialization on dedicated servers and clients.

@@ -4,8 +4,9 @@
 - **Category**: `[PERF]`
 - **Priority**: `[CRITICAL]`
 - **Scope**: `All Anchors (1.20.1, 1.21.1, 1.21.11, 26.1.2, 26.2, 26.3)`
-- **Status**: `📌 DEFERRED`
+- **Status**: `✅ RESOLVED`
 - **Target Repository / Root**: `Delayed Gratification Collection/Natural Reproduction`
+- **Reported By / Community Credit**: **Muqington** (Discord Community Request: Naturalist Frame Drops & Mob Toggles)
 
 ---
 
@@ -21,19 +22,21 @@
    - ❌ Do not break or alter vanilla livestock breeding, genetics, or scale limits for the 27 supported vanilla animals.
    - ❌ Do not break dedicated server classloading when YACL or ModMenu is absent.
 4. **✅ Definition of Done (Binary Verification Checklist)**:
-   - [ ] **Mod-Level Isolation**: By default, `AnimalHabitatHelper.isSpeciesReproductionAllowed` returns `false` in Java for any entity with a non-`minecraft` namespace unless explicitly enabled by the player.
-   - [ ] **Zero Herd Pollution**: `FollowHerdLeaderGoal` is strictly gated in Java to a hardcoded whitelist of pastoral vanilla herd animals (Cows, Sheep, Pigs, Horses, Donkeys, Mules, Llamas, Goats, Camels). Third-party mobs, birds, butterflies, frogs, axolotls, and turtles NEVER receive the goal.
-   - [ ] **Native Breeding Preservation**: `AnimalBreedingMixin.spawnChildFromBreeding` only cancels and enters gestation for enabled vanilla livestock. Modded animals bypass gestation and execute their native mod's breeding logic, animations, and offspring delivery completely unhindered.
-   - [ ] **Genetics & Scale Guard**: DasikLibrary genetics attribute modifiers are only applied to registered species; arbitrary modded entities are not mutated or scaled.
-   - [ ] **Overgrazing & Drop Multiplier Isolation**: Modded animals never trigger overgrazing dirt conversion or modified scale drop conversions.
-   - [ ] **In-Game Toggles**: `ALLOW_MODDED_ANIMALS` (default `false`) and `MODDED_HERD_DYNAMICS` (default `false`) exposed in YACL config screen and `/nr set` Brigadier commands.
-   - [ ] 5-Pillar automated test suites (`./gradlew test`) pass across all 6 version anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2`, `26.3`).
+   - [x] **Mod-Level Isolation**: By default, `AnimalHabitatHelper.isSpeciesReproductionAllowed` returns `false` in Java for any entity with a non-`minecraft` namespace unless explicitly enabled by the player.
+   - [x] **Zero Herd Pollution**: `FollowHerdLeaderGoal` is strictly gated in Java to a hardcoded whitelist of pastoral vanilla herd animals (Cows, Sheep, Pigs, Horses, Donkeys, Mules, Llamas, Goats, Camels). Third-party mobs, birds, butterflies, frogs, axolotls, and turtles NEVER receive the goal.
+   - [x] **Native Breeding Preservation**: `AnimalBreedingMixin.spawnChildFromBreeding` only cancels and enters gestation for enabled vanilla livestock. Modded animals bypass gestation and execute their native mod's breeding logic, animations, and offspring delivery completely unhindered.
+   - [x] **Genetics & Scale Guard**: DasikLibrary genetics attribute modifiers are only applied to registered species; arbitrary modded entities are not mutated or scaled.
+   - [x] **Overgrazing & Drop Multiplier Isolation**: Modded animals never trigger overgrazing dirt conversion or modified scale drop conversions.
+   - [x] **In-Game Toggles**: `ALLOW_MODDED_ANIMALS` (default `false`) and `MODDED_HERD_DYNAMICS` (default `false`) exposed in YACL config screen and `/nr set` Brigadier commands.
+   - [x] 5-Pillar automated test suites (`./gradlew test`) pass across all 6 version anchors (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2`, `26.3`).
 
 ---
 
 ## ❓ 2. Problem Statement & Player Impact
 
-Previously, compatibility issues with creature mods were approached through external datapacks (`BL-NR-011` / `BL-NR-013`). This is fundamentally flawed because normal players playing with popular mods like **Naturalist** or **Alex's Mobs** experience massive unplayable lag spikes immediately upon installing the mod, without knowing why:
+Reported by community member **Muqington** (*"I'm using Natural Reproduction with Naturalist and am massively losing frames because of the amount of Naturalist creatures in my world. I'd like to be able to just switch some of the added mobs off."*).
+
+Previously, compatibility issues with creature mods were approached through external datapacks (`BL-NR-011` / `BL-NR-013`). This is fundamentally flawed because players running popular mods like **Naturalist** (47 animals, 66 variants) experience massive unplayable lag spikes immediately upon installing the mod without knowing why:
 1. **Unchecked Mixin Scope**: `AnimalBreedingMixin` hooks directly into `net.minecraft.world.entity.animal.Animal`. Every single creature class from any mod that inherits from `Animal` inherits all of Natural Reproduction's background loops.
 2. **AI Goal Spreading**: Every creature (even a butterfly, firefly, bird, or snake) has `FollowHerdLeaderGoal` injected. Every 40–80 ticks per entity, it calls `HerdSocialHelper.findOrElectLeader()`, executing a 24-block (`48x48x48`) `level.getEntitiesOfClass(Animal.class)` query.
 3. **Breeding Hijack**: `spawnChildFromBreeding` cancels the event for *all* animals to start gestation. This corrupts other mods' custom mating behaviors, variant selections, or event hooks.
@@ -177,8 +180,8 @@ Implemented identically across all 6 targeted version anchors:
 
 ## 🏁 7. 5-Pillar Verification Checklist
 
-- [ ] **Pillar 1 (Boundary & Modded Namespace Fuzzing)**: Fuzz `isSpeciesReproductionAllowed` with synthetic modded namespaces (`naturalist:deer`, `alexsmobs:elephant`, etc.) asserting immediate `false` return when `ALLOW_MODDED_ANIMALS` is `false`.
-- [ ] **Pillar 2 (Concurrency Load)**: 50 concurrent threads querying species permissions and herd leader elections without deadlock.
-- [ ] **Pillar 3 (Brigadier AST Verification)**: Commands `/nr set allow_modded_animals <bool>` and `/nr set modded_herd_dynamics <bool>` compile and validate in Brigadier dispatcher.
-- [ ] **Pillar 4 (AI Fast-Fail & Breeding Preservation)**: Assert that modded animal entities never receive `FollowHerdLeaderGoal`, skip gestation ticks, and that `spawnChildFromBreeding` is NOT cancelled when `isSpeciesReproductionAllowed` is false.
-- [ ] **Pillar 5 (Knot Sidedness & Classloading)**: Client config GUI reflection compiles headlessly without dedicated server crashes.
+- [x] **Pillar 1 (Boundary & Modded Namespace Fuzzing)**: Fuzz `isSpeciesReproductionAllowed` with synthetic modded namespaces (`naturalist:deer`, `alexsmobs:elephant`, etc.) asserting immediate `false` return when `ALLOW_MODDED_ANIMALS` is `false`.
+- [x] **Pillar 2 (Concurrency Load)**: 50 concurrent threads querying species permissions and herd leader elections without deadlock.
+- [x] **Pillar 3 (Brigadier AST Verification)**: Commands `/nr set allow_modded_animals <bool>` and `/nr set modded_herd_dynamics <bool>` compile and validate in Brigadier dispatcher.
+- [x] **Pillar 4 (AI Fast-Fail & Breeding Preservation)**: Assert that modded animal entities never receive `FollowHerdLeaderGoal`, skip gestation ticks, and that `spawnChildFromBreeding` is NOT cancelled when `isSpeciesReproductionAllowed` is false.
+- [x] **Pillar 5 (Knot Sidedness & Classloading)**: Client config GUI reflection compiles headlessly without dedicated server crashes.

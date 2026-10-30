@@ -56,6 +56,8 @@ public class NaturalReproductionFabric implements ModInitializer {
     public static GameRule<Integer> NORMAL_SCALE;
     public static GameRule<Integer> MAX_SCALE;
     public static GameRule<Boolean> TRACKER_LOGS;
+    public static GameRule<Boolean> ALLOW_MODDED_ANIMALS;
+    public static GameRule<Boolean> MODDED_HERD_DYNAMICS;
 
     public static GameRule<Boolean> ALLOW_COW;
     public static GameRule<Boolean> ALLOW_PIG;
@@ -208,6 +210,16 @@ public class NaturalReproductionFabric implements ModInitializer {
             .description("When true, autonomous animal reproduction events are recorded to the tracker log and server console.")
             .register();
 
+        ALLOW_MODDED_ANIMALS = DynamicGameRuleManager.booleanRule("natural-reproduction:allow_modded_animals", CATEGORY, false)
+            .name("Allow Modded Animals Reproduction")
+            .description("When false, third-party modded animals are safely isolated from autonomous reproduction and run their native behaviors.")
+            .register();
+
+        MODDED_HERD_DYNAMICS = DynamicGameRuleManager.booleanRule("natural-reproduction:modded_herd_dynamics", CATEGORY, false)
+            .name("Allow Modded Herd Dynamics")
+            .description("When false, modded animals will never run herd leader searches or follow alpha leaders.")
+            .register();
+
         // 27 Per-Species GameRules under SPECIES_CATEGORY
         ALLOW_COW = registerSpeciesRule("allow_cow", EntityType.COW, "Cow");
         ALLOW_PIG = registerSpeciesRule("allow_pig", EntityType.PIG, "Pig");
@@ -300,7 +312,7 @@ public class NaturalReproductionFabric implements ModInitializer {
         if (rule != null && level != null) {
             return DynamicGameRuleManager.getBoolean(level, rule);
         }
-        return true;
+        return false;
     }
 }
 

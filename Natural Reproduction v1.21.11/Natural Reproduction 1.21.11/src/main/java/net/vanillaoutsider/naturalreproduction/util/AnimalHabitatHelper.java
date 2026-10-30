@@ -1,13 +1,19 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 1.21.11
 package net.vanillaoutsider.naturalreproduction.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.fox.Fox;
@@ -23,14 +29,54 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class AnimalHabitatHelper {
 
+    public static final TagKey<EntityType<?>> HERD_ANIMALS = TagKey.create(
+        Registries.ENTITY_TYPE,
+        Identifier.fromNamespaceAndPath(NaturalReproductionFabric.MOD_ID, "herd_animals")
+    );
+    public static final TagKey<EntityType<?>> EXCLUDED_ANIMALS = TagKey.create(
+        Registries.ENTITY_TYPE,
+        Identifier.fromNamespaceAndPath(NaturalReproductionFabric.MOD_ID, "excluded_animals")
+    );
+    public static final TagKey<EntityType<?>> INCLUDED_ANIMALS = TagKey.create(
+        Registries.ENTITY_TYPE,
+        Identifier.fromNamespaceAndPath(NaturalReproductionFabric.MOD_ID, "included_animals")
+    );
+
     private AnimalHabitatHelper() {
+    }
+
+    public static boolean isTagMember(EntityType<?> type, TagKey<EntityType<?>> tag) {
+        if (type == null || tag == null) {
+            return false;
+        }
+        Holder.Reference<EntityType<?>> holder = type.builtInRegistryHolder();
+        return holder != null && holder.is(tag);
     }
 
     public static boolean isSpeciesReproductionAllowed(ServerLevel level, Animal self) {
         if (level == null || self == null) {
             return false;
         }
-        return net.vanillaoutsider.naturalreproduction.NaturalReproductionFabric.isSpeciesAllowed(level, self.getType());
+
+        EntityType<?> type = self.getType();
+        if (isTagMember(type, EXCLUDED_ANIMALS)) {
+            return false;
+        }
+
+        Identifier id = BuiltInRegistries.ENTITY_TYPE.getKey(type);
+        boolean isModded = id != null && !id.getNamespace().equals("minecraft");
+
+        if (isModded) {
+            if (isTagMember(type, INCLUDED_ANIMALS)) {
+                return true;
+            }
+            boolean allowModded = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.ALLOW_MODDED_ANIMALS);
+            if (!allowModded) {
+                return false;
+            }
+        }
+
+        return NaturalReproductionFabric.isSpeciesAllowed(level, type);
     }
 
     public static boolean hasEnvironmentalBreedingConditions(ServerLevel level, Animal self) {

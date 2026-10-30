@@ -2,6 +2,18 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.1 are documented in this file.
 
+## [1.4.47+26.1] - 2026-10-30
+
+### Added & Fixed
+- **Mod-Level Entity Isolation & Data-Driven Herd Dynamics ([BL-NR-012])**:
+  - **Community Credit**: Reported by Discord user **Muqington** (resolving severe frame drops and broken breeding when running alongside third-party creature mods like Naturalist).
+  - **Native Mod-Level Isolation**: Third-party modded animals (non-`minecraft` namespace) are automatically safely isolated and run their native behaviors out-of-the-box with zero lag, zero AI goal pollution, and zero breeding hijacks without requiring any external datapacks.
+  - **Modded Breeding Bypass**: `spawnChildFromBreeding` bypasses pregnancy gestation cancellation for unmanaged modded animals, allowing external mods' native mating logic, custom animations, and variant spawning to proceed completely unhindered.
+  - **Data-Driven Herd Animal Tag Whitelist**: Replaced unchecked herd goal injection with `#natural-reproduction:herd_animals` (`herd_animals.json`) whitelist covering vanilla pastoral animals (cows, sheep, pigs, horses, donkeys, mules, llamas, trader llamas, camels, goats). Ambient and solitary creatures (butterflies, birds, snakes, frogs, axolotls, turtles) never receive `FollowHerdLeaderGoal`.
+  - **Modded Animal & Herd Toggles**: Added `allow_modded_animals` (default: `false`) and `modded_herd_dynamics` (default: `false`) GameRules exposed via `/nr set` Brigadier commands and YACL configuration screen.
+  - **Data-Driven Tag Extensibility**: Bundled default `#natural-reproduction:excluded_animals` and `#natural-reproduction:included_animals` entity tags for optional player customization.
+  - **Automated Test Suite**: Added `ModdedEntityIsolationTest` verifying namespace fast-failing, herd whitelist filtering, opt-in toggles, gestation bypass, and tag precedence hierarchy.
+
 ## [1.4.46+26.1] - 2026-10-29
 
 ### Added & Verified

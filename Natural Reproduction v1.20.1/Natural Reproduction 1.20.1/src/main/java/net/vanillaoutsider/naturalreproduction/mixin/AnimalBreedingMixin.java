@@ -48,15 +48,27 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             return;
         }
 
-        // Ensure genetics stats are rolled and applied via DasikLibrary API
-        if (!DasikAnimalGeneticsAPI.hasGenetics(self)) {
+        // Fast-fail: check if this species is allowed for reproduction and/or herd dynamics
+        boolean isAllowed = AnimalHabitatHelper.isSpeciesReproductionAllowed(level, self);
+        boolean isHerdEligible = naturalreproduction$isEligibleHerdAnimal(level, self);
+
+        if (!isAllowed && !isHerdEligible) {
+            return; // Zero CPU cost for modded / disabled animals!
+        }
+
+        // Ensure genetics stats are rolled and applied via DasikLibrary API (only for allowed species)
+        if (isAllowed && !DasikAnimalGeneticsAPI.hasGenetics(self)) {
             DasikAnimalGeneticsAPI.rollStats(self, "default");
             GeneticsEngine.applyGeneticsModifiers(self);
         }
 
-        // Attach Herd Social Follow Goal dynamically (world-reload safe)
-        if (!naturalreproduction$hasHerdGoal()) {
+        // Attach Herd Social Follow Goal dynamically (world-reload safe, only if eligible herd animal)
+        if (isHerdEligible && !naturalreproduction$hasHerdGoal()) {
             this.goalSelector.addGoal(6, new net.vanillaoutsider.naturalreproduction.ai.FollowHerdLeaderGoal(self, 1.0D));
+        }
+
+        if (!isAllowed) {
+            return; // Skip distress alarms, gestation, inbreeding, overgrazing, and autonomous breeding!
         }
 
         // Herd Predator Distress Alarm Check
@@ -161,6 +173,11 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
             return;
         }
 
+        // Mod-level bypass: if not an allowed species, let vanilla / third-party mod breeding proceed naturally!
+        if (!AnimalHabitatHelper.isSpeciesReproductionAllowed(level, parent1)) {
+            return;
+        }
+
         boolean useGestation = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.GESTATION_PERIOD);
         boolean manualAllowed = DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.MANUAL_GESTATION);
         boolean isManual = parent1.getLoveCause() != null || mate.getLoveCause() != null;
@@ -195,6 +212,10 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
     @Inject(method = "spawnChildFromBreeding", at = @At("TAIL"))
     private void naturalreproduction$onSpawnChildFromBreeding(ServerLevel level, Animal mate, CallbackInfo ci) {
         Animal parent1 = (Animal)(Object)this;
+        if (!AnimalHabitatHelper.isSpeciesReproductionAllowed(level, parent1)) {
+            return;
+        }
+
         // Find newest baby animal near parents
         List<AgeableMob> babies = level.getEntitiesOfClass(
             AgeableMob.class,
@@ -208,6 +229,22 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
         for (AgeableMob baby : babies) {
             BreedingPipelineHelper.finalizeNewborn(level, parent1, mate, baby, isEnriched);
         }
+    }
+
+    @Unique
+    private boolean naturalreproduction$isEligibleHerdAnimal(ServerLevel level, Animal self) {
+        if (!DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.HERD_DYNAMICS)) {
+            return false;
+        }
+
+        net.minecraft.resources.ResourceLocation id = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(self.getType());
+        boolean isModded = id != null && !id.getNamespace().equals("minecraft");
+
+        if (isModded && !DynamicGameRuleManager.getBoolean(level, NaturalReproductionFabric.MODDED_HERD_DYNAMICS)) {
+            return false;
+        }
+
+        return AnimalHabitatHelper.isTagMember(self.getType(), AnimalHabitatHelper.HERD_ANIMALS);
     }
 
     @Unique
