@@ -34,22 +34,33 @@ This datapack solves the issue immediately through two complementary layers:
 The datapack is packaged as a ready-to-drop universal `.zip` archive:
 `Doc/Players/Datapacks/Natural-Reproduction-Naturalist-Control.zip`
 
-### Singleplayer Worlds
-1. Open Minecraft and select your world from the Singleplayer menu.
-2. Click **Edit** ➔ **Open World Folder**.
-3. Open the `datapacks/` folder inside your world directory (`.minecraft/saves/<WorldName>/datapacks/`).
-4. Copy `Natural-Reproduction-Naturalist-Control.zip` directly into the `datapacks/` folder.
-5. In-game, run the command:
-   ```mcfunction
-   /reload
-   ```
-6. You will see a green welcome message confirming **Natural Reproduction - Naturalist Compatibility Datapack** is loaded.
+> [!IMPORTANT]
+> ⚠️ **Must be placed inside your World Save folder!**
+> Do **NOT** put this `.zip` into your main launcher or profile root folder (e.g. `ModrinthApp/profiles/<profile>/datapacks` or `.minecraft/datapacks`). In Minecraft, the game engine **only** loads datapacks from inside each specific world's `saves/<WorldName>/datapacks/` folder.
+
+### Singleplayer Worlds (Vanilla, Modrinth App, CurseForge, Prism)
+
+#### Option 1: Directly from the Minecraft Title Screen (Easiest)
+1. Open Minecraft and click **Singleplayer**.
+2. Select your world in the list and click **Edit** (at the bottom).
+3. Click **Open World Folder**.
+4. Open the **`datapacks`** folder inside.
+5. Drop `Natural-Reproduction-Naturalist-Control.zip` straight into this folder.
+6. Open your world (or type `/reload` if you are already in-game).
+
+#### Option 2: Via File Explorer
+- **Vanilla Launcher**: `%appdata%\.minecraft\saves\<YourWorld>\datapacks\`
+- **Modrinth App**: `%appdata%\ModrinthApp\profiles\<ProfileName>\saves\<YourWorld>\datapacks\`
+- **CurseForge App**: `%userprofile%\curseforge\minecraft\Instances\<ProfileName>\saves\<YourWorld>\datapacks\`
+- **Prism / MultiMC**: `<InstanceFolder>\.minecraft\saves\<YourWorld>\datapacks\`
+
+Type `/reload` in chat to activate. You will see a golden welcome message confirming **Natural Reproduction - Naturalist Compatibility Datapack** is active.
 
 ### Dedicated Multiplayer Servers
 1. Navigate to your Minecraft server root directory.
-2. Open your world's `datapacks/` folder (typically `world/datapacks/`).
-3. Place `Natural-Reproduction-Naturalist-Control.zip` into the `world/datapacks/` folder.
-4. Run `/reload` from the in-game chat (if OP) or `reload` directly in the server terminal.
+2. Open your active world's datapack folder: `<server_root>/world/datapacks/` (or `<server_root>/<YourWorldName>/datapacks/`).
+3. Place `Natural-Reproduction-Naturalist-Control.zip` into that `datapacks/` folder.
+4. Run `/reload` from the in-game chat (if OP) or `reload` directly in the server console.
 
 ---
 
@@ -143,7 +154,9 @@ I investigated what was going on under the hood: Naturalist creatures extend van
 I've put together a universal, zero-mod compatibility datapack that you can drop straight into your world right now to solve this without having to wait for the next mod release:
 
 1. Download **`Natural-Reproduction-Naturalist-Control.zip`** (attached below).
-2. Drop the `.zip` file into your world's `datapacks/` folder (`.minecraft/saves/<YourWorld>/datapacks/` or `world/datapacks/` on a server).
+2. Drop the `.zip` file into your specific world's **`datapacks`** folder:
+   - *Easiest way*: In Minecraft, click **Singleplayer** ➔ click your world ➔ click **Edit** (bottom) ➔ click **Open World Folder** ➔ open the **`datapacks`** folder inside and drop the `.zip` right there.
+   *(Make sure it's inside your world's `saves/<YourWorld>/datapacks/` folder and not the root launcher folder, since Minecraft only loads datapacks per world).*
 3. In-game, type `/reload`.
 4. Run `/function nr_naturalist:menu` in chat. It opens a clickable menu where you can disable breeding for all Naturalist mobs or toggle specific categories (like Ambient, Forest, Savanna, or Aquatic).
 5. If your world already has hundreds of extra mobs causing lag, click **`[THIN OUT EXCESS MOBS (FPS SAVER)]`** in the menu (or run `/function nr_naturalist:cull_excess`). It safely clears up to 25 wild disabled adult mobs per click while strictly protecting your named animals and tamed pets.
