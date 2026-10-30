@@ -1,8 +1,8 @@
 # Fast-Fail 1 Cooldown Reset: If disabled, set Age:600 on ready-to-breed adults (Age:0)
-# Global override
-execute if score #global nr_naturalist matches 1 as @e[type=#nr_naturalist:disabled_mobs,nbt={Age:0}] run data merge entity @s {Age:600}
+# Global mode: if #global is 1 (or unset), all Naturalist mobs are disabled
+execute unless score #global nr_naturalist matches 0 as @e[type=#nr_naturalist:disabled_mobs,nbt={Age:0}] run data merge entity @s {Age:600}
 
-# Per-category control when global override is off (#global = 0)
+# Per-category control when #global is explicitly set to 0 (per-category mode)
 execute if score #global nr_naturalist matches 0 if score #ambient nr_naturalist matches 1 as @e[type=#nr_naturalist:ambient_mobs,nbt={Age:0}] run data merge entity @s {Age:600}
 execute if score #global nr_naturalist matches 0 if score #forest nr_naturalist matches 1 as @e[type=#nr_naturalist:forest_mobs,nbt={Age:0}] run data merge entity @s {Age:600}
 execute if score #global nr_naturalist matches 0 if score #savanna nr_naturalist matches 1 as @e[type=#nr_naturalist:savanna_mobs,nbt={Age:0}] run data merge entity @s {Age:600}
