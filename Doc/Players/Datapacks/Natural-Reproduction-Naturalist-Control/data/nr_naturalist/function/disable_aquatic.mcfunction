@@ -1,2 +1,4 @@
+scoreboard players set #global nr_naturalist 0
 scoreboard players set #aquatic nr_naturalist 1
-tellraw @s [{"text":"[Natural Reproduction] ","color":"gold","bold":true},{"text":"Breeding DISABLED for Aquatic mobs (alligators, ducks, sharks, etc.).","color":"red"}]
+playsound minecraft:ui.button.click master @a ~ ~ ~ 1 1
+tellraw @a [{"text":"[Natural Reproduction] ","color":"gold","bold":true},{"text":"Aquatic & swamp breeding: ","color":"yellow"},{"text":"DISABLED","color":"red","bold":true}]

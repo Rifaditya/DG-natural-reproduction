@@ -1,3 +1,3 @@
-scoreboard players set #global nr_naturalist 0
 scoreboard players set #forest nr_naturalist 0
-tellraw @s [{"text":"[Natural Reproduction] ","color":"gold","bold":true},{"text":"Breeding ENABLED for Forest mobs.","color":"green"}]
+playsound minecraft:ui.button.click master @a ~ ~ ~ 1 1.2
+tellraw @a [{"text":"[Natural Reproduction] ","color":"gold","bold":true},{"text":"Forest & woodland breeding: ","color":"yellow"},{"text":"ENABLED","color":"green","bold":true}]
