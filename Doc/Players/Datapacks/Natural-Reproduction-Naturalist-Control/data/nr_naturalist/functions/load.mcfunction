@@ -1,5 +1,4 @@
 scoreboard objectives add nr_naturalist dummy "Naturalist Control"
-execute unless score #global nr_naturalist matches 0..1 run scoreboard players set #global nr_naturalist 1
 execute unless score #ambient nr_naturalist matches 0..1 run scoreboard players set #ambient nr_naturalist 1
 execute unless score #forest nr_naturalist matches 0..1 run scoreboard players set #forest nr_naturalist 1
 execute unless score #savanna nr_naturalist matches 0..1 run scoreboard players set #savanna nr_naturalist 1

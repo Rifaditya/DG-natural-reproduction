@@ -80,28 +80,27 @@ Configure autonomous breeding for 47 Naturalist mobs:
 
 Quick Actions:
  * [DISABLE ALL (47 MOBS)]  [ENABLE ALL]
- * [DISABLE AMBIENT]  [THIN OUT EXCESS MOBS (FPS SAVER)]
+ * [THIN OUT EXCESS MOBS (FPS SAVER)]
 
-Category Presets:
- * Ambient (7 mobs):   [OFF] [ON] (snails, butterflies, fireflies, etc.)
- * Forest (8 mobs):    [OFF] [ON] (deer, bears, boars, etc.)
- * Savanna (16 mobs):  [OFF] [ON] (elephants, lions, zebras, etc.)
- * Aquatic (16 mobs):  [OFF] [ON] (alligators, ducks, sharks, etc.)
+Category Presets & Status:
+ * Ambient (7 mobs):   [🔴 BLOCKED] [ON] (snails, butterflies, fireflies, etc.)
+ * Forest (8 mobs):    [🔴 BLOCKED] [ON] (deer, bears, boars, etc.)
+ * Savanna (16 mobs):  [🔴 BLOCKED] [ON] (elephants, lions, zebras, etc.)
+ * Aquatic (16 mobs):  [🔴 BLOCKED] [ON] (alligators, ducks, sharks, etc.)
 =======================================
 ```
 
 ### Quick Actions
 - **`[DISABLE ALL (47 MOBS)]`**: Instantly disables autonomous reproduction for all 47 Naturalist creatures across all biomes.
 - **`[ENABLE ALL]`**: Re-enables natural reproduction for all Naturalist creatures.
-- **`[DISABLE AMBIENT]`**: Specifically disables reproduction for rapid-multiplying ambient creatures (snails, butterflies, moths, dragonflies, fireflies, caterpillars, and blue snails).
 - **`[THIN OUT EXCESS MOBS (FPS SAVER)]`**: Runs `/function nr_naturalist:cull_excess` to thin out wild populations and restore FPS immediately.
 
-### Category Presets
-Click **`[OFF]`** or **`[ON]`** next to any category to toggle breeding for that specific ecological niche:
-- **Ambient (7 species)**: Snails, butterflies, moths, dragonflies, fireflies, caterpillars, and blue snails.
-- **Forest (8 species)**: Deer, bears, boars, birds, cardinals, bluejays, robins, and canaries.
-- **Savanna (16 species)**: Elephants, lions, giraffes, zebras, rhinos, vultures, ostriches, hyenas, hippos, termites, cheetahs, and gazelles.
-- **Aquatic & Semi-Aquatic (16 species)**: Ducks, alligators, tortoises, lizards, frogs, sharks, bass, catfish, and marine wildlife.
+### Category Presets & Live Status
+Click **`[ON]`** or **`[OFF]`** next to any category to toggle breeding for that specific ecological niche. The menu dynamically updates to display `[🔴 BLOCKED]` or `[🟢 ALLOWED]`:
+- **Ambient (7 species)**: Ants, birds, butterflies, caterpillars, dragonflies, fireflies, and snails.
+- **Forest (8 species)**: Bears (grizzly), black bears, boars, deer, hedgehogs, moles, rats, and turkeys.
+- **Savanna (16 species)**: Desert scorpions, elephants, giraffes, hippos, jungle scorpions, komodo dragons, lions, lizards, mammoths, ostriches, rhinos, snakes, tigers, tortoises, vultures, and zebras.
+- **Aquatic & Semi-Aquatic (16 species)**: Alligators, anglerfish, bass, blobfish, capybaras, catfish, clams, crabs, ducks, giant isopods, great white sharks, jellyfish, piranhas, rays, starfish, and whales.
 
 ---
 
@@ -115,8 +114,8 @@ If your world has already suffered severe lag from runaway animal populations be
 
 ### Safety Features
 - **Strict Custom Name Protection**: Any animal named with a Name Tag is completely ignored (`unless data entity @s CustomName`).
-- **Strict Tamed Pet Protection**: Tamed pets and animals are not targeted.
-- **Adult-Only Culling**: Only targets wild adult entities currently marked as disabled (`Age: 600`).
+- **Strict Tamed Pet Protection**: Tamed pets and animals are not targeted (`unless data entity @s Owner`).
+- **Adult-Only Culling**: Only targets wild adult entities currently marked as disabled (`tag=nr_breeding_blocked`).
 - **Batch Capped (Max 25)**: Safely limits removal to a maximum of 25 random wild mobs per command execution to avoid game freeze or sudden world empties. If you have hundreds of runaway mobs, simply run the command a few times until your FPS recovers.
 
 ---
