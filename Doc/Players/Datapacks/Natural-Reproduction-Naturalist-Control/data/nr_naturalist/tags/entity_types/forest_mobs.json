@@ -1,0 +1,37 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "naturalist:bear",
+      "required": false
+    },
+    {
+      "id": "naturalist:black_bear",
+      "required": false
+    },
+    {
+      "id": "naturalist:boar",
+      "required": false
+    },
+    {
+      "id": "naturalist:deer",
+      "required": false
+    },
+    {
+      "id": "naturalist:hedgehog",
+      "required": false
+    },
+    {
+      "id": "naturalist:mole",
+      "required": false
+    },
+    {
+      "id": "naturalist:rat",
+      "required": false
+    },
+    {
+      "id": "naturalist:turkey",
+      "required": false
+    }
+  ]
+}

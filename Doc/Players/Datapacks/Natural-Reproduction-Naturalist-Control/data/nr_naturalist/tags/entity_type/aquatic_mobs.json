@@ -1,0 +1,69 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "naturalist:alligator",
+      "required": false
+    },
+    {
+      "id": "naturalist:anglerfish",
+      "required": false
+    },
+    {
+      "id": "naturalist:bass",
+      "required": false
+    },
+    {
+      "id": "naturalist:blobfish",
+      "required": false
+    },
+    {
+      "id": "naturalist:capybara",
+      "required": false
+    },
+    {
+      "id": "naturalist:catfish",
+      "required": false
+    },
+    {
+      "id": "naturalist:clam",
+      "required": false
+    },
+    {
+      "id": "naturalist:crab",
+      "required": false
+    },
+    {
+      "id": "naturalist:duck",
+      "required": false
+    },
+    {
+      "id": "naturalist:giant_isopod",
+      "required": false
+    },
+    {
+      "id": "naturalist:great_white_shark",
+      "required": false
+    },
+    {
+      "id": "naturalist:jellyfish",
+      "required": false
+    },
+    {
+      "id": "naturalist:piranha",
+      "required": false
+    },
+    {
+      "id": "naturalist:ray",
+      "required": false
+    },
+    {
+      "id": "naturalist:starfish",
+      "required": false
+    },
+    {
+      "id": "naturalist:whale",
+      "required": false
+    }
+  ]
+}

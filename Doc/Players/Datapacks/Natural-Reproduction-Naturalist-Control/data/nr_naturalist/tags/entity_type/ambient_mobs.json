@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "naturalist:ant",
+      "required": false
+    },
+    {
+      "id": "naturalist:bird",
+      "required": false
+    },
+    {
+      "id": "naturalist:butterfly",
+      "required": false
+    },
+    {
+      "id": "naturalist:caterpillar",
+      "required": false
+    },
+    {
+      "id": "naturalist:dragonfly",
+      "required": false
+    },
+    {
+      "id": "naturalist:firefly",
+      "required": false
+    },
+    {
+      "id": "naturalist:snail",
+      "required": false
+    }
+  ]
+}
