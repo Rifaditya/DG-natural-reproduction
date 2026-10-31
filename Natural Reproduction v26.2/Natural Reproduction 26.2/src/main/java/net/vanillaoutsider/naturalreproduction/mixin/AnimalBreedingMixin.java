@@ -20,6 +20,9 @@ import net.vanillaoutsider.naturalreproduction.util.BreedingPipelineHelper;
 import net.vanillaoutsider.naturalreproduction.util.BreedingTrackerLogger;
 import net.vanillaoutsider.naturalreproduction.util.HerdSocialHelper;
 import net.vanillaoutsider.naturalreproduction.util.SpatialBreedingCacheHelper;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -66,6 +69,30 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
 
         if (!isAllowed) {
             return; // Skip distress alarms, gestation, inbreeding, overgrazing, and autonomous breeding!
+        }
+
+        // Proximity Mating for Untamed Cat / Wolf / Horse whose vanilla BreedGoal is blocked by !isTame()
+        if (self.isInLove() && !self.isBaby() && naturalreproduction$isUntamedBreeder(self)) {
+            List<Animal> nearbyMates = level.getEntitiesOfClass(
+                Animal.class,
+                self.getBoundingBox().inflate(3.0),
+                mate -> mate != self && mate.getType() == self.getType() && mate.isInLove() && !mate.isBaby()
+            );
+            if (!nearbyMates.isEmpty()) {
+                Animal mate = nearbyMates.get(0);
+                self.spawnChildFromBreeding(level, mate);
+                return;
+            } else if (self.tickCount % 10 == 0) {
+                // Navigate toward mate in 8-block radius if not yet within 3 blocks
+                List<Animal> distantMates = level.getEntitiesOfClass(
+                    Animal.class,
+                    self.getBoundingBox().inflate(8.0),
+                    mate -> mate != self && mate.getType() == self.getType() && mate.isInLove() && !mate.isBaby()
+                );
+                if (!distantMates.isEmpty()) {
+                    self.getNavigation().moveTo(distantMates.get(0), 1.0);
+                }
+            }
         }
 
         // Herd Predator Distress Alarm Check
@@ -172,6 +199,11 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
 
         // Mod-level bypass: if not an allowed species, let vanilla / third-party mod breeding proceed naturally!
         if (!AnimalHabitatHelper.isSpeciesReproductionAllowed(level, parent1)) {
+            return;
+        }
+
+        // Bees do not use mammalian gestation timers to prevent despawn loss inside hives/nests
+        if (parent1.getType() == EntityTypes.BEE) {
             return;
         }
 
@@ -296,5 +328,14 @@ public abstract class AnimalBreedingMixin extends AgeableMob {
         }
 
         return bestCandidate != null ? bestCandidate : candidates.get(0);
+    }
+
+    @Unique
+    private static boolean naturalreproduction$isUntamedBreeder(Animal animal) {
+        if (animal instanceof TamableAnimal tamable) {
+            return !tamable.isTame();
+        }
+        EntityType<?> type = animal.getType();
+        return type == EntityTypes.HORSE || type == EntityTypes.DONKEY || type == EntityTypes.MULE;
     }
 }

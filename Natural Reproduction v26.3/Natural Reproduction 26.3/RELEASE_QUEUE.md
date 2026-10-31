@@ -2,6 +2,7 @@
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.4.48+26.3** (2026-10-31) - **Gestation Timer Calibration & Biological Bug Sweep ([BL-NR-015])**: Reported by Night Dragon (Jasmine) and Muqington. 20x pregnancy timer bug fix (`AnimalGestationHelper`), manual gestation defaulted to false for instant vanilla breeding, bee hive entity discard gestation exemption, untamed cat/wolf/horse proximity mating fix, expanded pig pasture blocks, and YACL configuration screen reflection fix.
 - [ ] **1.4.47+26.3** (2026-10-30) - **Mod-Level Entity Isolation & Data-Driven Herd Dynamics ([BL-NR-012])**: Reported by Muqington. Native mod-level code isolation, `#natural-reproduction:herd_animals` whitelist gating, modded reproduction gating (`allow_modded_animals` & `modded_herd_dynamics` GameRules), and bypass of breeding gestation hijack for external creature mods.
 - [ ] **1.4.46+26.3** (2026-10-29) - **Universal Brigadier Command Framework Migration**: Refactored command suite to adopt DasikLibrary's ModCommandDispatcher, UniversalCommandRegistry, and GameRuleCommandBridge with saturated bounds arithmetic, full subcommand parity, and automated JUnit test suite.
 - [ ] **`1.4.45+26.3`** (2026-10-29) - **Pillar 5 Sidedness, Manifest & License Verification Suite**: Compile-time headless test suite asserting zero client imports in common sources/bytecode, single-line GPLv3 headers, purged reflection hygiene, mixin descriptor integrity, and fabric.mod.json compliance.
@@ -16,5 +17,5 @@
 - [ ] **`1.4.35+26.3`** (2026-09-28) - **Continuous Overcrowding Stunting & Pasture Recovery Suite**: Automated assertions verifying continuous stunting monotonicity [0.20f, 0.95f], saturation floor, and pasture recovery ceiling clamping.
 - [ ] **`1.4.34+26.3`** (2026-09-28) - **Multi-Era Lineage, Genetics & Drop Degradation Parity**: Full automated test verification of pedigree kinship matching, inbreeding progression (T0-T4), dilution, drop degradation, and codec serialization determinism.
 - [ ] **`1.4.33+26.3`** (2026-09-28) - **Drop Degradation & Pedigree Codec Serialization Determinism**: Automated headless test suite asserting Tier 3/4 drop conversion, secondary yield cuts, and deterministic pedigree codec serialization.
-- [ ] **`1.4.32+26.3`** (2026-09-28) - **Lineage & Pedigree Kinship Architecture Verification**: Full automated headless test suite verifying 3-generation pedigree kinship matching, inbreeding progression (Tiers 0-4), gradual dilution, and hybrid vigor scaling.
-- [ ] **`1.4.31+26.3`** (2026-09-26) - Official Minecraft 26.3 stable release port, toolchain modernization, and DasikLibrary 1.9.2 integration.
+- [x] **`1.4.32+26.3`** (2026-09-28) - **Lineage & Pedigree Kinship Architecture Verification**: Full automated headless test suite verifying 3-generation pedigree kinship matching, inbreeding progression (Tiers 0-4), gradual dilution, and hybrid vigor scaling.
+- [x] **`1.4.31+26.3`** (2026-09-26) - Official Minecraft 26.3 stable release port, toolchain modernization, and DasikLibrary 1.9.2 integration.

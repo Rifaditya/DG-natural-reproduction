@@ -95,6 +95,7 @@ public final class AnimalHabitatHelper {
         else if (type == EntityType.PIG) {
             return matchesAnyBlock(level, center, 2, 1, 2, state ->
                 state.is(Blocks.MUD) || state.is(Blocks.CARROTS) || state.is(Blocks.BEETROOTS) || state.is(Blocks.POTATOES) || state.is(Blocks.FARMLAND)
+                    || state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT) || state.is(Blocks.COARSE_DIRT) || state.is(Blocks.PODZOL) || state.is(Blocks.ROOTED_DIRT)
             );
         }
         // 3. Chickens

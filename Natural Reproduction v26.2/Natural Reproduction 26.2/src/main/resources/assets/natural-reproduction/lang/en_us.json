@@ -21,7 +21,7 @@
   "gamerule.natural-reproduction:gestation_period": "Autonomous Gestation Timers",
   "gamerule.natural-reproduction:gestation_period.description": "When true, breeding enters mothers into a pregnancy countdown before delivering offspring.",
   "gamerule.natural-reproduction:manual_gestation": "Manual Breeding Gestation",
-  "gamerule.natural-reproduction:manual_gestation.description": "When true, player manual feeding also uses pregnancy gestation timers.",
+  "gamerule.natural-reproduction:manual_gestation.description": "When true, player manual feeding also uses pregnancy gestation timers. When false, manual feeding delivers immediately.",
   "gamerule.natural-reproduction:gestation_duration": "Gestation Duration",
   "gamerule.natural-reproduction:gestation_duration.description": "Pregnancy gestation duration in ticks (24000 = 1 MC Day).",
   "gamerule.natural-reproduction:fertilized_chicken_eggs": "Fertilized Chicken Eggs",

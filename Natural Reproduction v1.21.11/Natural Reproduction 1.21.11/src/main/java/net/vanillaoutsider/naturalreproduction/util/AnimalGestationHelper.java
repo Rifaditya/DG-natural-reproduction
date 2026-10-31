@@ -72,8 +72,8 @@ public final class AnimalGestationHelper {
             return;
         }
 
-        ticksRemaining -= 1.0f;
-        DasikAnimalGeneticsAPI.setTrait(mother, "gestation_ticks", ticksRemaining);
+        ticksRemaining -= 20.0f;
+        DasikAnimalGeneticsAPI.setTrait(mother, "gestation_ticks", Math.max(0.0f, ticksRemaining));
 
         // Staggered prenatal pasture quality check every 100 ticks
         if ((mother.getId() + level.getGameTime()) % 100 == 0) {

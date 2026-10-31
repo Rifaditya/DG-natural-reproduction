@@ -35,7 +35,7 @@ public class YaclScreenHelper {
         boolean currentPastureEnrichment = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.PASTURE_ENRICHMENT) : true;
         boolean currentOvergrazing = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.OVERGRAZING) : true;
         boolean currentGestation = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.GESTATION_PERIOD) : true;
-        boolean currentManualGestation = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.MANUAL_GESTATION) : true;
+        boolean currentManualGestation = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.MANUAL_GESTATION) : false;
         int currentGestationDuration = client.level != null ? DynamicGameRuleManager.getInt(client.level, NaturalReproductionFabric.GESTATION_DURATION) : 24000;
         boolean currentFertilizedEggs = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.FERTILIZED_CHICKEN_EGGS) : true;
         boolean currentInfertileReg = client.level != null ? DynamicGameRuleManager.getBoolean(client.level, NaturalReproductionFabric.CHICKEN_INFERTILE_REGULAR_EGGS) : true;
@@ -299,7 +299,7 @@ public class YaclScreenHelper {
             Object manualGestationOption = buildBooleanOption(
                 Component.translatable("gamerule.natural-reproduction:manual_gestation"),
                 Component.translatable("gamerule.natural-reproduction:manual_gestation.description"),
-                true,
+                false,
                 () -> currentManualGestation,
                 val -> {
                     if (client.getSingleplayerServer() != null && NaturalReproductionFabric.MANUAL_GESTATION != null) {
@@ -570,7 +570,7 @@ public class YaclScreenHelper {
         Class<?> descClass = Class.forName("dev.isxander.yacl3.api.OptionDescription");
         Method descCreateBuilderMethod = descClass.getMethod("createBuilder");
         Object descBuilder = descCreateBuilderMethod.invoke(null);
-        findMethod(descBuilder.getClass(), "text").invoke(descBuilder, new Object[]{new Object[]{description}});
+        setOptionDescriptionText(descBuilder, description);
         Object desc = findMethod(descBuilder.getClass(), "build").invoke(descBuilder);
         findMethod(optBuilderClass, "description").invoke(optionBuilder, desc);
 
@@ -597,7 +597,7 @@ public class YaclScreenHelper {
 
         Class<?> descClass = Class.forName("dev.isxander.yacl3.api.OptionDescription");
         Object descBuilder = descClass.getMethod("createBuilder").invoke(null);
-        findMethod(descBuilder.getClass(), "text").invoke(descBuilder, new Object[]{new Object[]{description}});
+        setOptionDescriptionText(descBuilder, description);
         Object desc = findMethod(descBuilder.getClass(), "build").invoke(descBuilder);
         findMethod(optBuilderClass, "description").invoke(optionBuilder, desc);
 
@@ -631,7 +631,7 @@ public class YaclScreenHelper {
         Class<?> descClass = Class.forName("dev.isxander.yacl3.api.OptionDescription");
         Method descCreateBuilderMethod = descClass.getMethod("createBuilder");
         Object descBuilder = descCreateBuilderMethod.invoke(null);
-        findMethod(descBuilder.getClass(), "text").invoke(descBuilder, new Object[]{new Object[]{net.dasik.social.api.config.DasikSupportHelper.getTooltipText()}});
+        setOptionDescriptionText(descBuilder, net.dasik.social.api.config.DasikSupportHelper.getTooltipText());
         Object desc = findMethod(descBuilder.getClass(), "build").invoke(descBuilder);
         findMethod(builderClass, "description").invoke(builder, desc);
 
@@ -656,6 +656,50 @@ public class YaclScreenHelper {
         }
 
         return findMethod(builderClass, "build").invoke(builder);
+    }
+
+    private static void setOptionDescriptionText(Object descBuilder, Component description) {
+        if (descBuilder == null || description == null) {
+            return;
+        }
+        Class<?> clazz = descBuilder.getClass();
+        // 1. Try text(Collection<Component>)
+        for (Method m : clazz.getMethods()) {
+            if (m.getName().equals("text") && m.getParameterCount() == 1) {
+                if (java.util.Collection.class.isAssignableFrom(m.getParameterTypes()[0])) {
+                    try {
+                        m.invoke(descBuilder, java.util.List.of(description));
+                        return;
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+        // 2. Try text(Component...) / array
+        for (Method m : clazz.getMethods()) {
+            if (m.getName().equals("text") && m.getParameterCount() == 1) {
+                Class<?> paramType = m.getParameterTypes()[0];
+                if (paramType.isArray()) {
+                    try {
+                        Object arr = java.lang.reflect.Array.newInstance(paramType.getComponentType(), 1);
+                        java.lang.reflect.Array.set(arr, 0, description);
+                        m.invoke(descBuilder, arr);
+                        return;
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        }
+        // 3. Fallback: text(Component)
+        for (Method m : clazz.getMethods()) {
+            if (m.getName().equals("text") && m.getParameterCount() == 1) {
+                try {
+                    m.invoke(descBuilder, description);
+                    return;
+                } catch (Exception ignored) {
+                }
+            }
+        }
     }
 
     private static Method findMethod(Class<?> clazz, String name) {

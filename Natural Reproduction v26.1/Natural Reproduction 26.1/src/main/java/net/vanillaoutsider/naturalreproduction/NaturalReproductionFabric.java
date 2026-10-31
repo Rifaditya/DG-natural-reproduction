@@ -145,9 +145,9 @@ public class NaturalReproductionFabric implements ModInitializer {
             .description("When true, breeding enters mothers into a pregnancy countdown before delivering offspring.")
             .register();
 
-        MANUAL_GESTATION = DynamicGameRuleManager.booleanRule("natural-reproduction:manual_gestation", CATEGORY, true)
+        MANUAL_GESTATION = DynamicGameRuleManager.booleanRule("natural-reproduction:manual_gestation", CATEGORY, false)
             .name("Manual Breeding Gestation")
-            .description("When true, player manual feeding also uses pregnancy gestation timers.")
+            .description("When true, player manual feeding also uses pregnancy gestation timers. When false, manual feeding delivers immediately.")
             .register();
 
         GESTATION_DURATION = DynamicGameRuleManager.integerRule("natural-reproduction:gestation_duration", CATEGORY, 24000)

@@ -2,6 +2,18 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.3 are documented in this file.
 
+## [1.4.48+26.3] - 2026-10-31
+
+### Fixed & Improved
+- **Biological Gestation Timer Calibration & Multi-Bug Sweep ([BL-NR-015])**:
+  - **Community Credit**: Critical bug reports, triage reproduction, and telemetry logs provided by Discord community members **Night Dragon (Jasmine)** and **Muqington**.
+  - **20x Pregnancy Timer Acceleration**: Fixed severe biological countdown bug in `AnimalGestationHelper.java` where 20-tick step cycles only deducted 1.0f tick instead of 20.0f ticks. Gestation timers (default 24,000 ticks) now accurately complete in exactly 1 Minecraft day (20 minutes) instead of 20 Minecraft days.
+  - **Configurable Manual Gestation Bypass**: Defaulted `MANUAL_GESTATION` GameRule to `false` in `NaturalReproductionFabric.java`. Player-fed manual breeding now delivers offspring immediately like vanilla by default, while autonomous wild breeding retains full realistic gestation periods.
+  - **Beehive Entity Discard Exemption**: Exempted `EntityTypes.BEE` from mammalian gestation in `AnimalBreedingMixin.java`. Bees reproduce instantly upon mating to prevent pregnancy states from halting or discarding when bees enter hives/nests.
+  - **Untamed & Wild Mating Proximity Stalling**: Enabled untamed wild `TamableAnimal` (cats, wolves) and `AbstractHorse` to complete autonomous breeding when within 3 blocks of their mate, bypassing vanilla's `isTame()` restriction in `BreedGoal`.
+  - **Expanded Pig Pasture Habitat**: Added grass blocks, dirt, coarse dirt, podzol, and rooted dirt to `AnimalHabitatHelper.java` pig habitat criteria alongside mud and crops.
+  - **YACL Configuration Screen Reflection Fix**: Fixed reflection argument mismatch (`IllegalArgumentException`) in `YaclScreenHelper.java` by wrapping description components in collections for YetAnotherConfigLib v3 compatibility.
+
 ## [1.4.47+26.3] - 2026-10-30
 
 ### Added & Fixed
