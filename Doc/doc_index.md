@@ -9,7 +9,6 @@ Welcome to the central documentation hub for **Natural Reproduction**. This proj
 *   Original design goals and mechanical breakdown.
 
 ### [Development](Develop/)
-*   **[Architecture](Develop/Architecture/)**
 *   **[Changelogs](Develop/Changelogs/History.md)**
 
 ### [Player Guide Hub](Players/index.md)
@@ -23,7 +22,3 @@ Welcome to the central documentation hub for **Natural Reproduction**. This proj
 *   Explore the **[Media folder](Media/)**
 
 ---
-
----
-## 🧭 Navigation
-- [⬆ Back to Collection](../../philosophy.md)
