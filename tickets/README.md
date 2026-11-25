@@ -18,6 +18,9 @@ This directory contains dedicated atomic ticket files for **Natural Reproduction
 | `[BL-NR-011]` | `[REFINEMENT]` | Standalone Naturalist Compatibility Datapack & Player Support Package | `✅ RESOLVED` | [`BL-NR-011.md`](BL-NR-011.md) |
 | `[BL-NR-012]` | `[PERF]` | Mod-Level Creature Mod Engine Isolation & AI Safeguards (Zero Datapack Requirement) | `📌 DEFERRED` | [`BL-NR-012.md`](BL-NR-012.md) |
 | `[BL-NR-013]` | `[REFINEMENT]` | Wiki & Web Portal Guide: How to Create a Datapack to Exclude or Add Custom Mobs | `📌 DEFERRED` | [`BL-NR-013.md`](BL-NR-013.md) |
+| `[BL-NR-018]` | `[TECH_DEBT]` | Wiki Audit & Update to Latest Version: Natural Reproduction | `📌 DEFERRED` | [BL-NR-018.md](BL-NR-018.md) |
+| `[BL-NR-019]` | `[TECH_DEBT]` | Adopt Per-Mod Advancement-Triggered Early Access Support Prompt (`DasikPromptRegistry`) | `📌 DEFERRED` | [BL-NR-019.md](./BL-NR-019.md) |
+| `[BL-NR-020]` | `[BUGFIX]` | Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across All Anchors (`YaclScreenHelper`) | `📌 DEFERRED` | [`BL-NR-020.md`](BL-NR-020.md) |
 
 ---
 

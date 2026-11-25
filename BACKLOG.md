@@ -1,7 +1,7 @@
 # 📌 Natural Reproduction Backlog
 
-<!-- Highest Historical ID: BL-NR-018 (Next Ticket Must Start at BL-NR-019) -->
-> **Next Available Ticket ID**: `[BL-NR-019]`
+<!-- Highest Historical ID: BL-NR-020 (Next Ticket Must Start at BL-NR-021) -->
+> **Next Available Ticket ID**: `[BL-NR-021]`
 
 This file tracks planned features, technical refinements, performance optimizations, and deferred bug fixes for **Natural Reproduction** under the **Delayed Gratification (DG)** design track (*"Invest in the world, and the world pays dividends"*).
 
@@ -11,6 +11,7 @@ This file tracks planned features, technical refinements, performance optimizati
 
 | ID | Category | Title | Priority | Target Version | Status | Specification |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [`BL-NR-020`](tickets/BL-NR-020.md) | `[BUGFIX]` | Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across All Anchors (`YaclScreenHelper`) | `[CRITICAL]` | `All Anchors (1.20.1–26.3)` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-020.md) |
 | [`BL-NR-015`](tickets/BL-NR-015.md) | `[BUGFIX]` | Gestation Timer Acceleration Bug, Beehive Despawn, Untamed Mate Stalling & YACL Screen Reflection Fix | `[CRITICAL]` | `All Anchors (1.20.1–26.3)` | `✅ RESOLVED` | [View Ticket](tickets/BL-NR-015.md) |
 | [`BL-NR-016`](tickets/BL-NR-016.md) | `[FEATURE]` | Visual Pregnancy Particle Effect Indicator | `[HIGH]` | `All Anchors (1.20.1–26.x)` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-016.md) |
 | [`BL-NR-017`](tickets/BL-NR-017.md) | `[FEATURE]` | Jade & WTHIT HUD Tooltip Gestation & Pregnancy Display Integration | `[HIGH]` | `All Anchors (1.20.1–26.x)` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-017.md) |
@@ -20,6 +21,7 @@ This file tracks planned features, technical refinements, performance optimizati
 | [`BL-NR-012`](tickets/BL-NR-012.md) | `[PERF]` | Mod-Level Creature Mod Engine Isolation & AI Safeguards (Zero Datapack Requirement) | `[CRITICAL]` | `All Anchors (1.20.1–26.3)` | `✅ RESOLVED` | [View Ticket](tickets/BL-NR-012.md) |
 | [`BL-NR-011`](tickets/BL-NR-011.md) | `[REFINEMENT]` | Standalone Naturalist Compatibility Datapack & Player Support Package | `[HIGH]` | `Datapack (1.20.1 & 1.21.1+)` | `✅ RESOLVED` | [View Ticket](tickets/BL-NR-011.md) |
 | [`BL-NR-018`](tickets/BL-NR-018.md) | `[TECH_DEBT]` | Wiki Audit & Update to Latest Version: Natural Reproduction | `[MEDIUM]` | `All Anchors` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-018.md) |
+| [`BL-NR-019`](tickets/BL-NR-019.md) | `[TECH_DEBT]` | Adopt Per-Mod Advancement-Triggered Early Access Support Prompt (`DasikPromptRegistry`) | `[MEDIUM]` | `Opportunistic Per-Mod` | `📌 DEFERRED` | [View Ticket](tickets/BL-NR-019.md) |
 
 ---
 
