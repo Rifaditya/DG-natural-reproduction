@@ -10,17 +10,17 @@ This directory contains dedicated atomic ticket files for **Natural Reproduction
 | :--- | :--- | :--- | :--- | :--- |
 | `[BL-NR-017]` | `[FEATURE]` | Jade & WTHIT HUD Tooltip Gestation & Pregnancy Display Integration | `📌 DEFERRED` | [`BL-NR-017.md`](BL-NR-017.md) |
 | `[BL-NR-016]` | `[FEATURE]` | Visual Pregnancy Particle Effect Indicator | `📌 DEFERRED` | [`BL-NR-016.md`](BL-NR-016.md) |
-| `[BL-NR-015]` | `[BUGFIX]` | Gestation Timer Acceleration Bug, Beehive Despawn, Untamed Mate Stalling & YACL Screen Reflection Fix | `🚧 IN_PROGRESS` | [`BL-NR-015.md`](BL-NR-015.md) |
+| `[BL-NR-015]` | `[BUGFIX]` | Gestation Timer Acceleration Bug, Beehive Despawn, Untamed Mate Stalling & YACL Screen Reflection Fix | `✅ RESOLVED` | [`BL-NR-015.md`](BL-NR-015.md) |
 | `[BL-NR-014]` | `[TECH_DEBT]` | Scaffold Anchor 7: Natural Reproduction v26.x (rolling 26.3+) | `📌 DEFERRED` | [`BL-NR-014.md`](BL-NR-014.md) |
 | `[BL-NR-008]` | `[TECH_DEBT]` | Adopt 5-Pillar Testing & Sidedness Verification Harness | `✅ RESOLVED` | [`BL-NR-008.md`](BL-NR-008.md) |
 | `[BL-NR-009]` | `[TECH_DEBT]` | Migrate Command Suite to Universal Brigadier Command Framework | `✅ RESOLVED` | [`BL-NR-009.md`](BL-NR-009.md) |
-| `[BL-NR-010]` | `[GOVERNANCE]` | Storefront Reconciliation: Align Mod Pages with Current Public Release | `📌 DEFERRED` | [`BL-NR-010.md`](BL-NR-010.md) |
+| `[BL-NR-010]` | `[GOVERNANCE]` | Storefront Reconciliation: Align Mod Pages with Current Public Release | `✅ RESOLVED` | [`BL-NR-010.md`](BL-NR-010.md) |
 | `[BL-NR-011]` | `[REFINEMENT]` | Standalone Naturalist Compatibility Datapack & Player Support Package | `✅ RESOLVED` | [`BL-NR-011.md`](BL-NR-011.md) |
-| `[BL-NR-012]` | `[PERF]` | Mod-Level Creature Mod Engine Isolation & AI Safeguards (Zero Datapack Requirement) | `📌 DEFERRED` | [`BL-NR-012.md`](BL-NR-012.md) |
+| `[BL-NR-012]` | `[PERF]` | Mod-Level Creature Mod Engine Isolation & AI Safeguards (Zero Datapack Requirement) | `✅ RESOLVED` | [`BL-NR-012.md`](BL-NR-012.md) |
 | `[BL-NR-013]` | `[REFINEMENT]` | Wiki & Web Portal Guide: How to Create a Datapack to Exclude or Add Custom Mobs | `📌 DEFERRED` | [`BL-NR-013.md`](BL-NR-013.md) |
 | `[BL-NR-018]` | `[TECH_DEBT]` | Wiki Audit & Update to Latest Version: Natural Reproduction | `📌 DEFERRED` | [BL-NR-018.md](BL-NR-018.md) |
 | `[BL-NR-019]` | `[TECH_DEBT]` | Adopt Per-Mod Advancement-Triggered Early Access Support Prompt (`DasikPromptRegistry`) | `📌 DEFERRED` | [BL-NR-019.md](./BL-NR-019.md) |
-| `[BL-NR-020]` | `[BUGFIX]` | Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across All Anchors (`YaclScreenHelper`) | `📌 DEFERRED` | [`BL-NR-020.md`](BL-NR-020.md) |
+| `[BL-NR-020]` | `[BUGFIX]` | Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across All Anchors (`YaclScreenHelper`) | `✅ RESOLVED` | [`BL-NR-020.md`](BL-NR-020.md) |
 
 ---
 

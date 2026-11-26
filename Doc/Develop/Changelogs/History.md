@@ -1,5 +1,14 @@
 # Natural Reproduction - Version History
 
+## [1.4.49+26.x] - 2026-11-26
+
+### Fixed & Verified
+- **[BL-NR-020] Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across `26.x` Anchors (`26.1`, `26.2`, `26.3`, root)**:
+  - Replaced obsolete `net.dasik.social.api.config.DasikSupportHelper.openKofi(screen)` invocations in `YaclScreenHelper.java` (`lines 638, 649` in `v26.1/2/3`, `602, 613` in root) with `net.dasik.social.api.client.gui.ClientSupportScreenHelper.openKofi(screen)`.
+  - Updated `dasik_library_version=1.13.2` in `gradle.properties` and `"dasik-library": ">=1.11.2"` in `fabric.mod.json` across `v26.1`, `v26.2`, `v26.3`, and root (`[PAT-20261022-001]`).
+  - Added `@Test testYaclScreenHelperKofiAbiParity()` in `NaturalReproductionSidednessContractTest.java` parsing `YaclScreenHelper.class` constant-pool `Methodref` and UTF-8 entries (`0` obsolete `DasikSupportHelper;openKofi(Screen)V` references, verified `ClientSupportScreenHelper;openKofi(Screen)V` invocation).
+  - Verified 100% green test suites (`v26.1`: 68/68, `v26.2`: 71/71, `v26.3`: 68/68, root: 62/62), deployed `1.4.49+26.x` JARs across Local Archives, Release Hub, External Vault `D:\`, Discord `#early-access-builds`, and all 6 matching Modrinth profiles, clearing all `natural-reproduction` findings in `code_auditor.py --check-profiles`.
+
 ## [1.4.47+all] - 2026-10-30
 
 ### Added & Fixed
@@ -436,3 +445,31 @@
 
 ### Added
 - **Initial Release**: Autonomous wild breeding, livestock genetics (`DasikAnimalGeneticsAPI`), size scaling, and breeding inheritance.
+
+---
+
+## 📜 Resolved Backlog Archive
+
+### `[BL-NR-020]` Fix `DasikSupportHelper.openKofi(Screen)` ABI Mismatch Across `26.x` Anchors (`YaclScreenHelper`)
+- **Resolved**: 2026-11-26
+- **Category**: `[BUGFIX]` | **Priority**: `[CRITICAL]`
+- **Target Scope**: `Active 26.x Anchors (26.1 -> 1.4.49+26.1, 26.2 -> 1.4.49+26.2, 26.3 -> 1.4.49+26.3) + Root Mirror`
+- **Summary**: Replaced obsolete `DasikSupportHelper.openKofi(Screen)` calls in `YaclScreenHelper.java` with `ClientSupportScreenHelper.openKofi(screen)`, aligned `dasik-library` dependency bounds (`>=1.11.2` / `1.13.2`), added `testYaclScreenHelperKofiAbiParity()` bytecode constant-pool guard, and deployed `1.4.49+26.1/26.2/26.3` JARs across all archives and Modrinth profiles.
+
+### `[BL-NR-015]` Gestation Timer Acceleration Bug, Beehive Despawn, Untamed Mate Stalling & YACL Screen Reflection Fix
+- **Resolved**: 2026-11-25
+- **Category**: `[BUGFIX]` | **Priority**: `[CRITICAL]`
+- **Target Scope**: `All Anchors (1.20.1, 1.21.1, 1.21.11, 26.1.2, 26.2, 26.3)`
+- **Summary**: Resolve four interlinked biological reproduction, AI goal, and GUI reflection bugs across all 6 version anchors of `Natural Reproduction`:
+
+### `[BL-NR-010]` Storefront Reconciliation: Align Mod Pages with Current Public Release
+- **Resolved**: 2026-11-25
+- **Category**: `[GOVERNANCE]` | **Priority**: `[HIGH]`
+- **Target Scope**: `Platform Documentation & Metadata`
+- **Summary**: Reconcile Modrinth and CurseForge storefront descriptions to reflect 100% ground-truth features of the current public release (Modrinth `1.4.37+1.21.11` / CurseForge `1.4.32+26.3`), strictly purging unreleased, in-development, or early-access mechanics.
+
+### `[BL-NR-011]` Standalone Naturalist Compatibility Datapack & Player Support Package
+- **Resolved**: 2026-11-25
+- **Category**: `[REFINEMENT]` | **Priority**: `[HIGH]`
+- **Target Scope**: `Datapack & Player Support (MC 1.20.1 & 1.21.1+)`
+- **Summary**: Create a ready-to-drop universal vanilla datapack (`Doc/Players/Datapacks/Natural-Reproduction-Naturalist-Control.zip`) and player support guide that immediately lets players toggle off autonomous reproduction for any of the 47 **Naturalist** (`naturalist:*`) creatures on current public releases without waiting for a mod binary update, while remaining forward-compatible with upcoming native entity tags.

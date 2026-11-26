@@ -599,7 +599,7 @@ public class YaclScreenHelper {
         Object desc = findMethod(descBuilder.getClass(), "build").invoke(descBuilder);
         findMethod(builderClass, "description").invoke(builder, desc);
 
-        java.util.function.Consumer<Screen> action = screen -> net.dasik.social.api.config.DasikSupportHelper.openKofi(screen);
+        java.util.function.Consumer<Screen> action = screen -> net.dasik.social.api.client.gui.ClientSupportScreenHelper.openKofi(screen);
         Method actionMethod = null;
         for (Method m : builderClass.getMethods()) {
             if (m.getName().equals("action") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == java.util.function.Consumer.class) {
@@ -610,7 +610,7 @@ public class YaclScreenHelper {
         if (actionMethod != null) {
             actionMethod.invoke(builder, action);
         } else {
-            java.util.function.BiConsumer<Screen, Object> biAction = (screen, opt) -> net.dasik.social.api.config.DasikSupportHelper.openKofi(screen);
+            java.util.function.BiConsumer<Screen, Object> biAction = (screen, opt) -> net.dasik.social.api.client.gui.ClientSupportScreenHelper.openKofi(screen);
             for (Method m : builderClass.getMethods()) {
                 if (m.getName().equals("action") && m.getParameterCount() == 1 && m.getParameterTypes()[0] == java.util.function.BiConsumer.class) {
                     m.invoke(builder, biAction);

@@ -2,6 +2,14 @@
 
 All notable changes to **Natural Reproduction** for Minecraft 26.1 are documented in this file.
 
+## [1.4.49+26.1] - 2026-11-26
+
+### Fixed
+- **YACL Ko-fi Support Button ABI Compatibility ([BL-NR-020])**:
+  - Updated `YaclScreenHelper.java` Ko-fi button click callbacks to invoke `ClientSupportScreenHelper.openKofi(screen)` instead of the deprecated `DasikSupportHelper.openKofi(Screen)` signature, preventing `NoSuchMethodError` crashes when running with `DasikLibrary 1.13.x+`.
+  - Updated `dasik-library` dependency floor in `fabric.mod.json` to `>=1.11.2` and compiled against `DasikLibrary 1.13.2`.
+  - Added automated bytecode constant-pool contract verification (`testYaclScreenHelperKofiAbiParity`) to `NaturalReproductionSidednessContractTest.java`.
+
 ## [1.4.48+26.1] - 2026-10-31
 
 ### Fixed & Improved

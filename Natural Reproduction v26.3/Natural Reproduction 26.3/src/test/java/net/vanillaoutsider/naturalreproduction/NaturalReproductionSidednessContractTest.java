@@ -8,13 +8,17 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -214,5 +218,124 @@ public class NaturalReproductionSidednessContractTest {
             Path classPath = srcMain.resolve(pkg).resolve(mixinName + ".java");
             assertTrue(Files.exists(classPath), "Mixin class file must exist in source: " + classPath);
         }
+    }
+
+    @Test
+    @DisplayName("Pillar 5: YaclScreenHelper bytecode invokes ClientSupportScreenHelper.openKofi(Screen) with zero obsolete refs")
+    void testYaclScreenHelperKofiAbiParity() throws IOException {
+        Path root = findProjectRoot();
+        Path classesRoot = root.resolve("build/classes/java/main");
+        if (!Files.exists(classesRoot)) {
+            return;
+        }
+        Path clientClassesDir = classesRoot.resolve("net/vanillaoutsider/naturalreproduction/client");
+        Path yaclClass = clientClassesDir.resolve("YaclScreenHelper.class");
+        assertTrue(Files.exists(yaclClass), "Compiled YaclScreenHelper.class must exist at: " + yaclClass);
+
+        String obsoleteOwner = "net/dasik/social/api/config/" + "DasikSupport" + "Helper";
+        String methodName = "open" + "Kofi";
+        String screenDesc = "(Lnet/minecraft/client/gui/screens/Screen;)V";
+        String obsoleteRef = obsoleteOwner + ";" + methodName + screenDesc;
+
+        String expectedOwner = "net/dasik/social/api/client/gui/ClientSupportScreenHelper";
+        String expectedRef = expectedOwner + ";" + methodName + screenDesc;
+
+        List<Path> yaclClasses;
+        try (Stream<Path> stream = Files.list(clientClassesDir)) {
+            yaclClasses = stream
+                .filter(p -> {
+                    String name = p.getFileName().toString();
+                    return name.equals("YaclScreenHelper.class")
+                        || (name.startsWith("YaclScreenHelper$") && name.endsWith(".class"));
+                })
+                .toList();
+        }
+        assertFalse(yaclClasses.isEmpty(), "YaclScreenHelper class files must exist");
+
+        int expectedMethodRefCount = 0;
+        Set<String> allUtf8 = new HashSet<>();
+
+        for (Path classFile : yaclClasses) {
+            byte[] bytes = Files.readAllBytes(classFile);
+            try (DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes))) {
+                int magic = dis.readInt();
+                assertEquals(0xCAFEBABE, magic, "Invalid class file magic in: " + classFile);
+                dis.readUnsignedShort(); // minor_version
+                dis.readUnsignedShort(); // major_version
+                int cpCount = dis.readUnsignedShort();
+
+                int[] tags = new int[cpCount];
+                String[] utf8 = new String[cpCount];
+                int[] firstIdx = new int[cpCount];
+                int[] secondIdx = new int[cpCount];
+
+                for (int i = 1; i < cpCount; i++) {
+                    int tag = dis.readUnsignedByte();
+                    tags[i] = tag;
+                    switch (tag) {
+                        case 1:
+                            utf8[i] = dis.readUTF();
+                            allUtf8.add(utf8[i]);
+                            break;
+                        case 3:
+                        case 4:
+                            dis.readInt();
+                            break;
+                        case 5:
+                        case 6:
+                            dis.readLong();
+                            i++;
+                            break;
+                        case 7:
+                        case 8:
+                        case 16:
+                        case 19:
+                        case 20:
+                            firstIdx[i] = dis.readUnsignedShort();
+                            break;
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 17:
+                        case 18:
+                            firstIdx[i] = dis.readUnsignedShort();
+                            secondIdx[i] = dis.readUnsignedShort();
+                            break;
+                        case 15:
+                            dis.readUnsignedByte();
+                            dis.readUnsignedShort();
+                            break;
+                        default:
+                            fail("Unknown constant pool tag " + tag + " in " + classFile);
+                    }
+                }
+
+                for (int i = 1; i < cpCount; i++) {
+                    if (tags[i] == 10 || tags[i] == 11) {
+                        int classIdx = firstIdx[i];
+                        int natIdx = secondIdx[i];
+                        String owner = utf8[firstIdx[classIdx]];
+                        String invokedName = utf8[firstIdx[natIdx]];
+                        String invokedDesc = utf8[secondIdx[natIdx]];
+                        String fullRef = owner + ";" + invokedName + invokedDesc;
+                        assertNotEquals(obsoleteRef, fullRef,
+                            "Forbidden obsolete ABI reference found in " + classFile + ": " + fullRef);
+                        if (expectedRef.equals(fullRef)) {
+                            expectedMethodRefCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        assertTrue(allUtf8.contains(expectedOwner),
+            "YaclScreenHelper constant pool UTF-8 must contain " + expectedOwner);
+        assertTrue(allUtf8.contains(methodName),
+            "YaclScreenHelper constant pool UTF-8 must contain " + methodName);
+        assertTrue(allUtf8.contains(screenDesc),
+            "YaclScreenHelper constant pool UTF-8 must contain " + screenDesc);
+        assertTrue(expectedMethodRefCount >= 1,
+            "YaclScreenHelper must invoke " + expectedRef + " at least once");
     }
 }
